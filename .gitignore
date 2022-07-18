@@ -32,3 +32,4 @@ replay_pid*
 *.xml
 *.xml
 .idea/uiDesigner.xml
+PlayerCharacters.iml
