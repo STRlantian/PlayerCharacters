@@ -1,0 +1,9 @@
+name: PlayerCharacters
+main: Override.Studio.STRlantian.Main
+version: 1.0
+api-version: 1.19 1.18
+author: STRlantian
+commands:
+  character:
+    description: Player Characters
+    usage: /character <function>
