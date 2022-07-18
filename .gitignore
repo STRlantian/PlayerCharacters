@@ -23,3 +23,12 @@
 hs_err_pid*
 replay_pid*
 .idea/workspace.xml
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/compiler.xml
+.idea/PlayerCharacters.iml
+.idea/vcs.xml
+*.xml
+*.xml
+.idea/uiDesigner.xml
