@@ -1,7 +1,8 @@
-package Override.Studio.STRlantian.Listeners;
+package OverrideStudio.STRlantian.Listeners;
 
-import Override.Studio.STRlantian.Localisation;
+import OverrideStudio.STRlantian.Localisation;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
-import static Override.Studio.STRlantian.Main.inst;
+import static OverrideStudio.STRlantian.Main.inst;
 
 public final class Initialisation implements Listener
 {
@@ -70,10 +71,16 @@ public final class Initialisation implements Listener
                 case 3:
                 {
                     cfg.set(name + ".Language", "CN");
+                    pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
+                    pl.sendMessage(ChatColor.RED + "已更改语言到 简体中文");
+                    pl.closeInventory();
                 }
                 case 5:
                 {
                     cfg.set(name + ".Language", "EN");
+                    pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
+                    pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
+                    pl.closeInventory();
                 }
             }
         }

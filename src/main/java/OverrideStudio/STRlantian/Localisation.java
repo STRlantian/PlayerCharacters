@@ -1,4 +1,4 @@
-package Override.Studio.STRlantian;
+package OverrideStudio.STRlantian;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,14 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
-import java.util.List;
-
-import static Override.Studio.STRlantian.Main.inst;
-
 public final class Localisation
 {
-    static FileConfiguration cfg = inst.getConfig();
+    static FileConfiguration cfg = Main.inst.getConfig();
 
     public static String getLanguage(Player player)
     {
@@ -45,6 +40,6 @@ public final class Localisation
     public static void uDidntSetLanguage(Player pl)
     {
         pl.sendMessage(ChatColor.RED + "你貌似还没选择语言,请/character language");
-        pl.sendMessage(ChatColor.RED + "It seems that you haven't set your language yet.Use /character language please");
+        pl.sendMessage(ChatColor.RED + "It seems that you haven't set your language yet.Please /character language");
     }
 }
