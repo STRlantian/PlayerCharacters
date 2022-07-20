@@ -19,10 +19,11 @@ public final class Localisation
         return (String) cfg.get(name + ".Language");
     }
 
+    public static final String LANGTITLE = "选语言 | Choose a Language";
     @SuppressWarnings("Deprecation")
     public static Inventory getLanguageInv()
     {
-        Inventory inv = Bukkit.createInventory(null, 9, "选语言 | Choose a Language");
+        Inventory inv = Bukkit.createInventory(null, 9, LANGTITLE);
         ItemStack CN = new ItemStack(Material.RED_WOOL);
         ItemStack EN = new ItemStack(Material.BLUE_WOOL);
         ItemMeta cn = CN.getItemMeta();

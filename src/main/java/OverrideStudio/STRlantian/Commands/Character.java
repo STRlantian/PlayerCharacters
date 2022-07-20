@@ -104,6 +104,16 @@ public final class Character implements TabExecutor
             Localisation.uDidntSetLanguage(sd);
             return true;
         }
+        if(PlayerCharacters.getCharacterList(sd).get(0) == null)
+        {
+            if(!strings[0].equals("language") && !strings[0].equals("lang")
+            && !strings[0].equals("help") && !strings[0].equals("credit")
+            && !strings[0].equals("credits"))
+            {
+                PlayerCharacters.uDidntInit(sd);
+                return true;
+            }
+        }
 
         switch (strings.length)
         {
@@ -143,7 +153,8 @@ public final class Character implements TabExecutor
                     }
                     case "init", "initialise", "initialize"->
                     {
-
+                        PlayerCharacters.initialiseCharacters(sd);
+                        return true;
                     }
                 }
             }
@@ -154,7 +165,8 @@ public final class Character implements TabExecutor
     @Override
     public @NotNull List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings)
     {
-        if(strings.length == 0)
+        if(strings.length == 1
+        || strings.length == 0)
         {
             return List.of(new String[]{
                     "language",

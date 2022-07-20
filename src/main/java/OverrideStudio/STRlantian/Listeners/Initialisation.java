@@ -11,8 +11,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 
+import static OverrideStudio.STRlantian.Localisation.LANGTITLE;
 import static OverrideStudio.STRlantian.Main.inst;
+import static OverrideStudio.STRlantian.PlayerCharacters.INITITLECN;
+import static OverrideStudio.STRlantian.PlayerCharacters.INITITLEEN;
 
 public final class Initialisation implements Listener
 {
@@ -31,21 +35,21 @@ public final class Initialisation implements Listener
         cfg.set(name, "Characters");
         cfg.set(name, "ChangingTime");
 
+        cfg.set(cha, "Saturation");
+        cfg.set(cha, "Energy");
+        cfg.set(cha, "Health");
         cfg.set(cha, "Sanity");
         cfg.set(cha, "Darkness");
         cfg.set(cha, "Positive");
-        cfg.set(cha, "Braveness");
-        cfg.set(cha, "Outgoing");
-        cfg.set(cha, "Persistence");
-        cfg.set(cha, "EzAnger");
-        cfg.set(cha, "Energy");
-        cfg.set(cha, "Health");
+        cfg.set(cha, "Courage");
+        cfg.set(cha, "Kindness");
+        cfg.set(cha, "Patience");
         cfg.set(cha, "High");
         pl.openInventory(INV);
     }
 
     @EventHandler
-    public void ifCloseInit(InventoryCloseEvent e)
+    public void ifCloseLanguage(InventoryCloseEvent e)
     {
         Inventory invClo = e.getInventory();
         Player pl = (Player) e.getPlayer();
@@ -57,31 +61,42 @@ public final class Initialisation implements Listener
     }
 
     @EventHandler
-    public void chooseLanguage(InventoryClickEvent e)
+    public void clickInventory(InventoryClickEvent e)
     {
-        Inventory getInv = e.getInventory();
-        if(getInv.equals(Localisation.getLanguageInv()));
+        Player pl = (Player) e.getWhoClicked();
+        InventoryView inv = pl.getOpenInventory();
+        String title = inv.getTitle();
+        switch(title)
         {
-            e.setCancelled(true);
-            int slot = e.getSlot();
-            Player pl = (Player) e.getWhoClicked();
-            String name = pl.getName().toLowerCase();
-            switch(slot)
+            case LANGTITLE->
             {
-                case 3:
+                e.setCancelled(true);
+                int slot = e.getSlot();
+                String name = pl.getName().toLowerCase();
+                switch(slot)
                 {
-                    cfg.set(name + ".Language", "CN");
-                    pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
-                    pl.sendMessage(ChatColor.RED + "已更改语言到 简体中文");
-                    pl.closeInventory();
+                    case 3:
+                    {
+                        cfg.set(name + ".Language", "CN");
+                        pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
+                        pl.sendMessage(ChatColor.RED + "已更改语言到: 简体中文");
+                        pl.closeInventory();
+                    }
+                    case 5:
+                    {
+                        cfg.set(name + ".Language", "EN");
+                        pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
+                        pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
+                        pl.closeInventory();
+                    }
                 }
-                case 5:
-                {
-                    cfg.set(name + ".Language", "EN");
-                    pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
-                    pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
-                    pl.closeInventory();
-                }
+            }
+
+            case INITITLECN, INITITLEEN->
+            {
+                e.setCancelled(true);
+                int slot = e.getSlot();
+
             }
         }
     }
