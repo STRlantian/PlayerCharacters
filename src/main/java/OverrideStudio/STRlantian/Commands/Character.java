@@ -1,7 +1,9 @@
 package OverrideStudio.STRlantian.Commands;
 
-import OverrideStudio.STRlantian.Localisation;
-import OverrideStudio.STRlantian.PlayerCharacters;
+import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
+import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
+import OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters;
+import OverrideStudio.STRlantian.PlayerCharacters.ViewCharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -10,6 +12,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -96,6 +99,8 @@ public final class Character implements TabExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings)
     {
+        command.setAliases(new ArrayList<>(Collections.singletonList("cha")));
+
         Player sd = (Player) commandSender;
         String lang = Localisation.getLanguage(sd);
 
@@ -148,12 +153,12 @@ public final class Character implements TabExecutor
                     }
                     case "view"->
                     {
-                        PlayerCharacters.viewCharacters(sd);
+                        ViewCharacters.viewCharacters(sd);
                         return true;
                     }
                     case "init", "initialise", "initialize"->
                     {
-                        PlayerCharacters.initialiseCharacters(sd);
+                        InitialiseCharacters.initialiseCharacters(sd);
                         return true;
                     }
                 }
@@ -165,10 +170,9 @@ public final class Character implements TabExecutor
     @Override
     public @NotNull List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings)
     {
-        if(strings.length == 1
-        || strings.length == 0)
+        if(strings.length == 1)
         {
-            return List.of(new String[]{
+            return List.of(
                     "language",
                     "credits",
                     "help",
@@ -177,8 +181,7 @@ public final class Character implements TabExecutor
                     "delete",
                     "view",
                     "confirm",
-                    "decline",
-                    null});
+                    "decline");
         }
         else
         {

@@ -1,214 +1,21 @@
-package OverrideStudio.STRlantian;
+package OverrideStudio.STRlantian.PlayerCharacters;
 
-import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static java.lang.Integer.valueOf;
+import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.createItem;
+import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.getCharacterList;
+import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.createInv;
 
-public final class PlayerCharacters
+public final class ViewCharacters
 {
-    static FileConfiguration cfg = Main.inst.getConfig();
-
-    public static List<String> getPathList(Player pl)
-    {
-        List<String> list = new ArrayList<>(Collections.emptyList());
-
-        String name = pl.getName().toLowerCase();
-        String cha = name + ".Characters.";
-        String language = name + ".Language";
-        String change = name + ".ChangingTime";
-
-        String satu = cha + "Saturation";
-        String ene = cha + "Energy";
-        String heal = cha + "Health";
-        String san = cha + "Sanity";
-        String dark = cha + "Darkness";
-        String posi = cha + "Positivity";
-        String cour = cha + "Courage";
-        String kind = cha + "Kindness";
-        String pat = cha + "Patience";
-        String high = cha + "Height";
-
-        list.set(0, satu);
-        list.set(1, ene);
-        list.set(2, heal);
-        list.set(3, san);
-        list.set(4, dark);
-        list.set(5, posi);
-        list.set(6, cour);
-        list.set(7, kind);
-        list.set(8, pat);
-        list.set(9, high);
-        list.set(10, language);
-        list.set(11, change);
-
-        return list;
-    }
-    public static void uDidntInit(Player pl)
-    {
-        String language = Localisation.getLanguage(pl);
-        switch(language)
-        {
-            case "CN"->
-            {
-                pl.sendMessage(ChatColor.RED + "你还没初始化你的性格");
-                pl.sendMessage(ChatColor.RED + "使用/character init");
-            }
-            case "EN"->
-            {
-                pl.sendMessage(ChatColor.RED + "You haven't initialise your characters");
-                pl.sendMessage(ChatColor.RED + "Please use /character init");
-            }
-        }
-    }
-
-    private static void addTime(Player pl)
-    {
-        String name = pl.getName().toLowerCase();
-        String origin = Objects.requireNonNull((String) cfg.get(getPathList(pl).get(11)));
-        int og = Integer.parseInt(origin);
-        int a = og - 1;
-        cfg.set(getPathList(pl).get(11), a);
-    }
-    public static final String INITITLECN = "初始化性格";
-    public static final String INITITLEEN = "Initialising Characters";
-    public static void initialiseCharacters(Player pl)
-    {
-        final ItemStack RANDOM = new ItemStack(Material.APPLE, 1);
-        final ItemStack TEST = new ItemStack(Material.PAPER, 1);
-        final ItemStack CHOOSE = new ItemStack(Material.COBWEB, 1);
-        ItemMeta rim = RANDOM.getItemMeta();
-        rim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        rim.addEnchant(Enchantment.DURABILITY, 1, true);
-        ItemMeta tim = TEST.getItemMeta();
-        tim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        tim.addEnchant(Enchantment.DURABILITY, 1, true);
-        ItemMeta cim = CHOOSE.getItemMeta();
-        cim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        cim.addEnchant(Enchantment.DURABILITY, 1, true);
-
-        String name = pl.getName().toLowerCase();
-        pl.setGameMode(GameMode.SPECTATOR);
-        String language = Localisation.getLanguage(pl);
-        switch(language)
-        {
-            case "CN"->
-            {
-                cfg.set(getPathList(pl).get(11), 0);
-                pl.sendMessage(ChatColor.GREEN + "开始初始化性格...");
-                Inventory inv = Bukkit.createInventory(null, 6 * 9, INITITLECN);
-                rim.setDisplayName(ChatColor.YELLOW + "随机抽取性格");
-                tim.setDisplayName(ChatColor.YELLOW + "测试得出你的性格");
-                cim.setDisplayName(ChatColor.YELLOW + "手动调整你的性格");
-            }
-
-            case "EN"->
-            {
-
-            }
-        }
-    }
-
-    private static List<String> getCharacterList(Player pl)
-    {
-        List<String> list = new ArrayList<>(Collections.emptyList());
-        String name = pl.getName().toLowerCase();
-        String cha = name + ".Characters";
-
-        String hunger = (String) cfg.get(cha + "Hunger");
-        String ener = (String) cfg.get(cha + "Energy");
-        String health = (String) cfg.get(cha + "Health");
-        String san = (String) cfg.get(cha + "Sanity");
-        String dark = (String) cfg.get(cha + "Darkness");
-        String pos = (String) cfg.get(cha + "Positive");
-        String brave = (String) cfg.get(cha + "Braveness");
-        String wat = (String) cfg.get(cha + "Kindness");
-        String pers = (String) cfg.get(cha + "Persistence");
-        String high = (String) cfg.get(cha + "High");
-
-        list.set(0, hunger);
-        list.set(1, ener);
-        list.set(2, health);
-        list.set(3, san);
-        list.set(4, dark);
-        list.set(5, pos);
-        list.set(6, brave);
-        list.set(7, wat);
-        list.set(8, pers);
-        list.set(9, high);
-        return list;
-    }
-
-    private static Inventory createInv(Player pl, String language)
-    {
-        String name = pl.getName();
-        ItemStack consFlag = new ItemStack(Material.PAPER, 1);
-        ItemStack featFlag = new ItemStack(Material.PAPER, 1);
-        ItemMeta consim = consFlag.getItemMeta();
-        ItemMeta featim = featFlag.getItemMeta();
-        switch(language)
-        {
-            case "CN" ->
-            {
-                Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "的性格页面");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的基本性格"));
-                consim.addEnchant(Enchantment.DURABILITY, 1, true);
-                consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                featim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的特殊性格");
-                featim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的特殊性格"));
-                featim.addEnchant(Enchantment.DURABILITY, 1, true);
-                featim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                consFlag.setItemMeta(consim);
-                featFlag.setItemMeta(featim);
-
-                inv.setItem(0, consFlag);
-                inv.setItem(9, featFlag);
-                return inv;
-            }
-            case "EN" ->
-            {
-                Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "'s Character Page");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your basical characters"));
-                consim.addEnchant(Enchantment.DURABILITY, 1, true);
-                consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                featim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s special characters'");
-                featim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your special characters"));
-                featim.addEnchant(Enchantment.DURABILITY, 1, true);
-                featim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                consFlag.setItemMeta(consim);
-                featFlag.setItemMeta(featim);
-
-                inv.setItem(0, consFlag);
-                inv.setItem(9, featFlag);
-                return inv;
-            }
-        }
-        return null;
-    }
-
-    private static void createItem(Inventory inv, int slot, ItemStack i, String name, String lore)
-    {
-        ItemMeta im = i.getItemMeta();
-        im.setDisplayName(name);
-        im.setLore(Collections.singletonList(lore));
-        i.setItemMeta(im);
-        inv.setItem(slot, i);
-    }
     public static void viewCharacters(Player pl)
     {
         List<String> list = getCharacterList(pl);
@@ -235,75 +42,75 @@ public final class PlayerCharacters
                 {
                     case "0" ->
                             createItem(inv, 1, hun,
-                                ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求不高",
-                                ChatColor.DARK_GREEN + "饱食度上限少");
+                                    ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求不高",
+                                    ChatColor.DARK_GREEN + "饱食度上限少");
                     case "1" ->
                             createItem(inv, 1, hun,
-                                ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求正常",
-                                ChatColor.DARK_GREEN + "饱食度上限中");
+                                    ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求正常",
+                                    ChatColor.DARK_GREEN + "饱食度上限中");
                     case "2" ->
                             createItem(inv, 1, hun,
-                                ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求较高",
-                                ChatColor.DARK_GREEN + "饱食度上限大");
+                                    ChatColor.DARK_GREEN + "饱食度- 你对吃饭要求较高",
+                                    ChatColor.DARK_GREEN + "饱食度上限大");
                 }
                 switch (list.get(1))
                 {
                     case "0" ->
                             createItem(inv, 2, ene,
-                                ChatColor.DARK_BLUE + "能量值- 你体质不好",
-                                ChatColor.DARK_BLUE + "能量上限低");
+                                    ChatColor.DARK_BLUE + "能量值- 你体质不好",
+                                    ChatColor.DARK_BLUE + "能量上限低");
                     case "1" ->
                             createItem(inv, 2, ene,
-                                ChatColor.DARK_BLUE + "能量值- 你体质正常",
-                                ChatColor.DARK_BLUE + "能量上限适中");
+                                    ChatColor.DARK_BLUE + "能量值- 你体质正常",
+                                    ChatColor.DARK_BLUE + "能量上限适中");
                     case "2" ->
                             createItem(inv, 2, ene,
-                                ChatColor.DARK_BLUE + "能量值- 你体制超群",
-                                ChatColor.DARK_BLUE + "能量上限高");
+                                    ChatColor.DARK_BLUE + "能量值- 你体制超群",
+                                    ChatColor.DARK_BLUE + "能量上限高");
                 }
                 switch (list.get(2))
                 {
                     case "0" ->
                             createItem(inv, 3, hea,
-                                ChatColor.DARK_RED + "健康值- 你不健康",
-                                ChatColor.DARK_RED + "健康值上限低");
+                                    ChatColor.DARK_RED + "健康值- 你不健康",
+                                    ChatColor.DARK_RED + "健康值上限低");
                     case "1" ->
                             createItem(inv, 3, hea,
                                     ChatColor.DARK_RED + "健康值- 你挺健康",
                                     ChatColor.DARK_RED + "健康值上限中");
                     case "2" ->
                             createItem(inv, 3, hea,
-                                ChatColor.DARK_RED + "健康值- 你很健康",
-                                ChatColor.DARK_RED + "健康值上限高");
+                                    ChatColor.DARK_RED + "健康值- 你很健康",
+                                    ChatColor.DARK_RED + "健康值上限高");
                 }
                 switch (list.get(3)) //sanity
                 {
                     case "0" ->
                             createItem(inv, 10, san,
-                                ChatColor.AQUA + "理智- 你有时不清醒",
-                                ChatColor.AQUA + "概率性反胃和急迫效果");
+                                    ChatColor.AQUA + "理智- 你有时不清醒",
+                                    ChatColor.AQUA + "概率性反胃和急迫效果");
 
                     case "1" ->
                             createItem(inv, 10, san,
-                                ChatColor.AQUA + "理智- 你比较清醒",
-                                ChatColor.GRAY + "不受影响");
+                                    ChatColor.AQUA + "理智- 你比较清醒",
+                                    ChatColor.GRAY + "不受影响");
 
                     case "2" ->
                             createItem(inv, 10, san,
-                                ChatColor.AQUA + "理智- 你沉着冷静",
-                                ChatColor.AQUA + "抗性和速度效果");
+                                    ChatColor.AQUA + "理智- 你沉着冷静",
+                                    ChatColor.AQUA + "抗性和速度效果");
 
                 }
                 switch (list.get(4)) //darkness
                 {
                     case "0" ->
                             createItem(inv, 11, dar,
-                                ChatColor.BLACK + "黑暗- 你怕黑",
-                                ChatColor.BLACK + "在黑暗中速度和虚弱效果");
+                                    ChatColor.BLACK + "黑暗- 你怕黑",
+                                    ChatColor.BLACK + "在黑暗中速度和虚弱效果");
                     case "1" ->
                             createItem(inv, 11, dar,
-                                ChatColor.BLACK + "黑暗- 你不怕黑",
-                                ChatColor.GRAY + "不受影响");
+                                    ChatColor.BLACK + "黑暗- 你不怕黑",
+                                    ChatColor.GRAY + "不受影响");
                 }
                 switch (list.get(5)) //positivity
                 {
@@ -320,12 +127,12 @@ public final class PlayerCharacters
                 {
                     case "0" ->
                             createItem(inv, 13, bra,
-                                ChatColor.RED + "勇气- 你超勇的(bushi",
-                                ChatColor.RED + "持剑时力量效果");
+                                    ChatColor.RED + "勇气- 你超勇的(bushi",
+                                    ChatColor.RED + "持剑时力量效果");
                     case "1" ->
                             createItem(inv, 13, bra,
-                                ChatColor.RED + "勇气- 你很逊的啦(bushi",
-                                ChatColor.RED + "举盾时速度效果");
+                                    ChatColor.RED + "勇气- 你很逊的啦(bushi",
+                                    ChatColor.RED + "举盾时速度效果");
                 }
                 switch (list.get(7)) //Kindness
                 {
@@ -335,8 +142,8 @@ public final class PlayerCharacters
                                     ChatColor.BLUE + "健康值少和力量效果");
                     case "1" ->
                             createItem(inv, 14, kin,
-                                ChatColor.BLUE + "善良- 你是个正常人",
-                                ChatColor.BLUE + "钓鱼时幸运效果(我也不知道为什么我想起来这个");
+                                    ChatColor.BLUE + "善良- 你是个正常人",
+                                    ChatColor.BLUE + "钓鱼时幸运效果(我也不知道为什么我想起来这个");
                     case "2" ->
                             createItem(inv, 14, kin,
                                     ChatColor.BLUE + "善良- 你很善良",
@@ -346,8 +153,8 @@ public final class PlayerCharacters
                 {
                     case "0" ->
                             createItem(inv, 15, per,
-                                ChatColor.LIGHT_PURPLE + "耐心- 你不仅耐心还坚持不懈",
-                                ChatColor.LIGHT_PURPLE + "一些情况下缓慢和抗性效果");
+                                    ChatColor.LIGHT_PURPLE + "耐心- 你不仅耐心还坚持不懈",
+                                    ChatColor.LIGHT_PURPLE + "一些情况下缓慢和抗性效果");
                     case "1" ->
                             createItem(inv, 15, per,
                                     ChatColor.LIGHT_PURPLE + "耐心- 你很急躁,经常没耐心",
@@ -357,8 +164,8 @@ public final class PlayerCharacters
                 {
                     case "0" ->
                             createItem(inv, 16, hig,
-                                ChatColor.RED + "恐高- 你恐高",
-                                ChatColor.RED + "高处反胃和速度效果");
+                                    ChatColor.RED + "恐高- 你恐高",
+                                    ChatColor.RED + "高处反胃和速度效果");
                     case "1" ->
                             createItem(inv, 16, hig,
                                     ChatColor.RED + "恐高- 你不恐高",

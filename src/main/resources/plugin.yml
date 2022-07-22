@@ -7,3 +7,5 @@ commands:
   character:
     description: Player Characters
     usage: /character <function>
+    aliases:
+      - cha

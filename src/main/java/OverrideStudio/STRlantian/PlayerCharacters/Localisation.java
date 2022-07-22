@@ -1,5 +1,6 @@
-package OverrideStudio.STRlantian;
+package OverrideStudio.STRlantian.PlayerCharacters;
 
+import OverrideStudio.STRlantian.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -1,7 +1,8 @@
 package OverrideStudio.STRlantian.Listeners;
 
-import OverrideStudio.STRlantian.Localisation;
+import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,10 +14,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
-import static OverrideStudio.STRlantian.Localisation.LANGTITLE;
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.LANGTITLE;
 import static OverrideStudio.STRlantian.Main.inst;
-import static OverrideStudio.STRlantian.PlayerCharacters.INITITLECN;
-import static OverrideStudio.STRlantian.PlayerCharacters.INITITLEEN;
+import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.INITITLEMAINCN;
+import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.INITITLEMAINEN;
 
 public final class Initialisation implements Listener
 {
@@ -27,6 +28,7 @@ public final class Initialisation implements Listener
     {
         final Inventory INV = Localisation.getLanguageInv();
         Player pl = e.getPlayer();
+        pl.setGameMode(GameMode.SPECTATOR);
         String name = pl.getName().toLowerCase();
         pl.sendMessage(ChatColor.GRAY + "本服务器开启了 玩家性格 插件, 输入 /character 进行了解");
         pl.sendMessage(ChatColor.GRAY + "This server enables PlayerCharacter Plugin. Learn more by /character");
@@ -61,6 +63,14 @@ public final class Initialisation implements Listener
     }
 
     @EventHandler
+    public void closeInventory(InventoryCloseEvent e)
+    {
+        InventoryView inv = e.getView();
+        Player pl = (Player) e.getPlayer();
+        String title = inv.getTitle();
+    }
+
+    @EventHandler
     public void clickInventory(InventoryClickEvent e)
     {
         Player pl = (Player) e.getWhoClicked();
@@ -81,22 +91,23 @@ public final class Initialisation implements Listener
                         pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                         pl.sendMessage(ChatColor.RED + "已更改语言到: 简体中文");
                         pl.closeInventory();
+                        pl.setGameMode(GameMode.SURVIVAL);
                     }
                     case 5:
                     {
                         cfg.set(name + ".Language", "EN");
                         pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                         pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
+                        pl.setGameMode(GameMode.SURVIVAL);
                         pl.closeInventory();
                     }
                 }
             }
 
-            case INITITLECN, INITITLEEN->
+            case INITITLEMAINCN, INITITLEMAINEN ->
             {
                 e.setCancelled(true);
                 int slot = e.getSlot();
-
             }
         }
     }
