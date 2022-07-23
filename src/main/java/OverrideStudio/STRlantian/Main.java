@@ -1,6 +1,6 @@
 package OverrideStudio.STRlantian;
 
-import OverrideStudio.STRlantian.Commands.Character;
+import OverrideStudio.STRlantian.Commands.CharacterCommand;
 import OverrideStudio.STRlantian.Listeners.Initialisation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,9 +18,9 @@ public final class Main extends JavaPlugin
         saveConfig();
         System.out.println(ChatColor.GREEN + "Player Characters Plugin is enabled");
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setExecutor(new Character());
+        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setExecutor(new CharacterCommand());
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setTabCompleter(new Character());
+        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setTabCompleter(new CharacterCommand());
 
         Bukkit.getPluginManager().registerEvents(new Initialisation(), this);
 

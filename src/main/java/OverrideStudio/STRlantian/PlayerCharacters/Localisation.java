@@ -44,4 +44,11 @@ public final class Localisation
         pl.sendMessage(ChatColor.RED + "你貌似还没选择语言,请/character language");
         pl.sendMessage(ChatColor.RED + "It seems that you haven't set your language yet.Please /character language");
     }
+
+    public static boolean checkLang(Player pl) //Check if set lang
+    {
+        String lang = Localisation.getLanguage(pl);
+        return lang.equals("CN")
+                || lang.equals("EN");
+    }
 }

@@ -1,7 +1,7 @@
 package OverrideStudio.STRlantian.Commands;
 
-import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
 import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
+import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
 import OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters;
 import OverrideStudio.STRlantian.PlayerCharacters.ViewCharacters;
 import org.bukkit.ChatColor;
@@ -9,15 +9,21 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public final class Character implements TabExecutor
+import static OverrideStudio.STRlantian.Main.inst;
+
+public final class CharacterCommand implements TabExecutor
 {
+    FileConfiguration cfg = inst.getConfig();
+
     private void giveHelp(Player pl)
     {
         String language = Localisation.getLanguage(pl);
@@ -120,6 +126,7 @@ public final class Character implements TabExecutor
             }
         }
 
+        String changingTime = (String) cfg.get(PlayerCharacters.getPathList(sd).get(11));
         switch (strings.length)
         {
             default ->
@@ -158,9 +165,14 @@ public final class Character implements TabExecutor
                     }
                     case "init", "initialise", "initialize"->
                     {
-                        InitialiseCharacters.initialiseCharacters(sd);
+                        if(!Objects.equals(changingTime, "1")
+                        && !Objects.equals(changingTime, "0"))
+                        {
+                            InitialiseCharacters.initialiseCharacters(sd);
+                        }
                         return true;
                     }
+
                 }
             }
         }
