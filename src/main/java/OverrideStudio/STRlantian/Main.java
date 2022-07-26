@@ -1,7 +1,8 @@
 package OverrideStudio.STRlantian;
 
 import OverrideStudio.STRlantian.Commands.CharacterCommand;
-import OverrideStudio.STRlantian.Listeners.Initialisation;
+import OverrideStudio.STRlantian.Listeners.CommandListeners;
+import OverrideStudio.STRlantian.Listeners.JoinInit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,8 +23,8 @@ public final class Main extends JavaPlugin
 
         Objects.requireNonNull(Bukkit.getPluginCommand("character")).setTabCompleter(new CharacterCommand());
 
-        Bukkit.getPluginManager().registerEvents(new Initialisation(), this);
-
+        Bukkit.getPluginManager().registerEvents(new JoinInit(), this);
+        Bukkit.getPluginManager().registerEvents(new CommandListeners(), this);
     }
 
     @Override

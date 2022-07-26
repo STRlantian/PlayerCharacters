@@ -1,20 +1,34 @@
 package OverrideStudio.STRlantian.PlayerCharacters;
 
 import OverrideStudio.STRlantian.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public final class PlayerCharacters
 {
+    @SuppressWarnings("Deprecation")
+    public static void createItem(Inventory inv, int slot, ItemStack i, String name, @Nullable String lore)
+    {        //Create items for an ITEM IN **VIEWING PAGE**
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(name);
+        if(!Objects.equals(lore, null))
+        {
+            im.setLore(Collections.singletonList(lore));
+        }
+        i.setItemMeta(im);
+        inv.setItem(slot, i);
+    }
+
     static FileConfiguration cfg = Main.inst.getConfig(); //Config
     public enum Characters   //Characters Enum
     {
@@ -147,61 +161,6 @@ public final class PlayerCharacters
                     cfg.set(getPathList(pl).get(8), value);
             case HEIGHT ->
                     cfg.set(getPathList(pl).get(9), value);
-        }
-    }
-
-    public static void randCharacters(Player pl)
-    { //Full-Randomly get characters
-        String lang = Localisation.getLanguage(pl);
-        switch(lang)
-        {
-            case "CN"->
-                pl.sendMessage(ChatColor.YELLOW + "抽取中");
-            case "EN"->
-                pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
-        }
-        final ThreadLocalRandom RAND = ThreadLocalRandom.current();
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.SATURATION, RAND.nextInt(3));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.ENERGY, RAND.nextInt(3));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.HEALTH, RAND.nextInt(3));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.SANITY, RAND.nextInt(3));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.DARKNESS, RAND.nextInt(2));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.POSITIVITY, RAND.nextInt(2));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.BRAVENESS, RAND.nextInt(2));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.KINDNESS, RAND.nextInt(3));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.PATIENCE, RAND.nextInt(2));
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.HEIGHT, RAND.nextInt(2));
-        switch(lang)
-        {
-            case "CN"->
-                    pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
-            case "EN"->
-                    pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
-        }
-        ViewCharacters.viewCharacters(pl);
-    }
-
-    public static void testCharacters(Player pl)
-    {
-        String lang = Localisation.getLanguage(pl);
-        switch(lang)
-        {
-            case "CN"->
-            {
-                pl.sendMessage(ChatColor.GREEN + "你将会收到一个简短的小调查");
-                pl.sendMessage(ChatColor.GREEN + "最多花费5分钟时间");
-                pl.sendMessage(ChatColor.YELLOW + "建议在一个安全的地方做,否则不负责");
-                pl.sendMessage(ChatColor.RED + "如果你关掉测试窗口...欸对哦关掉会怎样我没试");
-
-            }
-
-            case "EN"->
-            {
-                pl.sendMessage(ChatColor.GREEN + "You will receive a short survey");
-                pl.sendMessage(ChatColor.GREEN + "It will take you about 5 minutes");
-                pl.sendMessage(ChatColor.YELLOW + "I suggest you doing this in a safe place to avoid any possible accidents");
-                pl.sendMessage(ChatColor.RED + "If you close the page...Ops i forgot to test it lol");
-            }
         }
     }
 }

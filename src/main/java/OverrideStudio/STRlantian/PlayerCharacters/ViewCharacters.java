@@ -15,20 +15,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.createItem;
 import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.getCharacterList;
 
 public final class ViewCharacters
 {
-    @SuppressWarnings("Deprecation")
-    private static void createItem(Inventory inv, int slot, ItemStack i, String name, String lore)
-    {        //Create items for an ITEM IN **VIEWING PAGE**
-        ItemMeta im = i.getItemMeta();
-        im.setDisplayName(name);
-        im.setLore(Collections.singletonList(lore));
-        i.setItemMeta(im);
-        inv.setItem(slot, i);
-    }
-
     @SuppressWarnings("Deprecation")
     private static Inventory createInv(Player pl, String language)
     {       //Create inventories for **VIEWING CHARACTERS**

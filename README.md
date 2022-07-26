@@ -7,7 +7,7 @@ This idea was came up with by myself.
 # Credits
 *STRlantian* - MainDev
 
-*JoeMichaelQiao* - Supporter
+*JoeMichaelQiao* - Supporter, Helper
 
 # Warning
 1. It's better to use this plugin on paper or paper-based servers
