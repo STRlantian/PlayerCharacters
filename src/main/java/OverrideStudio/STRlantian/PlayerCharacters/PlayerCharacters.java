@@ -48,7 +48,7 @@ public final class PlayerCharacters
     {
         List<String> list = new ArrayList<>(Collections.emptyList());
 
-        String name = pl.getName().toLowerCase();
+        String name = pl.getUniqueId().toString();
         String cha = name + ".Characters.";
         String language = name + ".Language";
         String change = name + ".ChangingTime";
@@ -82,15 +82,15 @@ public final class PlayerCharacters
 
     public static void uDidntInit(Player pl) //When someone hasn't initialised
     {
-        String language = Localisation.getLanguage(pl);
+        Localisation.Languages language = Localisation.getLanguage(pl);
         switch(language)
         {
-            case "CN"->
+            case CN->
             {
                 pl.sendMessage(ChatColor.RED + "你还没初始化你的性格");
                 pl.sendMessage(ChatColor.RED + "使用/character init");
             }
-            case "EN"->
+            case EN->
             {
                 pl.sendMessage(ChatColor.RED + "You haven't initialise your characters");
                 pl.sendMessage(ChatColor.RED + "Please use /character init");
@@ -98,40 +98,71 @@ public final class PlayerCharacters
         }
     }
 
-    public static List<String> getCharacterList(Player pl) //Get Characters
+    public static List<String> getCharacterList(Player pl,@Nullable List<Integer> tempList) //Get Characters
     {
         List<String> list = new ArrayList<>(Collections.emptyList());
-        String name = pl.getName().toLowerCase();
-        String cha = name + ".Characters";
+        int i = 0;
 
-        String hunger = (String) cfg.get(getPathList(pl).get(0));
-        String ener = (String) cfg.get(getPathList(pl).get(1));
-        String health = (String) cfg.get(getPathList(pl).get(2));
-        String san = (String) cfg.get(getPathList(pl).get(3));
-        String dark = (String) cfg.get(getPathList(pl).get(4));
-        String pos = (String) cfg.get(getPathList(pl).get(5));
-        String brave = (String) cfg.get(getPathList(pl).get(6));
-        String kind = (String) cfg.get(getPathList(pl).get(7));
-        String pat = (String) cfg.get(getPathList(pl).get(8));
-        String high = (String) cfg.get(getPathList(pl).get(9));
+        if(tempList == null)
+        {
+            String name = pl.getUniqueId().toString();
 
-        list.set(0, hunger);
-        list.set(1, ener);
-        list.set(2, health);
-        list.set(3, san);
-        list.set(4, dark);
-        list.set(5, pos);
-        list.set(6, brave);
-        list.set(7, kind);
-        list.set(8, pat);
-        list.set(9, high);
+            while(i < 10)
+            {
+                list.set(i, (String) cfg.get(getPathList(pl).get(i)));
+                i++;
+            }
+            /*
+            String hunger = (String) cfg.get(getPathList(pl).get(0));
+            String ener = (String) cfg.get(getPathList(pl).get(1));
+            String health = (String) cfg.get(getPathList(pl).get(2));
+            String san = (String) cfg.get(getPathList(pl).get(3));
+            String dark = (String) cfg.get(getPathList(pl).get(4));
+            String pos = (String) cfg.get(getPathList(pl).get(5));
+            String brave = (String) cfg.get(getPathList(pl).get(6));
+            String kind = (String) cfg.get(getPathList(pl).get(7));
+            String pat = (String) cfg.get(getPathList(pl).get(8));
+            String high = (String) cfg.get(getPathList(pl).get(9));
+
+            list.set(0, hunger);
+            list.set(1, ener);
+            list.set(2, health);
+            list.set(3, san);
+            list.set(4, dark);
+            list.set(5, pos);
+            list.set(6, brave);
+            list.set(7, kind);
+            list.set(8, pat);
+            list.set(9, high);
+             */
+            return list;
+        }
+
+
+        while(i < 10)
+        {
+            list.set(i, String.valueOf(tempList.get(i)));
+            i++;
+        }
+        /*
+        list.set(0, String.valueOf(tempList.get(0)));
+        list.set(1, String.valueOf(tempList.get(1)));
+        list.set(2, String.valueOf(tempList.get(2)));
+        list.set(3, String.valueOf(tempList.get(3)));
+        list.set(4, String.valueOf(tempList.get(4)));
+        list.set(5, String.valueOf(tempList.get(5)));
+        list.set(6, String.valueOf(tempList.get(6)));
+        list.set(7, String.valueOf(tempList.get(7)));
+        list.set(8, String.valueOf(tempList.get(8)));
+        list.set(9, String.valueOf(tempList.get(9)));
+        */
         return list;
     }
 
 
     public static void addChangingTime(Player pl)
     {         //When the changing time changes
-        String name = pl.getName().toLowerCase();
+        String name = pl.getUniqueId().toString();
         String origin = Objects.requireNonNull((String) cfg.get(getPathList(pl).get(11)));
         int og = Integer.parseInt(origin);
         int a = og + 1;
@@ -161,6 +192,16 @@ public final class PlayerCharacters
                     cfg.set(getPathList(pl).get(8), value);
             case HEIGHT ->
                     cfg.set(getPathList(pl).get(9), value);
+        }
+    }
+
+    public static void setCharacter(Player pl, List<Integer> list)
+    {
+        int i = 0;
+        while(i < 10)
+        {
+            cfg.set(getPathList(pl).get(i), list.get(i));
+            i++;
         }
     }
 }

@@ -15,13 +15,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.CN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.EN;
 import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.createItem;
 import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.getCharacterList;
 
 public final class ViewCharacters
 {
     @SuppressWarnings("Deprecation")
-    private static Inventory createInv(Player pl, String language)
+    private static Inventory createInv(Player pl, Localisation.Languages language)
     {       //Create inventories for **VIEWING CHARACTERS**
         String name = pl.getName();
         ItemStack consFlag = new ItemStack(Material.PAPER, 1);
@@ -30,7 +32,7 @@ public final class ViewCharacters
         ItemMeta featim = featFlag.getItemMeta();
         switch(language)
         {
-            case "CN" ->
+            case CN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "的性格页面");
                 consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格");
@@ -49,7 +51,7 @@ public final class ViewCharacters
                 inv.setItem(9, featFlag);
                 return inv;
             }
-            case "EN" ->
+            case EN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "'s Character Page");
                 consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters");
@@ -74,8 +76,8 @@ public final class ViewCharacters
 
     public static void viewCharacters(Player pl)
     {
-        List<String> list = getCharacterList(pl);
-        String language = Localisation.getLanguage(pl);
+        List<String> list = getCharacterList(pl, null);
+        Localisation.Languages language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Inventory inv = Objects.requireNonNull(createInv(pl, language));
 
@@ -92,7 +94,7 @@ public final class ViewCharacters
 
         switch(language)
         {
-            case "CN"->
+            case CN->
             {
                 switch (list.get(0))
                 {
@@ -229,7 +231,7 @@ public final class ViewCharacters
                 }
             }
 
-            case "EN"->
+            case EN->
             {
                 switch (list.get(0))
                 {

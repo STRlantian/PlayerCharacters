@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static OverrideStudio.STRlantian.Main.inst;
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.CN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.EN;
 
 public final class CharacterCommand implements TabExecutor
 {
@@ -26,11 +28,11 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveHelp(Player pl)
     {
-        String language = Localisation.getLanguage(pl);
+        Localisation.Languages language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
-            case "CN"->
+            case CN->
             {
                 pl.sendMessage(ChatColor.WHITE + "==========================");
                 pl.sendMessage(ChatColor.YELLOW + "Δ玩家性格帮助页面Δ");
@@ -53,7 +55,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "显示语言调整界面");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
             }
-            case "EN"->
+            case EN->
             {
                 pl.sendMessage(ChatColor.WHITE + "==========================");
                 pl.sendMessage(ChatColor.YELLOW + "ΔPlayer Characters' Help PageΔ");
@@ -79,20 +81,20 @@ public final class CharacterCommand implements TabExecutor
         }
     }
 
-    void giveCredits(Player pl)
+    private void giveCredits(Player pl)
     {
-        String language = Localisation.getLanguage(pl);
+        Localisation.Languages language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
-            case "CN"->
+            case CN->
             {
                 pl.sendMessage(ChatColor.GREEN + "作者Minecraft: " + ChatColor.BLUE + "STRlantian");
                 pl.sendMessage(ChatColor.YELLOW + "B站id: " + ChatColor.BLUE + "这里是陌蓝qwq");
                 pl.sendMessage(ChatColor.DARK_BLUE + "Github主页(建设中): " + ChatColor.BLUE + "strlantian.github.io");
                 pl.sendMessage(ChatColor.RED + "Discord: " + ChatColor.BLUE + "STRlantian#5461");
             }
-            case "EN"->
+            case EN->
             {
                 pl.sendMessage(ChatColor.GREEN + "Author's Minecraft username: " + ChatColor.BLUE + "STRlantian");
                 pl.sendMessage(ChatColor.YELLOW + "Bilibili: " + ChatColor.BLUE + "这里是陌蓝qwq");
@@ -108,14 +110,14 @@ public final class CharacterCommand implements TabExecutor
         command.setAliases(new ArrayList<>(Collections.singletonList("cha")));
 
         Player sd = (Player) commandSender;
-        String lang = Localisation.getLanguage(sd);
+        Localisation.Languages lang = Localisation.getLanguage(sd);
 
-        if(!lang.equals("CN") && !lang.equals("EN"))
+        if(!lang.equals(CN) && !lang.equals(EN))
         {
             Localisation.uDidntSetLanguage(sd);
             return true;
         }
-        if(PlayerCharacters.getCharacterList(sd).get(0) == null)
+        if(PlayerCharacters.getCharacterList(sd, null).get(0) == null)
         {
             if(!strings[0].equals("language") && !strings[0].equals("lang")
             && !strings[0].equals("help") && !strings[0].equals("credit")

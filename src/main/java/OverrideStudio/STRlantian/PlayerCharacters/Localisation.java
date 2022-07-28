@@ -10,14 +10,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.CN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.EN;
+
 public final class Localisation
 {
     static FileConfiguration cfg = Main.inst.getConfig();
 
-    public static String getLanguage(Player player)
+    public enum Languages
     {
-        String name = player.getName().toLowerCase();
-        return (String) cfg.get(name + ".Language");
+        CN,
+        EN
+    }
+    public static Languages getLanguage(Player player)
+    {
+        String name = player.getUniqueId().toString();
+        return (Languages) cfg.get(name + ".Language");
     }
 
     public static final String LANGTITLE = "选语言 | Choose a Language";
@@ -47,8 +55,8 @@ public final class Localisation
 
     public static boolean checkLang(Player pl) //Check if set lang
     {
-        String lang = Localisation.getLanguage(pl);
-        return lang.equals("CN")
-                || lang.equals("EN");
+        Languages lang = Localisation.getLanguage(pl);
+        return lang.equals(CN)
+                || lang.equals(EN);
     }
 }

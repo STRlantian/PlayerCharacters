@@ -1,6 +1,8 @@
 package OverrideStudio.STRlantian.Listeners;
 
+import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
 import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -8,13 +10,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.*;
 
-public class CommandListeners implements Listener
+public final class InventoryListeners implements Listener
 {
     @SuppressWarnings("Deprecation")
     @EventHandler
@@ -26,17 +32,18 @@ public class CommandListeners implements Listener
         if(Objects.equals(title, ASKTITLECN)
         || Objects.equals(title, ASKTITLEEN))
         {
-            String lang = Localisation.getLanguage(pl);
+            Localisation.Languages lang = Localisation.getLanguage(pl);
             pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
             switch(lang)
             {
-                case "CN"->
+                case CN->
                         pl.sendMessage(ChatColor.RED + "你取消了测试");
-                case "EN"->
+                case EN->
                         pl.sendMessage(ChatColor.RED + "You cancelled the test");
             }
         }
     }
+
 
     @SuppressWarnings("Deprecation")
     @EventHandler
@@ -59,26 +66,34 @@ public class CommandListeners implements Listener
         {
             case INITITLEMAINCN, INITITLEMAINEN ->
             {
+                List<Integer> tempList = getRandomConstList(pl);
                 e.setCancelled(true);
                 int slot = e.getSlot();
                 switch(slot)
                 {
                     case 2->
-                        randCharacters(pl);
+                        randCharacters(pl, tempList);
                     case 4->
-                        testCharacters(pl);
+                        testCharactersPre(pl);
                     case 6->
                         chooseCharacters(pl);
                 }
             }
 
-            case TESTINGCN, TESTINGEN ->
+            case ASKTITLECN, ASKTITLEEN ->
             {
+                List<Integer> tempList = getRandomConstList(pl);
                 e.setCancelled(true);
                 int slot = e.getSlot();
+
                 switch (slot)
                 {
-
+                    case 2->
+                    {
+                        InitialiseCharacters.testCharacters(pl, tempList);
+                    }
+                    case 6->
+                        pl.closeInventory();
                 }
             }
         }

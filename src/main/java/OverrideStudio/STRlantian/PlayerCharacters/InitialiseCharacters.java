@@ -10,30 +10,24 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.createItem;
+import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.setCharacter;
 
 public final class InitialiseCharacters
 {
-    @SuppressWarnings("Deprecation")
-    public static void randCharacters(Player pl)
-    { //Full-Randomly get characters
-        String lang = Localisation.getLanguage(pl);
-        switch(lang)
-        {
-            case "CN"->
-                    pl.sendMessage(ChatColor.YELLOW + "抽取中");
-            case "EN"->
-                    pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
-        }
+    public static List<Integer> getRandomConstList(Player pl)
+    {
+        List<Integer> tempList = new ArrayList<>();
         final ThreadLocalRandom RAND = ThreadLocalRandom.current();
         int satu = RAND.nextInt(3);
         int ener = RAND.nextInt(3);
         int heal = RAND.nextInt(3);
         if(satu == 2
-        && ener == 2)
+                && ener == 2)
         {
             if(heal < 2)
             {
@@ -43,13 +37,13 @@ public final class InitialiseCharacters
             switch(rand1)
             {
                 case 0->
-                    satu--;
+                        satu--;
                 case 1->
-                    ener--;
+                        ener--;
             }
         }
         else if(satu == 0
-        && ener == 0)
+                && ener == 0)
         {
             if(heal == 2)
             {
@@ -59,15 +53,51 @@ public final class InitialiseCharacters
             switch(rand2)
             {
                 case 0->
-                    satu++;
+                        satu++;
                 case 1->
-                    ener++;
+                        ener++;
             }
         }
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.SATURATION, satu);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.ENERGY, ener);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.HEALTH, heal);
+        if(heal == 0)
+        {
+            int rand3 = RAND.nextInt(2);
+            switch(rand3)
+            {
+                case 0->
+                {
+                    if(satu < 2)
+                    {
+                        satu++;
+                    }
+                }
+                case 1->
+                {
+                    if(ener < 2)
+                    {
+                        ener++;
+                    }
+                }
+            }
+        }
+        tempList.set(0, satu);
+        tempList.set(1, ener);
+        tempList.set(2, heal);
 
+        return tempList;
+    }
+
+    @SuppressWarnings("Deprecation")
+    public static void randCharacters(Player pl, List<Integer> list)
+    { //Full-Randomly get characters
+        Localisation.Languages lang = Localisation.getLanguage(pl);
+        switch(lang)
+        {
+            case CN->
+                    pl.sendMessage(ChatColor.YELLOW + "抽取中");
+            case EN->
+                    pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
+        }
+        final ThreadLocalRandom RAND = ThreadLocalRandom.current();
         int sani = RAND.nextInt(3);
         int bound1 = 2;
         if(sani == 2)
@@ -100,19 +130,20 @@ public final class InitialiseCharacters
         {
             heig = 1;
         }
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.SANITY, sani);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.DARKNESS, dark);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.POSITIVITY, posi);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.BRAVENESS, brav);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.KINDNESS, kind);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.PATIENCE, pati);
-        PlayerCharacters.setCharacter(pl, PlayerCharacters.Characters.HEIGHT, heig);
+        list.set(3, sani);
+        list.set(4, dark);
+        list.set(5, posi);
+        list.set(6, brav);
+        list.set(7, kind);
+        list.set(8, pati);
+        list.set(9, heig);
 
+        setCharacter(pl, list);
         switch(lang)
         {
-            case "CN"->
+            case CN->
                     pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
-            case "EN"->
+            case EN->
                     pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
         }
         ViewCharacters.viewCharacters(pl);
@@ -120,19 +151,17 @@ public final class InitialiseCharacters
 
     public static final String ASKTITLECN = "您确定吗";
     public static final String ASKTITLEEN = "Are you sure";
-    public static final String TESTINGCN = "正在测试";
-    public static final String TESTINGEN = "Testing...";
     @SuppressWarnings("Deprecation")
-    public static void testCharacters(Player pl)
+    public static void testCharactersPre(Player pl)
     {
         final ItemStack ATTENTION = new ItemStack(Material.PAPER, 1);
         final ItemStack CONFIRM = new ItemStack(Material.GREEN_WOOL, 1);
         final ItemStack DECLINE = new ItemStack(Material.RED_WOOL, 1);
 
-        String lang = Localisation.getLanguage(pl);
+        Localisation.Languages lang = Localisation.getLanguage(pl);
         switch(lang)
         {
-            case "CN"->
+            case CN->
             {
                 pl.sendMessage(ChatColor.GREEN + "你将会收到一个简短的小调查");
                 pl.sendMessage(ChatColor.GREEN + "最多花费5分钟时间");
@@ -144,7 +173,7 @@ public final class InitialiseCharacters
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧", null);
             }
 
-            case "EN"->
+            case EN->
             {
                 pl.sendMessage(ChatColor.GREEN + "You will receive a short survey");
                 pl.sendMessage(ChatColor.GREEN + "It will take you about 5 minutes");
@@ -154,6 +183,36 @@ public final class InitialiseCharacters
                 createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please", null);
                 createItem(invAsk, 4, ATTENTION, "Read the chat", null);
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick", null);
+            }
+        }
+    }
+
+    public static final String TESTINGCN = "正在测试";
+    public static final String TESTINGEN = "Testing...";
+    @SuppressWarnings("Deprecation")
+    public static void testCharacters(Player pl, List<Integer> list)
+    {
+        Localisation.Languages lang = Localisation.getLanguage(pl);
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        final ItemStack Q = new ItemStack(Material.BOOK, 1);
+        final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
+        final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
+        final ItemStack C = new ItemStack(Material.PINK_WOOL, 1);
+
+        int[] qList = new int[]
+                {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        switch(lang)
+        {
+            case CN->
+            {
+                final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGCN);
+
+            }
+            case EN->
+            {
+                final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGEN);
             }
         }
     }
@@ -181,10 +240,10 @@ public final class InitialiseCharacters
         cim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         cim.addEnchant(Enchantment.DURABILITY, 1, true);
 
-        String language = Localisation.getLanguage(pl);
+        Localisation.Languages language = Localisation.getLanguage(pl);
         switch(language)
         {
-            case "CN"->
+            case CN->
             {
                 pl.sendMessage(ChatColor.GREEN + "开始初始化性格...");
                 Inventory invMain = Bukkit.createInventory(null, 9, INITITLEMAINCN);
@@ -203,7 +262,7 @@ public final class InitialiseCharacters
                 pl.openInventory(invMain);
             }
 
-            case "EN"->
+            case EN->
             {
                 pl.sendMessage(ChatColor.GREEN + "Start initialising...");
                 Inventory invMain = Bukkit.createInventory(null, 9, INITITLEMAINCN);
