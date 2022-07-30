@@ -1,5 +1,7 @@
 package OverrideStudio.STRlantian.PlayerCharacters;
 
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.TestingQuestions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,9 +40,15 @@ public final class InitialiseCharacters
             switch(rand1)
             {
                 case 0->
-                        satu--;
+                {
+                    satu--;
+                    break;
+                }
                 case 1->
-                        ener--;
+                {
+                    ener--;
+                    break;
+                }
             }
         }
         else if(satu == 0
@@ -53,9 +62,15 @@ public final class InitialiseCharacters
             switch(rand2)
             {
                 case 0->
-                        satu++;
+                {
+                    satu++;
+                    break;
+                }
                 case 1->
-                        ener++;
+                {
+                    ener++;
+                    break;
+                }
             }
         }
         if(heal == 0)
@@ -69,6 +84,7 @@ public final class InitialiseCharacters
                     {
                         satu++;
                     }
+                    break;
                 }
                 case 1->
                 {
@@ -76,6 +92,7 @@ public final class InitialiseCharacters
                     {
                         ener++;
                     }
+                    break;
                 }
             }
         }
@@ -89,13 +106,19 @@ public final class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void randCharacters(Player pl, List<Integer> list)
     { //Full-Randomly get characters
-        Localisation.Languages lang = Localisation.getLanguage(pl);
+        Languages lang = Localisation.getLanguage(pl);
         switch(lang)
         {
             case CN->
-                    pl.sendMessage(ChatColor.YELLOW + "抽取中");
+            {
+                pl.sendMessage(ChatColor.YELLOW + "抽取中");
+                break;
+            }
             case EN->
-                    pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
+            {
+                pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
+                break;
+            }
         }
         final ThreadLocalRandom RAND = ThreadLocalRandom.current();
         int sani = RAND.nextInt(3);
@@ -142,9 +165,15 @@ public final class InitialiseCharacters
         switch(lang)
         {
             case CN->
-                    pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
+            {
+                pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
+                break;
+            }
             case EN->
-                    pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
+            {
+                pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
+                break;
+            }
         }
         ViewCharacters.viewCharacters(pl);
     }
@@ -158,7 +187,7 @@ public final class InitialiseCharacters
         final ItemStack CONFIRM = new ItemStack(Material.GREEN_WOOL, 1);
         final ItemStack DECLINE = new ItemStack(Material.RED_WOOL, 1);
 
-        Localisation.Languages lang = Localisation.getLanguage(pl);
+        Languages lang = Localisation.getLanguage(pl);
         switch(lang)
         {
             case CN->
@@ -166,11 +195,12 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.GREEN + "你将会收到一个简短的小调查");
                 pl.sendMessage(ChatColor.GREEN + "最多花费5分钟时间");
                 pl.sendMessage(ChatColor.YELLOW + "建议在一个安全的地方做来避免可能的事故");
-                pl.sendMessage(ChatColor.RED + "如果你关掉测试窗口...欸对哦关掉会怎样我没试");
+                pl.sendMessage(ChatColor.RED + "如果你关掉测试窗口,那么结果将不会保存");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLECN);
                 createItem(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要", null);
                 createItem(invAsk, 4, ATTENTION, "请参阅聊天栏", null);
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧", null);
+                break;
             }
 
             case EN->
@@ -178,41 +208,49 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.GREEN + "You will receive a short survey");
                 pl.sendMessage(ChatColor.GREEN + "It will take you about 5 minutes");
                 pl.sendMessage(ChatColor.YELLOW + "I suggest you doing this in a safe place to avoid any possible accidents");
-                pl.sendMessage(ChatColor.RED + "If you close the page...Ops i forgot to test it lol");
+                pl.sendMessage(ChatColor.RED + "If you close the page, your characters won't be saved");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLEEN);
                 createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please", null);
                 createItem(invAsk, 4, ATTENTION, "Read the chat", null);
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick", null);
+                break;
             }
         }
     }
-
     public static final String TESTINGCN = "正在测试";
     public static final String TESTINGEN = "Testing...";
     @SuppressWarnings("Deprecation")
     public static void testCharacters(Player pl, List<Integer> list)
     {
-        Localisation.Languages lang = Localisation.getLanguage(pl);
+        Languages lang = Localisation.getLanguage(pl);
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
+        List<TestingQuestions> testList = Collections.emptyList();
         final ItemStack Q = new ItemStack(Material.BOOK, 1);
         final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
         final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
         final ItemStack C = new ItemStack(Material.PINK_WOOL, 1);
+        for(int i = 3; i < 5; i++)
+        {
 
-        int[] qList = new int[]
-                {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
+        }
         switch(lang)
         {
             case CN->
             {
                 final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGCN);
 
+
+
+                break;
             }
             case EN->
             {
                 final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGEN);
+
+
+
+                break;
             }
         }
     }
@@ -240,7 +278,7 @@ public final class InitialiseCharacters
         cim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         cim.addEnchant(Enchantment.DURABILITY, 1, true);
 
-        Localisation.Languages language = Localisation.getLanguage(pl);
+        Languages language = Localisation.getLanguage(pl);
         switch(language)
         {
             case CN->
@@ -260,6 +298,7 @@ public final class InitialiseCharacters
                 invMain.setItem(4, TEST);
                 invMain.setItem(6, CHOOSE);
                 pl.openInventory(invMain);
+                break;
             }
 
             case EN->
@@ -279,6 +318,7 @@ public final class InitialiseCharacters
                 invMain.setItem(4, TEST);
                 invMain.setItem(6, CHOOSE);
                 pl.openInventory(invMain);
+                break;
             }
         }
     }

@@ -1,6 +1,7 @@
 package OverrideStudio.STRlantian.PlayerCharacters;
 
 import OverrideStudio.STRlantian.Main;
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,18 +11,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.CN;
-import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.EN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.CN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.EN;
 
 public final class Localisation
 {
     static FileConfiguration cfg = Main.inst.getConfig();
 
-    public enum Languages
-    {
-        CN,
-        EN
-    }
     public static Languages getLanguage(Player player)
     {
         String name = player.getUniqueId().toString();

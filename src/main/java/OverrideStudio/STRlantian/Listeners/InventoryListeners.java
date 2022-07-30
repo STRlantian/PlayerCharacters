@@ -1,8 +1,8 @@
 package OverrideStudio.STRlantian.Listeners;
 
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
 import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
 import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,13 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.*;
 
@@ -28,22 +24,50 @@ public final class InventoryListeners implements Listener
     {
         Player pl = (Player) e.getPlayer();
         InventoryView inv = e.getView();
+        Languages lang = Localisation.getLanguage(pl);
         String title = inv.getTitle();
-        if(Objects.equals(title, ASKTITLECN)
-        || Objects.equals(title, ASKTITLEEN))
+        switch(title)
         {
-            Localisation.Languages lang = Localisation.getLanguage(pl);
-            pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-            switch(lang)
+            case ASKTITLECN, ASKTITLEEN ->
             {
-                case CN->
+                pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                switch(lang)
+                {
+                    case CN->
+                    {
                         pl.sendMessage(ChatColor.RED + "你取消了测试");
-                case EN->
+                        break;
+                    }
+
+                    case EN->
+                    {
                         pl.sendMessage(ChatColor.RED + "You cancelled the test");
+                        break;
+                    }
+                }
+                break;
+            }
+
+            case TESTINGCN, TESTINGEN ->
+            {
+                pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                switch(lang)
+                {
+                    case CN->
+                    {
+                        pl.sendMessage(ChatColor.RED + "你取消了测试,结果将不被保存");
+                        break;
+                    }
+                    case EN->
+                    {
+                        pl.sendMessage(ChatColor.RED + "You cancelled the test so your characters won't be saved");
+                        break;
+                    }
+                }
+                break;
             }
         }
     }
-
 
     @SuppressWarnings("Deprecation")
     @EventHandler
@@ -52,14 +76,12 @@ public final class InventoryListeners implements Listener
         Player pl = (Player) e.getWhoClicked();
         InventoryView inv = e.getView();
         String title = inv.getTitle();
-        if(title.contains("的性格页面")
-        || title.contains("'s Character Page"))
+        String name = pl.getName();
+
+        if(title.equalsIgnoreCase(name + "的性格页面")
+        || title.equalsIgnoreCase(name + "'s Character Page"))
         {
-            if(title.contains(ChatColor.MAGIC.toString())
-            && title.contains(ChatColor.GOLD.toString()))
-            {
-                e.setCancelled(true);
-            }
+            e.setCancelled(true);
         }
 
         switch(title)
@@ -72,12 +94,22 @@ public final class InventoryListeners implements Listener
                 switch(slot)
                 {
                     case 2->
+                    {
                         randCharacters(pl, tempList);
+                        break;
+                    }
                     case 4->
+                    {
                         testCharactersPre(pl);
+                        break;
+                    }
                     case 6->
+                    {
                         chooseCharacters(pl);
+                        break;
+                    }
                 }
+                break;
             }
 
             case ASKTITLECN, ASKTITLEEN ->
@@ -91,10 +123,16 @@ public final class InventoryListeners implements Listener
                     case 2->
                     {
                         InitialiseCharacters.testCharacters(pl, tempList);
+                        break;
                     }
+
                     case 6->
+                    {
                         pl.closeInventory();
+                        break;
+                    }
                 }
+                break;
             }
         }
     }

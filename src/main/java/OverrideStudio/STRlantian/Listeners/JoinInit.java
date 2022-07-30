@@ -1,8 +1,8 @@
 package OverrideStudio.STRlantian.Listeners;
 
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
 import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -84,17 +84,19 @@ public final class JoinInit implements Listener
             {
                 case 3:
                 {
-                    cfg.set(name + ".Language", Localisation.Languages.CN);
+                    cfg.set(name + ".Language", Languages.CN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.RED + "已更改语言到: 简体中文");
                     pl.closeInventory();
+                    break;
                 }
                 case 5:
                 {
-                    cfg.set(name + ".Language", Localisation.Languages.EN);
+                    cfg.set(name + ".Language", Languages.EN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
                     pl.closeInventory();
+                    break;
                 }
             }
         }

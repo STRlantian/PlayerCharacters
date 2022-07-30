@@ -1,6 +1,8 @@
 package OverrideStudio.STRlantian.PlayerCharacters;
 
 import OverrideStudio.STRlantian.Main;
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Characters;
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ import java.util.Objects;
 
 public final class PlayerCharacters
 {
+    static FileConfiguration cfg = Main.inst.getConfig(); //Config
     @SuppressWarnings("Deprecation")
     public static void createItem(Inventory inv, int slot, ItemStack i, String name, @Nullable String lore)
     {        //Create items for an ITEM IN **VIEWING PAGE**
@@ -27,21 +30,6 @@ public final class PlayerCharacters
         }
         i.setItemMeta(im);
         inv.setItem(slot, i);
-    }
-
-    static FileConfiguration cfg = Main.inst.getConfig(); //Config
-    public enum Characters   //Characters Enum
-    {
-        SATURATION,
-        ENERGY,
-        HEALTH,
-        SANITY,
-        DARKNESS,
-        POSITIVITY,
-        BRAVENESS,
-        KINDNESS,
-        PATIENCE,
-        HEIGHT
     }
 
     public static List<String> getPathList(Player pl)  //Character Path
@@ -82,37 +70,35 @@ public final class PlayerCharacters
 
     public static void uDidntInit(Player pl) //When someone hasn't initialised
     {
-        Localisation.Languages language = Localisation.getLanguage(pl);
+        Languages language = Localisation.getLanguage(pl);
         switch(language)
         {
             case CN->
             {
                 pl.sendMessage(ChatColor.RED + "你还没初始化你的性格");
                 pl.sendMessage(ChatColor.RED + "使用/character init");
+                break;
             }
             case EN->
             {
                 pl.sendMessage(ChatColor.RED + "You haven't initialise your characters");
                 pl.sendMessage(ChatColor.RED + "Please use /character init");
+                break;
             }
         }
     }
 
-    public static List<String> getCharacterList(Player pl,@Nullable List<Integer> tempList) //Get Characters
+    public static List<Integer> getCharacterList(Player pl)
     {
-        List<String> list = new ArrayList<>(Collections.emptyList());
+        List<Integer> list = new ArrayList<>(Collections.emptyList());
         int i = 0;
 
-        if(tempList == null)
+        while(i < 10)
         {
-            String name = pl.getUniqueId().toString();
-
-            while(i < 10)
-            {
-                list.set(i, (String) cfg.get(getPathList(pl).get(i)));
-                i++;
-            }
-            /*
+            list.set(i, (Integer) cfg.get(getPathList(pl).get(i)));
+            i++;
+        }
+        /*
             String hunger = (String) cfg.get(getPathList(pl).get(0));
             String ener = (String) cfg.get(getPathList(pl).get(1));
             String health = (String) cfg.get(getPathList(pl).get(2));
@@ -135,9 +121,12 @@ public final class PlayerCharacters
             list.set(8, pat);
             list.set(9, high);
              */
-            return list;
-        }
-
+        return list;
+    }
+    public static List<String> getCharacterList(Player pl, List<Integer> tempList) //Get Characters
+    {
+        List<String> list = new ArrayList<>(Collections.emptyList());
+        int i = 0;
 
         while(i < 10)
         {
@@ -159,7 +148,6 @@ public final class PlayerCharacters
         return list;
     }
 
-
     public static void addChangingTime(Player pl)
     {         //When the changing time changes
         String name = pl.getUniqueId().toString();
@@ -168,30 +156,61 @@ public final class PlayerCharacters
         int a = og + 1;
         cfg.set(getPathList(pl).get(11), a);
     }
+
     public static void setCharacter(Player pl, Characters what, int value)
     {      //Set characters
         switch(what)
         {
             case SATURATION ->
-                    cfg.set(getPathList(pl).get(0), value);
+            {
+                cfg.set(getPathList(pl).get(0), value);
+                break;
+            }
             case ENERGY ->
-                    cfg.set(getPathList(pl).get(1), value);
+            {
+                cfg.set(getPathList(pl).get(1), value);
+                break;
+            }
             case HEALTH ->
-                    cfg.set(getPathList(pl).get(2), value);
+            {
+                cfg.set(getPathList(pl).get(2), value);
+                break;
+            }
             case SANITY ->
-                    cfg.set(getPathList(pl).get(3), value);
+            {
+                cfg.set(getPathList(pl).get(3), value);
+                break;
+            }
             case DARKNESS ->
-                    cfg.set(getPathList(pl).get(4), value);
+            {
+                cfg.set(getPathList(pl).get(4), value);
+                break;
+            }
             case POSITIVITY ->
-                    cfg.set(getPathList(pl).get(5), value);
+            {
+                cfg.set(getPathList(pl).get(5), value);
+                break;
+            }
             case BRAVENESS ->
-                    cfg.set(getPathList(pl).get(6), value);
+            {
+                cfg.set(getPathList(pl).get(6), value);
+                break;
+            }
             case KINDNESS ->
-                    cfg.set(getPathList(pl).get(7), value);
+            {
+                cfg.set(getPathList(pl).get(7), value);
+                break;
+            }
             case PATIENCE ->
-                    cfg.set(getPathList(pl).get(8), value);
+            {
+                cfg.set(getPathList(pl).get(8), value);
+                break;
+            }
             case HEIGHT ->
-                    cfg.set(getPathList(pl).get(9), value);
+            {
+                cfg.set(getPathList(pl).get(9), value);
+                break;
+            }
         }
     }
 

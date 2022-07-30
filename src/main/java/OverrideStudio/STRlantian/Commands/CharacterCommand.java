@@ -1,5 +1,6 @@
 package OverrideStudio.STRlantian.Commands;
 
+import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
 import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
 import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
 import OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters;
@@ -19,8 +20,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static OverrideStudio.STRlantian.Main.inst;
-import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.CN;
-import static OverrideStudio.STRlantian.PlayerCharacters.Localisation.Languages.EN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.CN;
+import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.EN;
+import static java.lang.Integer.valueOf;
 
 public final class CharacterCommand implements TabExecutor
 {
@@ -28,7 +30,7 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveHelp(Player pl)
     {
-        Localisation.Languages language = Localisation.getLanguage(pl);
+        Languages language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -54,6 +56,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "展示作者(求求看看吧看看我b站)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "显示语言调整界面");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
+                break;
             }
             case EN->
             {
@@ -77,13 +80,14 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "Show author(SEE MY BILIBILI PLEEEAAASE)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "Show language page");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
+                break;
             }
         }
     }
 
     private void giveCredits(Player pl)
     {
-        Localisation.Languages language = Localisation.getLanguage(pl);
+        Languages language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -93,6 +97,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.YELLOW + "B站id: " + ChatColor.BLUE + "这里是陌蓝qwq");
                 pl.sendMessage(ChatColor.DARK_BLUE + "Github主页(建设中): " + ChatColor.BLUE + "strlantian.github.io");
                 pl.sendMessage(ChatColor.RED + "Discord: " + ChatColor.BLUE + "STRlantian#5461");
+                break;
             }
             case EN->
             {
@@ -100,6 +105,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.YELLOW + "Bilibili: " + ChatColor.BLUE + "这里是陌蓝qwq");
                 pl.sendMessage(ChatColor.DARK_BLUE + "Github Page(Under construction): " + ChatColor.BLUE + "strlantian.github.io");
                 pl.sendMessage(ChatColor.RED + "Discord: " + ChatColor.BLUE + "STRlantian#5461");
+                break;
             }
         }
     }
@@ -110,14 +116,14 @@ public final class CharacterCommand implements TabExecutor
         command.setAliases(new ArrayList<>(Collections.singletonList("cha")));
 
         Player sd = (Player) commandSender;
-        Localisation.Languages lang = Localisation.getLanguage(sd);
+        Languages lang = Localisation.getLanguage(sd);
 
         if(!lang.equals(CN) && !lang.equals(EN))
         {
             Localisation.uDidntSetLanguage(sd);
             return true;
         }
-        if(PlayerCharacters.getCharacterList(sd, null).get(0) == null)
+        if(PlayerCharacters.getCharacterList(sd).get(0) == null)
         {
             if(!strings[0].equals("language") && !strings[0].equals("lang")
             && !strings[0].equals("help") && !strings[0].equals("credit")
@@ -128,18 +134,18 @@ public final class CharacterCommand implements TabExecutor
             }
         }
 
-        String changingTime = (String) cfg.get(PlayerCharacters.getPathList(sd).get(11));
+        int changingTime = Objects.requireNonNull((Integer) cfg.get(PlayerCharacters.getPathList(sd).get(11)));
         switch (strings.length)
         {
             default ->
             {
                 sd.sendMessage(ChatColor.RED + "U KNOW THE RULES AND SO DO I");
-                return true;
+                break;
             }
             case 0 ->
             {
                 giveHelp(sd);
-                return true;
+                break;
             }
             case 1 ->
             {
@@ -148,31 +154,31 @@ public final class CharacterCommand implements TabExecutor
                     case "help"->
                     {
                         giveHelp(sd);
-                        return true;
+                        break;
                     }
                     case "credits", "credit"->
                     {
                         giveCredits(sd);
-                        return true;
+                        break;
                     }
                     case "language", "lang" ->
                     {
                         sd.openInventory(Localisation.getLanguageInv());
-                        return true;
+                        break;
                     }
                     case "view"->
                     {
                         ViewCharacters.viewCharacters(sd);
-                        return true;
+                        break;
                     }
                     case "init", "initialise", "initialize"->
                     {
-                        if(!Objects.equals(changingTime, "1")
-                        && !Objects.equals(changingTime, "0"))
+                        if(!Objects.equals(changingTime, 1)
+                        && !Objects.equals(changingTime, 0))
                         {
                             InitialiseCharacters.initialiseCharacters(sd);
                         }
-                        return true;
+                        break;
                     }
 
                 }
