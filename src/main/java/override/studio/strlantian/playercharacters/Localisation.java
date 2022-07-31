@@ -1,7 +1,7 @@
-package OverrideStudio.STRlantian.PlayerCharacters;
+package override.studio.strlantian.playercharacters;
 
-import OverrideStudio.STRlantian.Main;
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
+import override.studio.strlantian.Main;
+import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.CN;
-import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.EN;
 
 public final class Localisation
 {
@@ -52,7 +49,7 @@ public final class Localisation
     public static boolean checkLang(Player pl) //Check if set lang
     {
         Languages lang = Localisation.getLanguage(pl);
-        return lang.equals(CN)
-                || lang.equals(EN);
+        return lang.equals(Languages.CN)
+                || lang.equals(Languages.EN);
     }
 }

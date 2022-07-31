@@ -1,7 +1,6 @@
-package OverrideStudio.STRlantian.PlayerCharacters;
+package override.studio.strlantian.playercharacters;
 
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.TestingQuestions;
+import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,14 +10,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.createItem;
-import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.setCharacter;
+import static override.studio.strlantian.playercharacters.PlayerCharacters.createItem;
+import static override.studio.strlantian.playercharacters.PlayerCharacters.setCharacter;
 
 public final class InitialiseCharacters
 {
@@ -197,9 +198,9 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.YELLOW + "建议在一个安全的地方做来避免可能的事故");
                 pl.sendMessage(ChatColor.RED + "如果你关掉测试窗口,那么结果将不会保存");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLECN);
-                createItem(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要", null);
-                createItem(invAsk, 4, ATTENTION, "请参阅聊天栏", null);
-                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧", null);
+                createItem(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要");
+                createItem(invAsk, 4, ATTENTION, "请参阅聊天栏");
+                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧");
                 break;
             }
 
@@ -210,10 +211,41 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.YELLOW + "I suggest you doing this in a safe place to avoid any possible accidents");
                 pl.sendMessage(ChatColor.RED + "If you close the page, your characters won't be saved");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLEEN);
-                createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please", null);
-                createItem(invAsk, 4, ATTENTION, "Read the chat", null);
-                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick", null);
+                createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please");
+                createItem(invAsk, 4, ATTENTION, "Read the chat");
+                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick");
                 break;
+            }
+        }
+    }
+
+    private static void askQuestion(int which, Inventory inv, Languages lang)
+    {
+        switch(lang)
+        {
+            case CN ->
+            {
+                switch(which)
+                {
+                    case 0 ->
+                    {
+                        createItem(inv, QuestionOptions.QUESTION, "对于你看过的恐怖片,你愿意再看一遍吗");
+                        createItem(inv, QuestionOptions.OPIA, "愿意");
+                        createItem(inv, QuestionOptions.OPIC, "不愿意");
+                        break;
+                    }
+                    case 1 ->
+                    {
+                        createItem(inv, QuestionOptions.QUESTION, "晚上你睡觉想开个灯吗,哪怕是小灯");
+                        createItem(inv, QuestionOptions.OPIA, "非常想,我怕黑");
+                        createItem(inv, QuestionOptions.OPIC, "才不想,,,,我才不");
+                        break;
+                    }
+                    case 2 ->
+                    {
+
+                    }
+                }
             }
         }
     }
@@ -224,16 +256,31 @@ public final class InitialiseCharacters
     {
         Languages lang = Localisation.getLanguage(pl);
         ThreadLocalRandom rand = ThreadLocalRandom.current();
+        int[] queList = new int[5];
 
-        List<TestingQuestions> testList = Collections.emptyList();
-        final ItemStack Q = new ItemStack(Material.BOOK, 1);
-        final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
-        final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
-        final ItemStack C = new ItemStack(Material.PINK_WOOL, 1);
-        for(int i = 3; i < 5; i++)
+        for(int a = 0; a < 100; a++)
         {
+            for(int b = 2; b < 11; b += 2)
+            {
+                queList[(b / 2) - 1] = rand.nextInt(2) + b;
+                switch(queList[4])
+                {
+                    case 10 ->
+                    {
+                        queList[4] = 0;
+                        break;
+                    }
 
+                    case 11 ->
+                    {
+                        queList[4] = 1;
+                        break;
+                    }
+                }
+            }
+            Arrays.sort(queList);
         }
+
         switch(lang)
         {
             case CN->

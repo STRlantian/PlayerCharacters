@@ -1,8 +1,8 @@
-package OverrideStudio.STRlantian.Listeners;
+package override.studio.strlantian.listeners;
 
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
-import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
-import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
+import override.studio.strlantian.playercharacters.enums.Languages;
+import override.studio.strlantian.playercharacters.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.Localisation;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -13,8 +13,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.InventoryView;
 
 import java.util.List;
-
-import static OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters.*;
 
 public final class InventoryListeners implements Listener
 {
@@ -28,7 +26,7 @@ public final class InventoryListeners implements Listener
         String title = inv.getTitle();
         switch(title)
         {
-            case ASKTITLECN, ASKTITLEEN ->
+            case InitialiseCharacters.ASKTITLECN, InitialiseCharacters.ASKTITLEEN ->
             {
                 pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 switch(lang)
@@ -48,7 +46,7 @@ public final class InventoryListeners implements Listener
                 break;
             }
 
-            case TESTINGCN, TESTINGEN ->
+            case InitialiseCharacters.TESTINGCN, InitialiseCharacters.TESTINGEN ->
             {
                 pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 switch(lang)
@@ -86,35 +84,35 @@ public final class InventoryListeners implements Listener
 
         switch(title)
         {
-            case INITITLEMAINCN, INITITLEMAINEN ->
+            case InitialiseCharacters.INITITLEMAINCN, InitialiseCharacters.INITITLEMAINEN ->
             {
-                List<Integer> tempList = getRandomConstList(pl);
+                List<Integer> tempList = InitialiseCharacters.getRandomConstList(pl);
                 e.setCancelled(true);
                 int slot = e.getSlot();
                 switch(slot)
                 {
                     case 2->
                     {
-                        randCharacters(pl, tempList);
+                        InitialiseCharacters.randCharacters(pl, tempList);
                         break;
                     }
                     case 4->
                     {
-                        testCharactersPre(pl);
+                        InitialiseCharacters.testCharactersPre(pl);
                         break;
                     }
                     case 6->
                     {
-                        chooseCharacters(pl);
+                        InitialiseCharacters.chooseCharacters(pl);
                         break;
                     }
                 }
                 break;
             }
 
-            case ASKTITLECN, ASKTITLEEN ->
+            case InitialiseCharacters.ASKTITLECN, InitialiseCharacters.ASKTITLEEN ->
             {
-                List<Integer> tempList = getRandomConstList(pl);
+                List<Integer> tempList = InitialiseCharacters.getRandomConstList(pl);
                 e.setCancelled(true);
                 int slot = e.getSlot();
 

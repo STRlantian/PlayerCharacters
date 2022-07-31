@@ -1,16 +1,17 @@
-package OverrideStudio.STRlantian.PlayerCharacters;
+package override.studio.strlantian.playercharacters;
 
-import OverrideStudio.STRlantian.Main;
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Characters;
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
+import org.bukkit.Material;
+import override.studio.strlantian.Main;
+import override.studio.strlantian.playercharacters.enums.Characters;
+import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,18 +21,55 @@ public final class PlayerCharacters
 {
     static FileConfiguration cfg = Main.inst.getConfig(); //Config
     @SuppressWarnings("Deprecation")
-    public static void createItem(Inventory inv, int slot, ItemStack i, String name, @Nullable String lore)
+    public static void createItem(Inventory inv, int slot, ItemStack i, String name, String ... lore)
     {        //Create items for an ITEM IN **VIEWING PAGE**
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(name);
-        if(!Objects.equals(lore, null))
-        {
-            im.setLore(Collections.singletonList(lore));
-        }
+        im.setLore(List.of(lore));
+        i.setItemMeta(im);
+        inv.setItem(slot, i);
+    }
+    @SuppressWarnings("Deprecation")
+    public static void createItem(Inventory inv, int slot, ItemStack i, String name)
+    {
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(name);
         i.setItemMeta(im);
         inv.setItem(slot, i);
     }
 
+    @SuppressWarnings("Deprecation")
+    public static void createItem(Inventory inv, QuestionOptions ques, String name)
+    {
+        final ItemStack Q = new ItemStack(Material.BOOK, 1);
+        final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
+        final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
+        final ItemStack C = new ItemStack(Material.PINK_WOOL, 1);
+
+        switch(ques)
+        {
+            case QUESTION ->
+            {
+                createItem(inv, 13, Q, ChatColor.GREEN + name);
+                break;
+            }
+            case OPIA ->
+            {
+                createItem(inv, 29, A, ChatColor.BLUE + name);
+                break;
+            }
+            case OPIB ->
+            {
+                createItem(inv, 31, B, ChatColor.YELLOW + name);
+                break;
+            }
+            case OPIC ->
+            {
+                createItem(inv, 33, C, ChatColor.LIGHT_PURPLE + name);
+                break;
+            }
+        }
+    }
     public static List<String> getPathList(Player pl)  //Character Path
     {
         List<String> list = new ArrayList<>(Collections.emptyList());

@@ -1,10 +1,10 @@
-package OverrideStudio.STRlantian.Commands;
+package override.studio.strlantian.commands;
 
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
-import OverrideStudio.STRlantian.PlayerCharacters.InitialiseCharacters;
-import OverrideStudio.STRlantian.PlayerCharacters.Localisation;
-import OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters;
-import OverrideStudio.STRlantian.PlayerCharacters.ViewCharacters;
+import override.studio.strlantian.playercharacters.enums.Languages;
+import override.studio.strlantian.playercharacters.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.Localisation;
+import override.studio.strlantian.playercharacters.PlayerCharacters;
+import override.studio.strlantian.playercharacters.ViewCharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -13,20 +13,18 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import override.studio.strlantian.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static OverrideStudio.STRlantian.Main.inst;
-import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.CN;
-import static OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages.EN;
 import static java.lang.Integer.valueOf;
 
 public final class CharacterCommand implements TabExecutor
 {
-    FileConfiguration cfg = inst.getConfig();
+    FileConfiguration cfg = Main.inst.getConfig();
 
     private void giveHelp(Player pl)
     {
@@ -118,7 +116,7 @@ public final class CharacterCommand implements TabExecutor
         Player sd = (Player) commandSender;
         Languages lang = Localisation.getLanguage(sd);
 
-        if(!lang.equals(CN) && !lang.equals(EN))
+        if(!lang.equals(Languages.CN) && !lang.equals(Languages.EN))
         {
             Localisation.uDidntSetLanguage(sd);
             return true;

@@ -1,6 +1,6 @@
-package OverrideStudio.STRlantian.PlayerCharacters;
+package override.studio.strlantian.playercharacters;
 
-import OverrideStudio.STRlantian.PlayerCharacters.Enums.Languages;
+import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static OverrideStudio.STRlantian.PlayerCharacters.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.PlayerCharacters.*;
 
 public final class ViewCharacters
 {

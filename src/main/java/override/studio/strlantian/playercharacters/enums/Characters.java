@@ -1,4 +1,4 @@
-package OverrideStudio.STRlantian.PlayerCharacters.Enums;
+package override.studio.strlantian.playercharacters.enums;
 
 public enum Characters
 {

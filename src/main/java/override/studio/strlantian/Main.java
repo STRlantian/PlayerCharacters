@@ -1,8 +1,8 @@
-package OverrideStudio.STRlantian;
+package override.studio.strlantian;
 
-import OverrideStudio.STRlantian.Commands.CharacterCommand;
-import OverrideStudio.STRlantian.Listeners.InventoryListeners;
-import OverrideStudio.STRlantian.Listeners.JoinInit;
+import override.studio.strlantian.commands.CharacterCommand;
+import override.studio.strlantian.listeners.InventoryListeners;
+import override.studio.strlantian.listeners.JoinInit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
