@@ -1,11 +1,11 @@
 package override.studio.strlantian;
 
-import override.studio.strlantian.commands.CharacterCommand;
-import override.studio.strlantian.listeners.InventoryListeners;
-import override.studio.strlantian.listeners.JoinInit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import override.studio.strlantian.commands.CharacterCommand;
+import override.studio.strlantian.listeners.InventoryListeners;
+import override.studio.strlantian.listeners.JoinInit;
 
 import java.util.Objects;
 public final class Main extends JavaPlugin

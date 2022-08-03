@@ -1,6 +1,5 @@
-package override.studio.strlantian.playercharacters;
+package override.studio.strlantian.playercharacters.commandrealisation;
 
-import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,22 +9,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import override.studio.strlantian.playercharacters.Localisation;
+import override.studio.strlantian.playercharacters.enums.Languages;
 import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static override.studio.strlantian.playercharacters.PlayerCharacters.createItem;
-import static override.studio.strlantian.playercharacters.PlayerCharacters.setCharacter;
+import static override.studio.strlantian.playercharacters.PlayerCharacters.*;
 
 public final class InitialiseCharacters
 {
+    public static final Map<String, List<Integer>> CharTempList = new HashMap<>(Collections.emptyMap());
     public static List<Integer> getRandomConstList(Player pl)
     {
         List<Integer> tempList = new ArrayList<>();
+        String name = pl.getName();
         final ThreadLocalRandom RAND = ThreadLocalRandom.current();
         int satu = RAND.nextInt(3);
         int ener = RAND.nextInt(3);
@@ -40,16 +39,8 @@ public final class InitialiseCharacters
             int rand1 = RAND.nextInt(2);
             switch(rand1)
             {
-                case 0->
-                {
-                    satu--;
-                    break;
-                }
-                case 1->
-                {
-                    ener--;
-                    break;
-                }
+                case 0-> satu--;
+                case 1-> ener--;
             }
         }
         else if(satu == 0
@@ -62,16 +53,8 @@ public final class InitialiseCharacters
             int rand2 = RAND.nextInt(2);
             switch(rand2)
             {
-                case 0->
-                {
-                    satu++;
-                    break;
-                }
-                case 1->
-                {
-                    ener++;
-                    break;
-                }
+                case 0-> satu++;
+                case 1-> ener++;
             }
         }
         if(heal == 0)
@@ -85,7 +68,7 @@ public final class InitialiseCharacters
                     {
                         satu++;
                     }
-                    break;
+                    
                 }
                 case 1->
                 {
@@ -93,7 +76,6 @@ public final class InitialiseCharacters
                     {
                         ener++;
                     }
-                    break;
                 }
             }
         }
@@ -103,23 +85,14 @@ public final class InitialiseCharacters
 
         return tempList;
     }
-
     @SuppressWarnings("Deprecation")
     public static void randCharacters(Player pl, List<Integer> list)
     { //Full-Randomly get characters
         Languages lang = Localisation.getLanguage(pl);
         switch(lang)
         {
-            case CN->
-            {
-                pl.sendMessage(ChatColor.YELLOW + "抽取中");
-                break;
-            }
-            case EN->
-            {
-                pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
-                break;
-            }
+            case CN-> pl.sendMessage(ChatColor.YELLOW + "抽取中");
+            case EN-> pl.sendMessage(ChatColor.YELLOW + "Rolling your characters");
         }
         final ThreadLocalRandom RAND = ThreadLocalRandom.current();
         int sani = RAND.nextInt(3);
@@ -165,20 +138,12 @@ public final class InitialiseCharacters
         setCharacter(pl, list);
         switch(lang)
         {
-            case CN->
-            {
-                pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
-                break;
-            }
-            case EN->
-            {
-                pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
-                break;
-            }
+            case CN-> pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
+            case EN-> pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
         }
         ViewCharacters.viewCharacters(pl);
+        setEnable(pl, true);
     }
-
     public static final String ASKTITLECN = "您确定吗";
     public static final String ASKTITLEEN = "Are you sure";
     @SuppressWarnings("Deprecation")
@@ -201,7 +166,6 @@ public final class InitialiseCharacters
                 createItem(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要");
                 createItem(invAsk, 4, ATTENTION, "请参阅聊天栏");
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧");
-                break;
             }
 
             case EN->
@@ -214,12 +178,10 @@ public final class InitialiseCharacters
                 createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please");
                 createItem(invAsk, 4, ATTENTION, "Read the chat");
                 createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick");
-                break;
             }
         }
     }
-
-    private static void askQuestion(int which, Inventory inv, Languages lang)
+    public static void askQuestion(int which, Inventory inv, Languages lang, Player pl)
     {
         switch(lang)
         {
@@ -229,25 +191,85 @@ public final class InitialiseCharacters
                 {
                     case 0 ->
                     {
-                        createItem(inv, QuestionOptions.QUESTION, "对于你看过的恐怖片,你愿意再看一遍吗");
-                        createItem(inv, QuestionOptions.OPIA, "愿意");
-                        createItem(inv, QuestionOptions.OPIC, "不愿意");
-                        break;
+                        createItem(inv, "1A", "对于看过的恐怖片你愿意再看一遍吗");
+                        createItem(inv, QuestionOptions.OPIA, "愿意,才不怕呢");
+                        createItem(inv, QuestionOptions.OPIC, "不愿意,想吓死我?");
+                        
                     }
                     case 1 ->
                     {
-                        createItem(inv, QuestionOptions.QUESTION, "晚上你睡觉想开个灯吗,哪怕是小灯");
+                        createItem(inv, "1B", "晚上你睡觉想开个灯吗,哪怕是小灯");
                         createItem(inv, QuestionOptions.OPIA, "非常想,我怕黑");
                         createItem(inv, QuestionOptions.OPIC, "才不想,,,,我才不");
-                        break;
+                        
                     }
                     case 2 ->
                     {
-
+                        createItem(inv, "2A", "假如你打PVP忽然断网了 你会(最接近)怎么反应");
+                        createItem(inv, QuestionOptions.OPIA, "气死我了 对面肯定打不过开挂断网");
+                        createItem(inv, QuestionOptions.OPIB, "咋突然断网了??我快赢了啊啊啊!!");
+                        createItem(inv, QuestionOptions.OPIC, "这路由器是不是出问题了 我去修修");
+                        
+                    }
+                    case 3 ->
+                    {
+                        createItem(inv, "2B", "面对很重要的考试前 你通常怎么表现");
+                        createItem(inv, QuestionOptions.OPIA, "紧张 很紧张");
+                        createItem(inv, QuestionOptions.OPIB, "自信 觉得认真学了不怎么会失误");
+                        createItem(inv, QuestionOptions.OPIC, "不当回事 啊对对对(划掉");
+                        
+                    }
+                    case 4 ->
+                    {
+                        createItem(inv, "3A", "有人借你钱一直不还 你咋办");
+                        createItem(inv, QuestionOptions.OPIA, "不急 他只要有时间肯定会还的");
+                        createItem(inv, QuestionOptions.OPIB, "直接给他说 能不能还我?");
+                        createItem(inv, QuestionOptions.OPIC, "阴阳怪气 核疝问候他");
+                        
+                    }
+                    case 5 ->
+                    {
+                        createItem(inv, "3B", "你想养宠物或者在养宠物吗");
+                        createItem(inv, QuestionOptions.OPIA, "想(或者正在养)");
+                        createItem(inv, QuestionOptions.OPIC, "不想");
+                        
+                    }
+                    case 6 ->
+                    {
+                        createItem(inv, "4A", "现在让你干等60秒 你愿意等吗");
+                        createItem(inv, QuestionOptions.OPIA, "愿意");
+                        createItem(inv, QuestionOptions.OPIC, "不愿意");
+                    }
+                    case 7 ->
+                    {
+                        createItem(inv, "4B", "看动画的时候你通常跳过开头片尾吗");
+                        createItem(inv, QuestionOptions.OPIA, "跳过");
+                        createItem(inv, QuestionOptions.OPIC, "不跳过");
+                    }
+                    case 8 ->
+                    {
+                        createItem(inv, "5A", "如果有个极其安全机会 你想在高楼之间跑酷吗");
+                        createItem(inv, QuestionOptions.OPIA, "想");
+                        createItem(inv, QuestionOptions.OPIB, "不想");
+                    }
+                    case 9 ->
+                    {
+                        createItem(inv, "5B", "假如你睁眼忽然发现你在一个很高山上 你会怎么办");
+                        createItem(inv, QuestionOptions.OPIA, "吓一下然后冷静地观察周围 慢慢下");
+                        createItem(inv, QuestionOptions.OPIB, "根本不怕 直接滑下去");
+                        createItem(inv, QuestionOptions.OPIC, "吓一下然后掉下去(真有人选这个嘛");
+                    }
+                    default ->
+                    {
+                        createItem(inv, ".͆.̓", "出bug了 你觉得是咋回事 =▲=");
+                        createItem(inv, QuestionOptions.OPIA, "ị̬̰̤̺̹̊ͦ̍ͭ͂̽͑ͫ͡ͅM͚̝̘̞̯̦͉̌̂͑ͤ̓ͭ̀");
+                        createItem(inv, QuestionOptions.OPIB, "aͩ͑̇҉̨̠͈̼aͩ͑̇҉̨̠͈̼aͩ͑̇҉̨̠͈̼");
+                        createItem(inv, QuestionOptions.OPIC, "ĺ̳͕͖̬̮̳͋̄ǫ̥͖͕̃͌̉̈ͮ̿ś̳͕͖̮̳͋̄t̨̥͖͕̃͌̉̈ͮ̿");
                     }
                 }
             }
         }
+        pl.openInventory(inv);
     }
     public static final String TESTINGCN = "正在测试";
     public static final String TESTINGEN = "Testing...";
@@ -256,48 +278,20 @@ public final class InitialiseCharacters
     {
         Languages lang = Localisation.getLanguage(pl);
         ThreadLocalRandom rand = ThreadLocalRandom.current();
-        int[] queList = new int[5];
-
-        for(int a = 0; a < 100; a++)
-        {
-            for(int b = 2; b < 11; b += 2)
-            {
-                queList[(b / 2) - 1] = rand.nextInt(2) + b;
-                switch(queList[4])
-                {
-                    case 10 ->
-                    {
-                        queList[4] = 0;
-                        break;
-                    }
-
-                    case 11 ->
-                    {
-                        queList[4] = 1;
-                        break;
-                    }
-                }
-            }
-            Arrays.sort(queList);
-        }
+        int queNum = rand.nextInt(2);
 
         switch(lang)
         {
             case CN->
             {
                 final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGCN);
-
-
-
-                break;
+                askQuestion(queNum, INV, lang, pl);
+                
             }
             case EN->
             {
                 final Inventory INV = Bukkit.createInventory(null, 5 * 9, TESTINGEN);
-
-
-
-                break;
+                askQuestion(queNum, INV, lang, pl);
             }
         }
     }
@@ -345,7 +339,6 @@ public final class InitialiseCharacters
                 invMain.setItem(4, TEST);
                 invMain.setItem(6, CHOOSE);
                 pl.openInventory(invMain);
-                break;
             }
 
             case EN->
@@ -365,7 +358,6 @@ public final class InitialiseCharacters
                 invMain.setItem(4, TEST);
                 invMain.setItem(6, CHOOSE);
                 pl.openInventory(invMain);
-                break;
             }
         }
     }

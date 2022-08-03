@@ -11,5 +11,8 @@ public enum Characters
     BRAVENESS,
     KINDNESS,
     PATIENCE,
-    HEIGHT
+    HEIGHT,
+    LANGUAGE,
+    CHANGE,
+    ENABLED
 }

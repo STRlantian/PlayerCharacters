@@ -1,10 +1,5 @@
 package override.studio.strlantian.commands;
 
-import override.studio.strlantian.playercharacters.enums.Languages;
-import override.studio.strlantian.playercharacters.InitialiseCharacters;
-import override.studio.strlantian.playercharacters.Localisation;
-import override.studio.strlantian.playercharacters.PlayerCharacters;
-import override.studio.strlantian.playercharacters.ViewCharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -14,13 +9,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import override.studio.strlantian.Main;
+import override.studio.strlantian.playercharacters.Localisation;
+import override.studio.strlantian.playercharacters.PlayerCharacters;
+import override.studio.strlantian.playercharacters.commandrealisation.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.commandrealisation.ViewCharacters;
+import override.studio.strlantian.playercharacters.enums.Languages;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static java.lang.Integer.valueOf;
 
 public final class CharacterCommand implements TabExecutor
 {
@@ -54,7 +52,6 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "展示作者(求求看看吧看看我b站)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "显示语言调整界面");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
-                break;
             }
             case EN->
             {
@@ -78,7 +75,6 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "Show author(SEE MY BILIBILI PLEEEAAASE)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "Show language page");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
-                break;
             }
         }
     }
@@ -95,7 +91,6 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.YELLOW + "B站id: " + ChatColor.BLUE + "这里是陌蓝qwq");
                 pl.sendMessage(ChatColor.DARK_BLUE + "Github主页(建设中): " + ChatColor.BLUE + "strlantian.github.io");
                 pl.sendMessage(ChatColor.RED + "Discord: " + ChatColor.BLUE + "STRlantian#5461");
-                break;
             }
             case EN->
             {
@@ -103,7 +98,6 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.YELLOW + "Bilibili: " + ChatColor.BLUE + "这里是陌蓝qwq");
                 pl.sendMessage(ChatColor.DARK_BLUE + "Github Page(Under construction): " + ChatColor.BLUE + "strlantian.github.io");
                 pl.sendMessage(ChatColor.RED + "Discord: " + ChatColor.BLUE + "STRlantian#5461");
-                break;
             }
         }
     }
@@ -137,38 +131,22 @@ public final class CharacterCommand implements TabExecutor
         {
             default ->
             {
-                sd.sendMessage(ChatColor.RED + "U KNOW THE RULES AND SO DO I");
-                break;
+                switch(lang)
+                {
+                    case CN -> sd.sendMessage(ChatColor.RED + "麻烦看看/character help吧");
+                    case EN -> sd.sendMessage(ChatColor.RED + "Please do /character help");
+                }
+                
             }
-            case 0 ->
-            {
-                giveHelp(sd);
-                break;
-            }
+            case 0 -> giveHelp(sd);
             case 1 ->
             {
                 switch (strings[0])
                 {
-                    case "help"->
-                    {
-                        giveHelp(sd);
-                        break;
-                    }
-                    case "credits", "credit"->
-                    {
-                        giveCredits(sd);
-                        break;
-                    }
-                    case "language", "lang" ->
-                    {
-                        sd.openInventory(Localisation.getLanguageInv());
-                        break;
-                    }
-                    case "view"->
-                    {
-                        ViewCharacters.viewCharacters(sd);
-                        break;
-                    }
+                    case "help"-> giveHelp(sd);
+                    case "credits", "credit"-> giveCredits(sd);
+                    case "language", "lang" -> sd.openInventory(Localisation.getLanguageInv());
+                    case "view"-> ViewCharacters.viewCharacters(sd);
                     case "init", "initialise", "initialize"->
                     {
                         if(!Objects.equals(changingTime, 1)
@@ -176,7 +154,7 @@ public final class CharacterCommand implements TabExecutor
                         {
                             InitialiseCharacters.initialiseCharacters(sd);
                         }
-                        break;
+                        
                     }
 
                 }

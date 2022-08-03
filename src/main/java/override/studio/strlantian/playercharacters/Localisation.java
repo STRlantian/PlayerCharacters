@@ -1,7 +1,5 @@
 package override.studio.strlantian.playercharacters;
 
-import override.studio.strlantian.Main;
-import override.studio.strlantian.playercharacters.enums.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import override.studio.strlantian.Main;
+import override.studio.strlantian.playercharacters.enums.Characters;
+import override.studio.strlantian.playercharacters.enums.Languages;
 
 public final class Localisation
 {
@@ -17,8 +18,7 @@ public final class Localisation
 
     public static Languages getLanguage(Player player)
     {
-        String name = player.getUniqueId().toString();
-        return (Languages) cfg.get(name + ".Language");
+        return (Languages) cfg.get(PlayerCharacters.getPathList(player).get(Characters.LANGUAGE.ordinal()));
     }
 
     public static final String LANGTITLE = "选语言 | Choose a Language";
