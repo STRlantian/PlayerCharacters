@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.Objects;
 
 import static override.studio.strlantian.playercharacters.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public final class ViewCharacters
 {
     @SuppressWarnings("Deprecation")
-    private static Inventory createViewInv(Player pl, Languages language)
+    static Inventory createViewInv(Player pl, Languages language)
     {       //Create inventories for **VIEWING CHARACTERS**
         String name = pl.getName();
         ItemStack consFlag = new ItemStack(Material.PAPER, 1);
@@ -35,8 +36,8 @@ public final class ViewCharacters
             case CN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "的性格页面");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的基本性格"));
+                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格(抽取)");
+                consim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的基本性格(不是你选的 是你抽的)"));
                 consim.addEnchant(Enchantment.DURABILITY, 1, true);
                 consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
@@ -54,8 +55,8 @@ public final class ViewCharacters
             case EN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "'s Character Page");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your basical characters"));
+                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters(Randomly)");
+                consim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your basical characters(Got randomly)"));
                 consim.addEnchant(Enchantment.DURABILITY, 1, true);
                 consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
@@ -81,17 +82,17 @@ public final class ViewCharacters
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Inventory inv = Objects.requireNonNull(createViewInv(pl, language));
 
-        ItemStack hun = new ItemStack(Material.COOKED_CHICKEN, 1);
-        ItemStack ene = new ItemStack(Material.SUGAR, 1);
-        ItemStack hea = new ItemStack(Material.GOLDEN_CARROT, 1);
+        ItemStack hun = SATURATION.getRepresentItem();
+        ItemStack ene = ENERGY.getRepresentItem();
+        ItemStack hea = HEALTH.getRepresentItem();
 
-        ItemStack san = new ItemStack(Material.NAUTILUS_SHELL, 1);
-        ItemStack dar = new ItemStack(Material.BLACK_WOOL, 1);
-        ItemStack pos = new ItemStack(Material.SLIME_BALL, 1);
-        ItemStack bra = new ItemStack(Material.WOODEN_SWORD, 1);
-        ItemStack kin = new ItemStack(Material.EGG, 1);
-        ItemStack pat = new ItemStack(Material.GOLDEN_BOOTS, 1);
-        ItemStack hig = new ItemStack(Material.FEATHER , 1);
+        ItemStack san = SANITY.getRepresentItem();
+        ItemStack dar = DARKNESS.getRepresentItem();
+        ItemStack pos = POSITIVITY.getRepresentItem();
+        ItemStack bra = BRAVENESS.getRepresentItem();
+        ItemStack kin = KINDNESS.getRepresentItem();
+        ItemStack pat = PATIENCE.getRepresentItem();
+        ItemStack hig = HEIGHT.getRepresentItem();
 
         switch(language)
         {

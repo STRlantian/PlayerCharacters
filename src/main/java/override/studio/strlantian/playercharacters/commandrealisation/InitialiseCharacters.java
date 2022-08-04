@@ -141,8 +141,8 @@ public final class InitialiseCharacters
             case CN-> pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
             case EN-> pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
         }
-        ViewCharacters.viewCharacters(pl);
         setEnable(pl, true);
+        ViewCharacters.viewCharacters(pl);
     }
     public static final String ASKTITLECN = "您确定吗";
     public static final String ASKTITLEEN = "Are you sure";
@@ -191,17 +191,15 @@ public final class InitialiseCharacters
                 {
                     case 0 ->
                     {
-                        createItem(inv, "1A", "对于看过的恐怖片你愿意再看一遍吗");
-                        createItem(inv, QuestionOptions.OPIA, "愿意,才不怕呢");
-                        createItem(inv, QuestionOptions.OPIC, "不愿意,想吓死我?");
-                        
+                        createItem(inv, "1A", "对于看过的恐怖片你敢再看一遍吗");
+                        createItem(inv, QuestionOptions.OPIA, "敢,才不怕呢");
+                        createItem(inv, QuestionOptions.OPIC, "不敢,想吓死我?");
                     }
                     case 1 ->
                     {
                         createItem(inv, "1B", "晚上你睡觉想开个灯吗,哪怕是小灯");
                         createItem(inv, QuestionOptions.OPIA, "非常想,我怕黑");
                         createItem(inv, QuestionOptions.OPIC, "才不想,,,,我才不");
-                        
                     }
                     case 2 ->
                     {
@@ -209,7 +207,6 @@ public final class InitialiseCharacters
                         createItem(inv, QuestionOptions.OPIA, "气死我了 对面肯定打不过开挂断网");
                         createItem(inv, QuestionOptions.OPIB, "咋突然断网了??我快赢了啊啊啊!!");
                         createItem(inv, QuestionOptions.OPIC, "这路由器是不是出问题了 我去修修");
-                        
                     }
                     case 3 ->
                     {
@@ -217,22 +214,20 @@ public final class InitialiseCharacters
                         createItem(inv, QuestionOptions.OPIA, "紧张 很紧张");
                         createItem(inv, QuestionOptions.OPIB, "自信 觉得认真学了不怎么会失误");
                         createItem(inv, QuestionOptions.OPIC, "不当回事 啊对对对(划掉");
-                        
                     }
                     case 4 ->
                     {
                         createItem(inv, "3A", "有人借你钱一直不还 你咋办");
                         createItem(inv, QuestionOptions.OPIA, "不急 他只要有时间肯定会还的");
                         createItem(inv, QuestionOptions.OPIB, "直接给他说 能不能还我?");
-                        createItem(inv, QuestionOptions.OPIC, "阴阳怪气 核疝问候他");
-                        
+                        createItem(inv, QuestionOptions.OPIC, "阴阳怪气 核疝问候(物理)他");
                     }
                     case 5 ->
                     {
-                        createItem(inv, "3B", "你想养宠物或者在养宠物吗");
-                        createItem(inv, QuestionOptions.OPIA, "想(或者正在养)");
-                        createItem(inv, QuestionOptions.OPIC, "不想");
-                        
+                        createItem(inv, "3B", "你喜欢小动物吗,想养吗");
+                        createItem(inv, QuestionOptions.OPIA, "喜欢 好可爱的 正在养呢");
+                        createItem(inv, QuestionOptions.OPIB, "喜欢 但是麻烦 不想养");
+                        createItem(inv, QuestionOptions.OPIC, "不喜欢 我嫌他们烦");
                     }
                     case 6 ->
                     {
@@ -248,9 +243,9 @@ public final class InitialiseCharacters
                     }
                     case 8 ->
                     {
-                        createItem(inv, "5A", "如果有个极其安全机会 你想在高楼之间跑酷吗");
-                        createItem(inv, QuestionOptions.OPIA, "想");
-                        createItem(inv, QuestionOptions.OPIB, "不想");
+                        createItem(inv, "5A", "如果有个可以保证绝对安全的机会 你敢在高楼之间跑酷吗");
+                        createItem(inv, QuestionOptions.OPIA, "我敢");
+                        createItem(inv, QuestionOptions.OPIB, "不敢");
                     }
                     case 9 ->
                     {
@@ -268,13 +263,92 @@ public final class InitialiseCharacters
                     }
                 }
             }
+
+            case EN ->
+            {
+                switch(which)
+                {
+                    case 0 ->
+                    {
+                        createItem(inv, "1A", "Do you get afraid when you see a scary film for another time");
+                        createItem(inv, QuestionOptions.OPIA, "Yes");
+                        createItem(inv, QuestionOptions.OPIC, "No");
+                    }
+                    case 1 ->
+                    {
+                        createItem(inv, "1B", "Do you often light up a light when sleeping in darkness");
+                        createItem(inv, QuestionOptions.OPIA, "Yes");
+                        createItem(inv, QuestionOptions.OPIC, "No");
+                    }
+                    case 2 ->
+                    {
+                        createItem(inv, "2A", "What will you think if you are disconnected during PVP");
+                        createItem(inv, QuestionOptions.OPIA, "My opponent must cheat to make me disconnected -□-");
+                        createItem(inv, QuestionOptions.OPIB, "Why disconnected??? Reconnect pleeeease!!");
+                        createItem(inv, QuestionOptions.OPIC, "Is the wifi broken? Let me have a look");
+                    }
+                    case 3 ->
+                    {
+                        createItem(inv, "2B", "Brfore important examinations, what do you often think");
+                        createItem(inv, QuestionOptions.OPIA, "Nervous");
+                        createItem(inv, QuestionOptions.OPIB, "Confident, I will pass");
+                        createItem(inv, QuestionOptions.OPIC, "(Ignore this exam, don't even think about it)");
+                    }
+                    case 4 ->
+                    {
+                        createItem(inv, "3A", "If someone borrowed your money and hasn't payed back now");
+                        createItem(inv, QuestionOptions.OPIA, "It's just not the right time. He will pay me back someday");
+                        createItem(inv, QuestionOptions.OPIB, "Tell him directly, when to pay me back??");
+                        createItem(inv, QuestionOptions.OPIC, "Ask him \"politely\" and \"Greet\" him(substantively)");
+                    }
+                    case 5 ->
+                    {
+                        createItem(inv, "3B", "Do you like pets and do you feed any pets");
+                        createItem(inv, QuestionOptions.OPIA, "I like them and I am feeding at least one");
+                        createItem(inv, QuestionOptions.OPIB, "I like them but I think I don't have time to feed one");
+                        createItem(inv, QuestionOptions.OPIC, "I don't like them. They are quite naughty and dirty");
+                    }
+                    case 6 ->
+                    {
+                        createItem(inv, "4A", "If I ask you to wait for 60 seconds, will you accept");
+                        createItem(inv, QuestionOptions.OPIA, "Yes");
+                        createItem(inv, QuestionOptions.OPIC, "No");
+                    }
+                    case 7 ->
+                    {
+                        createItem(inv, "4B", "Do you often skip the staring and ending songs of animations");
+                        createItem(inv, QuestionOptions.OPIA, "Yes");
+                        createItem(inv, QuestionOptions.OPIC, "No");
+                    }
+                    case 8 ->
+                    {
+                        createItem(inv, "5A", "If there is a completely safe chance for you to do parkour above high buildings, do you dare to do it");
+                        createItem(inv, QuestionOptions.OPIA, "Yes");
+                        createItem(inv, QuestionOptions.OPIB, "No");
+                    }
+                    case 9 ->
+                    {
+                        createItem(inv, "5B", "If you find yourself at a high place when waking up, what will you prob do");
+                        createItem(inv, QuestionOptions.OPIA, "Get scared and calm down, then climb down slowly");
+                        createItem(inv, QuestionOptions.OPIB, "Nothing scary, I will just slide down");
+                        createItem(inv, QuestionOptions.OPIC, "Get scared and fall down(Will there be anyone choose this)");
+                    }
+                    default ->
+                    {
+                        createItem(inv, ".͆.̓", "It seems that we get a bug =▲=");
+                        createItem(inv, QuestionOptions.OPIA, "ị̬̰̤̺̹̊ͦ̍ͭ͂̽͑ͫ͡ͅM͚̝̘̞̯̦͉̌̂͑ͤ̓ͭ̀");
+                        createItem(inv, QuestionOptions.OPIB, "aͩ͑̇҉̨̠͈̼aͩ͑̇҉̨̠͈̼aͩ͑̇҉̨̠͈̼");
+                        createItem(inv, QuestionOptions.OPIC, "ĺ̳͕͖̬̮̳͋̄ǫ̥͖͕̃͌̉̈ͮ̿ś̳͕͖̮̳͋̄t̨̥͖͕̃͌̉̈ͮ̿");
+                    }
+                }
+            }
         }
         pl.openInventory(inv);
     }
     public static final String TESTINGCN = "正在测试";
     public static final String TESTINGEN = "Testing...";
     @SuppressWarnings("Deprecation")
-    public static void testCharacters(Player pl, List<Integer> list)
+    public static void testCharacters(Player pl)
     {
         Languages lang = Localisation.getLanguage(pl);
         ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -298,7 +372,38 @@ public final class InitialiseCharacters
 
     public static void chooseCharacters(Player pl)
     {
+        Languages lang = Localisation.getLanguage(pl);
+        Inventory inv = ViewCharacters.createViewInv(pl, lang);
+        ItemStack score = new ItemStack(Material.BOOKSHELF, 1);
+        ItemStack how = new ItemStack(Material.OAK_SIGN, 1);
+        ItemMeta im = score.getItemMeta();
+        im.addEnchant(Enchantment.DURABILITY, 1, true);
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        score.setItemMeta(im);
+        switch(lang)
+        {
+            case CN ->
+            {
+                pl.sendMessage(ChatColor.RED + "请看物品栏左上角的说明");
+                createItem(inv, 0, score, ChatColor.GREEN + "现在可分配的分数: ",
+                        ChatColor.GRAY + "这是你选的可分配分数", ChatColor.GRAY +
+                                "分数耗尽就不能选了", ChatColor.GRAY + "没有选中的将进行抽取");
+                createItem(inv, 1, how, ChatColor.GREEN + "操作指示",
+                        ChatColor.YELLOW + "左键点击物品加分", ChatColor.YELLOW + "右键点击物品减分",
+                        ChatColor.YELLOW + "具体的分数情况可以参阅物品上的说明");
 
+            }
+            case EN ->
+            {
+                pl.sendMessage(ChatColor.RED + "Please have a look at the instruction above the inventory");
+                createItem(inv, 0, score, ChatColor.GREEN + "The scores you have: ",
+                        ChatColor.GRAY + "These are the scores you can use", ChatColor.GRAY +
+                                "If it become 0 then you can't select anything", ChatColor.GRAY + "Characters that haven't been chosen will be chosen randomly");
+                createItem(inv, 1, how, ChatColor.GREEN + "How to choose",
+                        ChatColor.YELLOW + "Left-click items to add scores", ChatColor.YELLOW + "Right-click items to deduct scores",
+                        ChatColor.YELLOW + "The actual meaning of the score can be found on every items");
+            }
+        }
     }
 
     public static final String INITITLEMAINCN = "初始化性格";
