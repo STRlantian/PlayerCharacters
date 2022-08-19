@@ -3,10 +3,13 @@ package override.studio.strlantian.playercharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 import override.studio.strlantian.Main;
 import override.studio.strlantian.playercharacters.enums.Characters;
 import override.studio.strlantian.playercharacters.enums.Languages;
@@ -20,6 +23,19 @@ import java.util.Objects;
 public final class PlayerCharacters
 {
     static FileConfiguration cfg = Main.inst.getConfig(); //Config
+    public static void createItem(Inventory inv, int slot, ItemStack i, String name, Enchantment ench, int level, boolean isHideEnchant, String ... lore)
+    {
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(name);
+        im.setLore(List.of(lore));
+        im.addEnchant(ench, level, true);
+        if(isHideEnchant)
+        {
+            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        }
+        i.setItemMeta(im);
+        inv.setItem(slot, i);
+    }
     @SuppressWarnings("Deprecation")
     public static void createItem(Inventory inv, int slot, ItemStack i, String name, String ... lore)
     {        //Create items for an ITEM IN **VIEWING PAGE**
@@ -146,6 +162,7 @@ public final class PlayerCharacters
         cfg.set(getPathList(pl).get(11), a);
     }
 
+    /*
     public static void setCharacter(Player pl, Characters what, int value)
     {      //Set characters
         switch(what)
@@ -162,6 +179,7 @@ public final class PlayerCharacters
             case HEIGHT -> cfg.set(getPathList(pl).get(Characters.HEIGHT.ordinal()), value);
         }
     }
+     */
 
     public static void setCharacter(Player pl, List<Integer> list)
     {

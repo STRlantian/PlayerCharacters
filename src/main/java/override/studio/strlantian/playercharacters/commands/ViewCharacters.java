@@ -1,4 +1,4 @@
-package override.studio.strlantian.playercharacters.commandrealisation;
+package override.studio.strlantian.playercharacters.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,13 +7,10 @@ import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,56 +20,37 @@ import static override.studio.strlantian.playercharacters.enums.Characters.*;
 public final class ViewCharacters
 {
     @SuppressWarnings("Deprecation")
-    static Inventory createViewInv(Player pl, Languages language)
+    private static Inventory createViewInv(Player pl, Languages language)
     {       //Create inventories for **VIEWING CHARACTERS**
         String name = pl.getName();
         ItemStack consFlag = new ItemStack(Material.PAPER, 1);
         ItemStack featFlag = new ItemStack(Material.PAPER, 1);
-        ItemMeta consim = consFlag.getItemMeta();
-        ItemMeta featim = featFlag.getItemMeta();
+
         switch(language)
         {
             default -> uDidntInit(pl);
             case CN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "的性格页面");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格(抽取)");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的基本性格(不是你选的 是你抽的)"));
-                consim.addEnchant(Enchantment.DURABILITY, 1, true);
-                consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                featim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的特殊性格");
-                featim.setLore(Collections.singletonList(ChatColor.GOLD + "这是你的特殊性格"));
-                featim.addEnchant(Enchantment.DURABILITY, 1, true);
-                featim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                consFlag.setItemMeta(consim);
-                featFlag.setItemMeta(featim);
-
-                inv.setItem(0, consFlag);
-                inv.setItem(9, featFlag);
+                createItem(inv, 0, consFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格",
+                        Enchantment.DURABILITY, 1, true,
+                        ChatColor.GOLD + "这是你的基本性格");
+                createItem(inv, 9, featFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的特殊性格",
+                        ChatColor.GOLD + "这是你的特殊性格");
                 return inv;
             }
             case EN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + "'s Character Page");
-                consim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters(Randomly)");
-                consim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your basical characters(Got randomly)"));
-                consim.addEnchant(Enchantment.DURABILITY, 1, true);
-                consim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                featim.setDisplayName(ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s special characters'");
-                featim.setLore(Collections.singletonList(ChatColor.GOLD + "These are your special characters"));
-                featim.addEnchant(Enchantment.DURABILITY, 1, true);
-                featim.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                consFlag.setItemMeta(consim);
-                featFlag.setItemMeta(featim);
-
-                inv.setItem(0, consFlag);
-                inv.setItem(9, featFlag);
+                createItem(inv, 0, consFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters",
+                        Enchantment.DURABILITY, 1, true,
+                        ChatColor.GOLD + "These are your basical characters");
+                createItem(inv, 9, featFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s special characters",
+                        ChatColor.GOLD + "These are your special characters");
                 return inv;
             }
         }
-        return createViewInv(pl, language);
+        return Bukkit.createInventory(null, 9, ChatColor.RED + "ERROR |||| 出错了");
     }
 
     public static void viewCharacters(Player pl)

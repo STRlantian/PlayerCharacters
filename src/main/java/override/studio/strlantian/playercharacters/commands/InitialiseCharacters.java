@@ -1,4 +1,4 @@
-package override.studio.strlantian.playercharacters.commandrealisation;
+package override.studio.strlantian.playercharacters.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static override.studio.strlantian.playercharacters.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.enums.Characters.SATURATION;
 
 public final class InitialiseCharacters
 {
@@ -370,38 +371,45 @@ public final class InitialiseCharacters
         }
     }
 
+    public static final String CHOOSETITLECN = "选择你的性格";
+    public static final String CHOOSETITLEEN = "Choose your characters";
     public static void chooseCharacters(Player pl)
     {
         Languages lang = Localisation.getLanguage(pl);
-        Inventory inv = ViewCharacters.createViewInv(pl, lang);
         ItemStack score = new ItemStack(Material.BOOKSHELF, 1);
         ItemStack how = new ItemStack(Material.OAK_SIGN, 1);
-        ItemMeta im = score.getItemMeta();
-        im.addEnchant(Enchantment.DURABILITY, 1, true);
-        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        score.setItemMeta(im);
+
         switch(lang)
         {
             case CN ->
             {
+                Inventory inv = Bukkit.createInventory(null, 4 * 9, CHOOSETITLECN);
                 pl.sendMessage(ChatColor.RED + "请看物品栏左上角的说明");
                 createItem(inv, 0, score, ChatColor.GREEN + "现在可分配的分数: ",
+                        Enchantment.DURABILITY, 1, true,
                         ChatColor.GRAY + "这是你选的可分配分数", ChatColor.GRAY +
                                 "分数耗尽就不能选了", ChatColor.GRAY + "没有选中的将进行抽取");
                 createItem(inv, 1, how, ChatColor.GREEN + "操作指示",
                         ChatColor.YELLOW + "左键点击物品加分", ChatColor.YELLOW + "右键点击物品减分",
                         ChatColor.YELLOW + "具体的分数情况可以参阅物品上的说明");
-
+                createItem(inv, 9, new ItemStack(Material.PAPER), ChatColor.MAGIC + "" + ChatColor.GOLD + "分配你的基本性格",
+                        Enchantment.DURABILITY, 1, true);
+                createItem(inv, 18, new ItemStack(Material.PAPER), ChatColor.MAGIC + "" + ChatColor.GOLD + "分配你的特殊性格",
+                        Enchantment.DURABILITY, 1, true);
+                createItem(inv, 10, SATURATION.getRepresentItem(), ChatColor.GREEN + "");
             }
             case EN ->
             {
+                Inventory inv = Bukkit.createInventory(null, 4 * 9, CHOOSETITLEEN);
                 pl.sendMessage(ChatColor.RED + "Please have a look at the instruction above the inventory");
                 createItem(inv, 0, score, ChatColor.GREEN + "The scores you have: ",
+                        Enchantment.DURABILITY, 1, true,
                         ChatColor.GRAY + "These are the scores you can use", ChatColor.GRAY +
                                 "If it become 0 then you can't select anything", ChatColor.GRAY + "Characters that haven't been chosen will be chosen randomly");
                 createItem(inv, 1, how, ChatColor.GREEN + "How to choose",
                         ChatColor.YELLOW + "Left-click items to add scores", ChatColor.YELLOW + "Right-click items to deduct scores",
                         ChatColor.YELLOW + "The actual meaning of the score can be found on every items");
+
             }
         }
     }

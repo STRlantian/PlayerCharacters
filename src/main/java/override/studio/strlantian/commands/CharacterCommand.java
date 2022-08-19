@@ -1,5 +1,10 @@
 package override.studio.strlantian.commands;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -11,10 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import override.studio.strlantian.Main;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PlayerCharacters;
-import override.studio.strlantian.playercharacters.commandrealisation.InitialiseCharacters;
-import override.studio.strlantian.playercharacters.commandrealisation.ViewCharacters;
+import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +57,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "5. /character help: " + ChatColor.DARK_GREEN + "显示此帮助页面");
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "展示作者(求求看看吧看看我b站)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "显示语言调整界面");
+                pl.sendMessage(ChatColor.GREEN + "8. /character settings: " + ChatColor.DARK_GREEN + "显示性格设置界面" + ChatColor.RED + "(仅管理员)");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
             }
             case EN->
@@ -74,6 +81,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "5. /character help: " + ChatColor.DARK_GREEN + "Show this help page");
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "Show author(SEE MY BILIBILI PLEEEAAASE)");
                 pl.sendMessage(ChatColor.GREEN + "7. /character language: " + ChatColor.DARK_GREEN + "Show language page");
+                pl.sendMessage(ChatColor.GREEN + "8. /character settings: " + ChatColor.DARK_GREEN + "Show settings' page" + ChatColor.RED + "(Admin only)");
                 pl.sendMessage(ChatColor.WHITE + "==========================");
             }
         }
@@ -131,10 +139,23 @@ public final class CharacterCommand implements TabExecutor
         {
             default ->
             {
+
                 switch(lang)
                 {
-                    case CN -> sd.sendMessage(ChatColor.RED + "麻烦看看/character help吧");
-                    case EN -> sd.sendMessage(ChatColor.RED + "Please do /character help");
+                    case CN ->
+                    {
+                        BaseComponent pleaseDoHelpCN = new TextComponent(ChatColor.RED + "麻烦看看/character help吧");
+                        pleaseDoHelpCN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("看啥,点啊")));
+                        pleaseDoHelpCN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
+                        sd.sendMessage(pleaseDoHelpCN);
+                    }
+                    case EN ->
+                    {
+                        BaseComponent pleaseDoHelpEN = new TextComponent(ChatColor.RED + "Please do /character help");
+                        pleaseDoHelpEN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("What r u waiting for")));
+                        pleaseDoHelpEN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
+                        sd.sendMessage(pleaseDoHelpEN);
+                    }
                 }
                 
             }

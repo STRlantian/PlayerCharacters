@@ -15,8 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PlayerCharacters;
-import override.studio.strlantian.playercharacters.commandrealisation.InitialiseCharacters;
-import override.studio.strlantian.playercharacters.commandrealisation.ViewCharacters;
+import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 import override.studio.strlantian.playercharacters.enums.Languages;
 import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static override.studio.strlantian.Main.inst;
-import static override.studio.strlantian.playercharacters.commandrealisation.InitialiseCharacters.*;
+import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public final class InventoryListeners implements Listener
