@@ -8,17 +8,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import override.studio.strlantian.Main;
+import override.studio.strlantian.PlayerCharacters;
 import override.studio.strlantian.playercharacters.enums.Characters;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
 public final class Localisation
 {
-    static FileConfiguration cfg = Main.inst.getConfig();
+    static FileConfiguration cfg = PlayerCharacters.inst.getConfig();
 
     public static Languages getLanguage(Player player)
     {
-        return (Languages) cfg.get(PlayerCharacters.getPathList(player).get(Characters.LANGUAGE.ordinal()));
+        return (Languages) cfg.get(PCFactory.getPathList(player).get(Characters.LANGUAGE.ordinal()));
     }
 
     public static final String LANGTITLE = "选语言 | Choose a Language";

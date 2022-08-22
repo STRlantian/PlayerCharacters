@@ -1,5 +1,12 @@
 package override.studio.strlantian.listeners;
 
+import com.google.common.hash.HashingOutputStream;
+import net.kyori.adventure.text.event.HoverEventSource;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -13,8 +20,9 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.yaml.snakeyaml.constructor.BaseConstructor;
 import override.studio.strlantian.playercharacters.Localisation;
-import override.studio.strlantian.playercharacters.PlayerCharacters;
+import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 import override.studio.strlantian.playercharacters.enums.Languages;
@@ -24,7 +32,8 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-import static override.studio.strlantian.Main.inst;
+import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
@@ -71,8 +80,9 @@ public final class InventoryListeners implements Listener
                     if(num == 4
                             && letter == 'a')
                     {
-                        ISWAITED.remove(pl.getName());
-                        NICETRY.remove(pl.getName());
+                        ISWAITED.remove(pl);
+                        NICETRY.remove(pl);
+                        CHARTEMPLIST.remove(pl);
                         switch(lang)
                         {
                             case CN -> pl.sendMessage(ChatColor.RED + "你的计时也是");
@@ -84,8 +94,8 @@ public final class InventoryListeners implements Listener
         }
     }
 
-    private static final Map<String, Boolean> ISWAITED = new HashMap<>(Collections.emptyMap());
-    private static final Map<String, Integer> NICETRY = new HashMap<>(Collections.emptyMap());
+    private static final Map<Player, Boolean> ISWAITED = new HashMap<>(Collections.emptyMap());
+    private static final Map<Player, Integer> NICETRY = new HashMap<>(Collections.emptyMap());
 
     @SuppressWarnings("Deprecation")
     @EventHandler
@@ -97,26 +107,25 @@ public final class InventoryListeners implements Listener
         String plName = pl.getName();
         if(title.equalsIgnoreCase(plName + "的性格页面")
         || title.equalsIgnoreCase(plName + "'s Character Page"))
-        {
+        {                       //View Page
             e.setCancelled(true);
         }
 
         switch(title)
         {
-            case INITITLEMAINCN, INITITLEMAINEN ->
+            case INITITLEMAINCN, INITITLEMAINEN ->      //Initialise page
             {
                 List<Integer> tempList = InitialiseCharacters.getRandomConstList(pl);
                 e.setCancelled(true);
                 int slot = e.getSlot();
                 switch(slot)
                 {
-                    case 2-> InitialiseCharacters.randCharacters(pl, tempList);
-                    case 4-> InitialiseCharacters.testCharactersPre(pl);
-                    case 6-> InitialiseCharacters.chooseCharacters(pl);
+                    case 3-> InitialiseCharacters.randCharacters(pl, tempList);
+                    case 5-> InitialiseCharacters.testCharactersPre(pl);
                 }
             }
 
-            case ASKTITLECN, ASKTITLEEN ->
+            case ASKTITLECN, ASKTITLEEN ->              //Ask if going to take a test
             {
                 List<Integer> tempList = getRandomConstList(pl);
                 e.setCancelled(true);
@@ -127,14 +136,15 @@ public final class InventoryListeners implements Listener
                     case 2->
                     {
                         InitialiseCharacters.testCharacters(pl);
-                        CharTempList.put(plName, tempList);
+                        CHARTEMPLIST.put(pl, tempList);
                     }
                     case 6-> pl.closeInventory();
                 }
             }
 
-            case TESTINGCN, TESTINGEN ->
+            case TESTINGCN, TESTINGEN ->            //Test page
             {
+                e.setCancelled(true);
                 ThreadLocalRandom rand = ThreadLocalRandom.current();
                 Inventory invQues = e.getInventory();
                 ItemStack item = invQues.getItem(13);
@@ -143,7 +153,7 @@ public final class InventoryListeners implements Listener
                 int num = tempChar[1];
                 char letter = tempChar[2];
                 int slot = e.getSlot();
-                List<Integer> list = CharTempList.get(plName);
+                List<Integer> list = CHARTEMPLIST.get(pl);
                 Languages lang = Localisation.getLanguage(pl);
                 switch(num)
                 {
@@ -341,8 +351,8 @@ public final class InventoryListeners implements Listener
                         {
                             case 'A' ->
                             {
-                                ISWAITED.put(plName, false);
-                                NICETRY.put(plName, 0);
+                                ISWAITED.put(pl, false);
+                                NICETRY.put(pl, 0);
                                 switch(slot)
                                 {
                                     case 29 ->
@@ -350,12 +360,12 @@ public final class InventoryListeners implements Listener
                                         if(Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.BLUE + "我愿意")
                                         || Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.BLUE + "Yes"))
                                         {
-                                            if(!ISWAITED.get(plName))
+                                            if(!ISWAITED.get(pl))
                                             {
                                                 switch(lang)
                                                 {
-                                                    case CN -> PlayerCharacters.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
-                                                    case EN -> PlayerCharacters.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
+                                                    case CN -> PCFactory.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
+                                                    case EN -> PCFactory.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
                                                 }
                                                 new BukkitRunnable()
                                                 {
@@ -383,11 +393,12 @@ public final class InventoryListeners implements Listener
                                                             {
                                                                 switch(lang)
                                                                 {
-                                                                    case CN -> PlayerCharacters.createItem(invQues, QuestionOptions.OPIA, "我愿意");
-                                                                    case EN -> PlayerCharacters.createItem(invQues, QuestionOptions.OPIA, "Yes");
+                                                                    case CN -> PCFactory.createItemForOption(invQues, QuestionOptions.OPIA, "我愿意");
+                                                                    case EN -> PCFactory.createItemForOption(invQues, QuestionOptions.OPIA, "Yes");
                                                                 }
-                                                                ISWAITED.put(plName, true);
-                                                                NICETRY.remove(plName);
+                                                                ISWAITED.put(pl, true);
+                                                                NICETRY.remove(pl);
+                                                                break;
                                                             }
                                                         }
                                                     }
@@ -395,7 +406,7 @@ public final class InventoryListeners implements Listener
                                             }
                                             else
                                             {
-                                                ISWAITED.remove(plName);
+                                                ISWAITED.remove(pl);
                                                 list.set(PATIENCE.ordinal(), 0);
                                                 int next = rand.nextInt(2) + 8;
                                                 askQuestion(next, invQues, lang, pl);
@@ -403,11 +414,16 @@ public final class InventoryListeners implements Listener
                                         }
                                         else
                                         {
-                                            int haveATry = NICETRY.get(plName);
+                                            int haveATry = NICETRY.get(pl);
                                             haveATry++;
-                                            NICETRY.put(plName, haveATry);
                                             if(haveATry >= 15)
                                             {
+                                                try
+                                                {
+                                                    NICETRY.remove(pl);
+                                                }
+                                                catch (Exception ignored)
+                                                {}
                                                 switch(lang)
                                                 {
                                                     case CN -> pl.sendMessage(ChatColor.RED + "都说了让你等你不听");
@@ -417,6 +433,7 @@ public final class InventoryListeners implements Listener
                                             }
                                             else
                                             {
+                                                NICETRY.put(pl, haveATry);
                                                 switch(lang)
                                                 {
                                                     case CN -> pl.sendMessage(ChatColor.RED + "请耐心等待");
@@ -428,7 +445,7 @@ public final class InventoryListeners implements Listener
 
                                     case 33 ->
                                     {
-                                        ISWAITED.remove(plName);
+                                        ISWAITED.remove(pl);
                                         list.set(PATIENCE.ordinal(), 1);
                                         int ene = list.get(ENERGY.ordinal());
                                         if(ene > 0)
@@ -565,9 +582,9 @@ public final class InventoryListeners implements Listener
                                 pl.sendMessage(ChatColor.GREEN + "The result has been saved. Have a look!");
                             }
                         }
-                        PlayerCharacters.setCharacter(pl, list);
+                        PCFactory.setCharacter(pl, list);
                         pl.closeInventory();
-                        PlayerCharacters.setEnable(pl, true);
+                        PCFactory.setEnable(pl, PCFactory.ENABLED);
                         ViewCharacters.viewCharacters(pl);
                     }
                     default ->
@@ -580,15 +597,55 @@ public final class InventoryListeners implements Listener
                                 pl.sendMessage(ChatColor.RED + "要么是你改了");
                                 pl.sendMessage(ChatColor.RED + "要么是插件坏了");
                                 pl.sendMessage(ChatColor.RED + "你看着办吧 =Δ=");
-                                
                             }
                             case EN ->
                             {
                                 pl.sendMessage(ChatColor.RED + "There must be something wrong");
                                 pl.sendMessage(ChatColor.RED + "Either the plugin or yourself");
                                 pl.sendMessage(ChatColor.RED + "What do u think =Δ=");
-                                
                             }
+                        }
+                    }
+                }
+            }
+
+            case DELCONFIRMCN, DELCONFIRMEN ->             //Check if delete page
+            {
+                e.setCancelled(true);
+                Languages lang = Localisation.getLanguage(pl);
+                switch(e.getSlot())
+                {
+                    case 3 ->
+                    {
+                        pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
+                        switch(lang)                //I HATE DEPRECATION
+                        {
+                            case CN ->
+                            {
+                                pl.sendMessage(ChatColor.YELLOW + "你真的确定吗,请再选择一次,因为删除后无法恢复");
+                                BaseComponent sure = new TextComponent(ChatColor.GREEN + "我真的确认");
+                                sure.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("嗯嗯嗯删了吧")));
+                                sure.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character delete and im very sure about this"));
+                                pl.sendMessage(sure);
+                            }
+                            case EN ->
+                            {
+                                pl.sendMessage(ChatColor.YELLOW + "Are you really sure? Please select again bcs you can't recover them");
+                                BaseComponent sure = new TextComponent(ChatColor.GREEN + "Yes");
+                                sure.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Delete please")));
+                                sure.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character delete and im very sure about this"));
+                                pl.sendMessage(sure);
+                            }
+                        }
+                    }
+                    case 5 ->
+                    {
+                        pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                        pl.closeInventory();
+                        switch(lang)
+                        {
+                            case CN -> pl.sendMessage(ChatColor.RED + "你取消了删除");
+                            case EN -> pl.sendMessage(ChatColor.RED + "You refused to delete");
                         }
                     }
                 }

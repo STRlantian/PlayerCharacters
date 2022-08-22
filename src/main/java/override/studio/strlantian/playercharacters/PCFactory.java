@@ -9,8 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.Nullable;
-import override.studio.strlantian.Main;
 import override.studio.strlantian.playercharacters.enums.Characters;
 import override.studio.strlantian.playercharacters.enums.Languages;
 import override.studio.strlantian.playercharacters.enums.QuestionOptions;
@@ -18,11 +16,14 @@ import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public final class PlayerCharacters
+import static override.studio.strlantian.playercharacters.enums.Characters.CHANGE;
+
+public final class PCFactory
 {
-    static FileConfiguration cfg = Main.inst.getConfig(); //Config
+    static FileConfiguration cfg = override.studio.strlantian.PlayerCharacters.inst.getConfig(); //Config
+
+    @SuppressWarnings("Deprecation")
     public static void createItem(Inventory inv, int slot, ItemStack i, String name, Enchantment ench, int level, boolean isHideEnchant, String ... lore)
     {
         ItemMeta im = i.getItemMeta();
@@ -53,13 +54,12 @@ public final class PlayerCharacters
         i.setItemMeta(im);
         inv.setItem(slot, i);
     }
-    public static void createItem(Inventory inv, String num, String lore)
+    public static void createItemForQuestion(Inventory inv, String num, String lore)
     {
         final ItemStack Q = new ItemStack(Material.BOOK, 1);
         createItem(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
     }
-    @SuppressWarnings("Deprecation")
-    public static void createItem(Inventory inv, QuestionOptions ques, String name)
+    public static void createItemForOption(Inventory inv, QuestionOptions ques, String name)
     {
         final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
         final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
@@ -79,7 +79,7 @@ public final class PlayerCharacters
         String name = pl.getName().toLowerCase();
         String cha = name + ".Characters.";
         String language = name + ".Language";
-        String change = name + ".ChangingTime";
+        String change = name + ".Changed";
         String enable = name + ".isEnabled";
 
         String satu = cha + "Saturation";
@@ -128,18 +128,6 @@ public final class PlayerCharacters
             }
         }
     }
-    public static List<Integer> getCharacterList(Player pl)
-    {
-        List<Integer> list = new ArrayList<>(Collections.emptyList());
-        int i = 0;
-
-        while(i < 10)
-        {
-            list.set(i, (Integer) cfg.get(getPathList(pl).get(i)));
-            i++;
-        }
-        return list;
-    }
     public static List<String> getCharacterList(Player pl, List<Integer> tempList) //Get Characters
     {
         List<String> list = new ArrayList<>(Collections.emptyList());
@@ -153,18 +141,60 @@ public final class PlayerCharacters
         return list;
     }
 
-    public static void addChangingTime(Player pl)
+    public static final int NOTCHANGED = 0;
+    public static final int CHANGED = 1;
+    public static final int NOTENABLED = 0;
+    public static final int ENABLED = 1;
+    public static final int NOINIT = 2;
+    public static int getChanged(Player pl)
+    {
+        return cfg.getInt(getPathList(pl).get(CHANGE.ordinal()));
+    }
+    public static void setChanged(Player pl)
     {         //When the changing time changes
-        String name = pl.getName().toLowerCase();
-        String origin = Objects.requireNonNull((String) cfg.get(getPathList(pl).get(11)));
-        int og = Integer.parseInt(origin);
-        int a = og + 1;
-        cfg.set(getPathList(pl).get(11), a);
+        cfg.set(getPathList(pl).get(CHANGE.ordinal()), CHANGED);
+    }
+    public static void setEnable(Player pl, int whatNow)
+    {
+        cfg.set(getPathList(pl).get(Characters.ENABLED.ordinal()), whatNow);
+        Languages lang = Localisation.getLanguage(pl);
+        if (whatNow == ENABLED)
+        {
+            switch (lang)
+            {
+                case CN -> pl.sendMessage(ChatColor.GREEN + "你的性格已启用");
+                case EN -> pl.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
+            }
+        }
+        else if(whatNow == NOTENABLED)
+        {
+            switch (lang)
+            {
+                case CN -> pl.sendMessage(ChatColor.RED + "你的性格已经删除");
+                case EN -> pl.sendMessage(ChatColor.RED + "Your characters has been deleted");
+            }
+        }
+    }
+    public static int getEnable(Player pl)
+    {
+        return cfg.getInt(getPathList(pl).get(Characters.ENABLED.ordinal()));
     }
 
-    /*
+    public static List<Integer> getCharacterList(Player pl)
+    {
+        List<Integer> list = new ArrayList<>(Collections.emptyList());
+        int i = 0;
+
+        while(i < 10)
+        {
+            list.set(i, (Integer) cfg.get(getPathList(pl).get(i)));
+            i++;
+        }
+        return list;
+    }
+
     public static void setCharacter(Player pl, Characters what, int value)
-    {      //Set characters
+    {      //Set characters in detail
         switch(what)
         {
             case SATURATION -> cfg.set(getPathList(pl).get(Characters.SATURATION.ordinal()), value);
@@ -179,42 +209,14 @@ public final class PlayerCharacters
             case HEIGHT -> cfg.set(getPathList(pl).get(Characters.HEIGHT.ordinal()), value);
         }
     }
-     */
 
     public static void setCharacter(Player pl, List<Integer> list)
-    {
+    { //Set character from a list
         int i = 0;
         while(i < 10)
         {
             cfg.set(getPathList(pl).get(i), list.get(i));
             i++;
         }
-    }
-
-    public static void setEnable(Player pl, boolean whatNow)
-    {
-        cfg.set(getPathList(pl).get(Characters.ENABLED.ordinal()), whatNow);
-        Languages lang = Localisation.getLanguage(pl);
-        if (whatNow)
-        {
-            switch (lang)
-            {
-                case CN -> pl.sendMessage(ChatColor.GREEN + "你的性格已启用");
-                case EN -> pl.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
-            }
-        }
-        else
-        {
-            switch (lang)
-            {
-                case CN -> pl.sendMessage(ChatColor.RED + "你的性格已经删除");
-                case EN -> pl.sendMessage(ChatColor.RED + "Your characters has been deleted");
-            }
-        }
-    }
-
-    public static boolean getEnable(Player pl)
-    {
-        return Boolean.parseBoolean((String) cfg.get(getPathList(pl).get(Characters.ENABLED.ordinal())));
     }
 }

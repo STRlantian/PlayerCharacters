@@ -11,24 +11,23 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import override.studio.strlantian.Main;
+import override.studio.strlantian.PlayerCharacters;
 import override.studio.strlantian.playercharacters.Localisation;
-import override.studio.strlantian.playercharacters.PlayerCharacters;
-import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
+import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public final class CharacterCommand implements TabExecutor
 {
-    FileConfiguration cfg = Main.inst.getConfig();
+    FileConfiguration cfg = PlayerCharacters.inst.getConfig();
 
     private void giveHelp(Player pl)
     {
@@ -111,35 +110,42 @@ public final class CharacterCommand implements TabExecutor
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings)
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args)
     {
-        command.setAliases(new ArrayList<>(Collections.singletonList("cha")));
-
-        Player sd = (Player) commandSender;
-        Languages lang = Localisation.getLanguage(sd);
-
-        if(!lang.equals(Languages.CN) && !lang.equals(Languages.EN))
+        Player pl;
+        if((commandSender instanceof Entity))
         {
-            Localisation.uDidntSetLanguage(sd);
+             pl = (Player) commandSender;
+        }
+        else
+        {
+            commandSender.sendMessage(ChatColor.RED + "别瞎试");
+            commandSender.sendMessage(ChatColor.RED + "Nice try");
             return true;
         }
-        if(PlayerCharacters.getCharacterList(sd).get(0) == null)
+
+        Languages lang = Objects.requireNonNull(Localisation.getLanguage(pl));
+        if(!lang.equals(Languages.CN) && !lang.equals(Languages.EN))
         {
-            if(!strings[0].equals("language") && !strings[0].equals("lang")
-            && !strings[0].equals("help") && !strings[0].equals("credit")
-            && !strings[0].equals("credits"))
+            Localisation.uDidntSetLanguage(pl);
+            return true;
+        }
+
+        if(PCFactory.getCharacterList(pl).get(0) == null)
+        {
+            if(!args[0].equals("language") && !args[0].equals("lang")
+            && !args[0].equals("help") && !args[0].equals("credit")
+            && !args[0].equals("credits"))
             {
-                PlayerCharacters.uDidntInit(sd);
+                PCFactory.uDidntInit(pl);
                 return true;
             }
         }
 
-        int changingTime = Objects.requireNonNull((Integer) cfg.get(PlayerCharacters.getPathList(sd).get(11)));
-        switch (strings.length)
+        switch (args.length)
         {
             default ->
             {
-
                 switch(lang)
                 {
                     case CN ->
@@ -147,37 +153,59 @@ public final class CharacterCommand implements TabExecutor
                         BaseComponent pleaseDoHelpCN = new TextComponent(ChatColor.RED + "麻烦看看/character help吧");
                         pleaseDoHelpCN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("看啥,点啊")));
                         pleaseDoHelpCN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
-                        sd.sendMessage(pleaseDoHelpCN);
+                        pl.sendMessage(pleaseDoHelpCN);
                     }
                     case EN ->
                     {
                         BaseComponent pleaseDoHelpEN = new TextComponent(ChatColor.RED + "Please do /character help");
                         pleaseDoHelpEN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("What r u waiting for")));
                         pleaseDoHelpEN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
-                        sd.sendMessage(pleaseDoHelpEN);
+                        pl.sendMessage(pleaseDoHelpEN);
                     }
                 }
-                
             }
-            case 0 -> giveHelp(sd);
+            case 0 -> giveHelp(pl);
             case 1 ->
             {
-                switch (strings[0])
+                switch (args[0])
                 {
-                    case "help"-> giveHelp(sd);
-                    case "credits", "credit"-> giveCredits(sd);
-                    case "language", "lang" -> sd.openInventory(Localisation.getLanguageInv());
-                    case "view"-> ViewCharacters.viewCharacters(sd);
+                    case "help"-> giveHelp(pl);
+                    case "credits", "credit"-> giveCredits(pl);
+                    case "language", "lang" -> pl.openInventory(Localisation.getLanguageInv());
+                    case "view"-> ViewCharacters.viewCharacters(pl);
                     case "init", "initialise", "initialize"->
                     {
-                        if(!Objects.equals(changingTime, 1)
-                        && !Objects.equals(changingTime, 0))
+                        if(PCFactory.getEnable(pl) == PCFactory.ENABLED
+                        || PCFactory.getChanged(pl) == PCFactory.NOTCHANGED)
                         {
-                            InitialiseCharacters.initialiseCharacters(sd);
-                        }
-                        
-                    }
 
+                        }
+                    }
+                    case "delete", "del" ->
+                    {
+                        if(PCFactory.getEnable(pl) == PCFactory.ENABLED)
+                        {
+                            DeleteCharacters.confirmDelete(pl);
+                        }
+                    }
+                }
+            }
+            case 8 ->
+            {
+                if(args[0].equals("delete")
+                && args[1].equals("and")
+                && args[2].equals("im")
+                && args[3].equals("very")
+                && args[4].equals("sure")
+                && args[5].equals("about")
+                && args[6].equals("this"))
+                {
+                    DeleteCharacters.deleteCharacters(pl);
+                    switch(lang)
+                    {
+                        case CN -> pl.sendMessage(ChatColor.GREEN + "已删除性格 感谢使用!");
+                        case EN -> pl.sendMessage(ChatColor.GREEN + "Deleted! Thx for using!");
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 name: PlayerCharacters
-main: OverrideStudio.STRlantian.Main
+main: override.studio.strlantian.PlayerCharacters
 version: 1.0
 api-version: 1.18
 author: STRlantian

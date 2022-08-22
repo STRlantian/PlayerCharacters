@@ -14,7 +14,7 @@ import override.studio.strlantian.playercharacters.enums.Languages;
 import java.util.List;
 import java.util.Objects;
 
-import static override.studio.strlantian.playercharacters.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.PCFactory.*;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public final class ViewCharacters

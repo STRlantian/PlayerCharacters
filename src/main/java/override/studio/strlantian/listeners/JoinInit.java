@@ -14,22 +14,19 @@ import org.bukkit.inventory.InventoryView;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
-import static override.studio.strlantian.Main.inst;
+import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
 
 public final class JoinInit implements Listener
 {
-    FileConfiguration cfg = inst.getConfig();
+    static FileConfiguration cfg = inst.getConfig();
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e)
+    public static void joinInit(Player pl)
     {
-        Player pl = e.getPlayer();
-        boolean hasLang = Localisation.checkLang(pl);
-
-        if(!hasLang)
+        if(!Localisation.checkLang(pl))
         {
             final Inventory INV = Localisation.getLanguageInv();
-            String name = e.getPlayer().getName().toLowerCase();
+            String name = pl.getName().toLowerCase();
 
             pl.sendMessage(ChatColor.GRAY + "[玩家性格]本服务器开启了 玩家性格 插件, 输入 /character 进行了解");
             pl.sendMessage(ChatColor.GRAY + "[玩家性格]建议不要改名字因为插件要用 改了您数据就没");
@@ -38,8 +35,8 @@ public final class JoinInit implements Listener
             String cha = name + ".Characters";
             cfg.set(name, "Language");
             cfg.set(name, "Characters");
-            cfg.set(name + ".ChangingTime", 0);
-            cfg.set(name + ".isEnabled", false);
+            cfg.set(name + ".Changed", NOINIT);
+            cfg.set(name + ".isEnabled", NOINIT);
 
             cfg.set(cha, "Saturation");
             cfg.set(cha, "Energy");
@@ -53,6 +50,12 @@ public final class JoinInit implements Listener
             cfg.set(cha, "Height");
             pl.openInventory(INV);
         }
+    }
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e)
+    {
+        Player pl = e.getPlayer();
+        joinInit(pl);
     }
 
     @SuppressWarnings("Deprecation")
