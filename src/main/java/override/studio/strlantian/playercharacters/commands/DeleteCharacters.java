@@ -11,13 +11,9 @@ import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.enums.Languages;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import static override.studio.strlantian.PlayerCharacters.inst;
 
-public class DeleteCharacters
+public final class DeleteCharacters
 {
     static FileConfiguration cfg = inst.getConfig();
     private static void itIsDisabled(Player pl)
@@ -43,26 +39,26 @@ public class DeleteCharacters
     public static void confirmDelete(Player pl)
     {
         Languages lang = Localisation.getLanguage(pl);
-        if(PCFactory.getEnable(pl) == PCFactory.NOTENABLED)
+        if(PCFactory.getEnable(pl) == PCFactory.CHARDISALED)
         {
             itIsDisabled(pl);
         }
-        else if(PCFactory.getEnable(pl) == PCFactory.ENABLED)
+        else if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
         {
             switch(lang)
             {
                 case CN ->
                 {
                     Inventory inv = Bukkit.createInventory(null, 9, DELCONFIRMCN);
-                    PCFactory.createItem(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "嗯 我确定删除");
-                    PCFactory.createItem(inv, 5, new ItemStack(Material.RED_WOOL), ChatColor.RED + "不 我点错了");
+                    PCFactory.setItemToInv(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "嗯 我确定删除");
+                    PCFactory.setItemToInv(inv, 5, new ItemStack(Material.RED_WOOL), ChatColor.RED + "不 我点错了");
                     pl.openInventory(inv);
                 }
                 case EN ->
                 {
                     Inventory inv = Bukkit.createInventory(null, 9, DELCONFIRMEN);
-                    PCFactory.createItem(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "Yes I want to delete them");
-                    PCFactory.createItem(inv, 5, new ItemStack(Material.RED_WOOL), ChatColor.RED + "No I sent the wrong command");
+                    PCFactory.setItemToInv(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "Yes I want to delete them");
+                    PCFactory.setItemToInv(inv, 5, new ItemStack(Material.RED_WOOL), ChatColor.RED + "No I sent the wrong command");
                     pl.openInventory(inv);
                 }
             }
@@ -76,15 +72,15 @@ public class DeleteCharacters
     public static void deleteCharacters(Player pl)
     {
         String name = pl.getName().toLowerCase();
-        if(PCFactory.getEnable(pl) == PCFactory.ENABLED)
+        if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
         {
-            PCFactory.setEnable(pl, PCFactory.NOTENABLED);
+            PCFactory.setEnable(pl, PCFactory.CHARDISALED);
             if(cfg.contains(name))
             {
                 cfg.set(name + ".Characters", "");
             }
         }
-        else if(PCFactory.getEnable(pl) == PCFactory.NOTENABLED)
+        else if(PCFactory.getEnable(pl) == PCFactory.CHARDISALED)
         {
             itIsDisabled(pl);
         }

@@ -25,7 +25,6 @@ public final class JoinInit implements Listener
     {
         if(!Localisation.checkLang(pl))
         {
-            final Inventory INV = Localisation.getLanguageInv();
             String name = pl.getName().toLowerCase();
 
             pl.sendMessage(ChatColor.GRAY + "[玩家性格]本服务器开启了 玩家性格 插件, 输入 /character 进行了解");
@@ -48,7 +47,7 @@ public final class JoinInit implements Listener
             cfg.set(cha, "Kindness");
             cfg.set(cha, "Patience");
             cfg.set(cha, "Height");
-            pl.openInventory(INV);
+            pl.openInventory(Localisation.getLanguageInv());
         }
     }
     @EventHandler

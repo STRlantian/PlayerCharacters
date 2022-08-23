@@ -1,7 +1,5 @@
 package override.studio.strlantian.listeners;
 
-import com.google.common.hash.HashingOutputStream;
-import net.kyori.adventure.text.event.HoverEventSource;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -13,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -20,9 +19,9 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.yaml.snakeyaml.constructor.BaseConstructor;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 import override.studio.strlantian.playercharacters.enums.Languages;
@@ -31,10 +30,14 @@ import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
+import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
+import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public final class InventoryListeners implements Listener
@@ -55,7 +58,7 @@ public final class InventoryListeners implements Listener
 
         switch(title)
         {
-            case ASKTITLECN, InitialiseCharacters.ASKTITLEEN ->
+            case ASKTITLECN, ASKTITLEEN ->
             {
                 pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 switch(lang)
@@ -66,7 +69,6 @@ public final class InventoryListeners implements Listener
                 }
                 
             }
-
             case TESTINGCN, TESTINGEN ->
             {
                 if(num != 5)
@@ -105,12 +107,11 @@ public final class InventoryListeners implements Listener
         InventoryView invView = e.getView();
         String title = invView.getTitle();
         String plName = pl.getName();
-        if(title.equalsIgnoreCase(plName + "的性格页面")
-        || title.equalsIgnoreCase(plName + "'s Character Page"))
+        if(title.equalsIgnoreCase(plName + VIEWCHARCN)
+        || title.equalsIgnoreCase(plName + VIEWCHAREN))
         {                       //View Page
             e.setCancelled(true);
         }
-
         switch(title)
         {
             case INITITLEMAINCN, INITITLEMAINEN ->      //Initialise page
@@ -124,7 +125,6 @@ public final class InventoryListeners implements Listener
                     case 5-> InitialiseCharacters.testCharactersPre(pl);
                 }
             }
-
             case ASKTITLECN, ASKTITLEEN ->              //Ask if going to take a test
             {
                 List<Integer> tempList = getRandomConstList(pl);
@@ -141,8 +141,7 @@ public final class InventoryListeners implements Listener
                     case 6-> pl.closeInventory();
                 }
             }
-
-            case TESTINGCN, TESTINGEN ->            //Test page
+            case TESTINGCN, TESTINGEN ->            //Characters' test page
             {
                 e.setCancelled(true);
                 ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -364,8 +363,8 @@ public final class InventoryListeners implements Listener
                                             {
                                                 switch(lang)
                                                 {
-                                                    case CN -> PCFactory.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
-                                                    case EN -> PCFactory.createItem(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
+                                                    case CN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
+                                                    case EN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
                                                 }
                                                 new BukkitRunnable()
                                                 {
@@ -579,12 +578,13 @@ public final class InventoryListeners implements Listener
                             case EN ->
                             {
                                 pl.sendMessage(ChatColor.GREEN + "Well done, the test is over");
-                                pl.sendMessage(ChatColor.GREEN + "The result has been saved. Have a look!");
+                                pl.sendMessage(ChatColor.GREEN + "The results has been saved. Have a look!");
                             }
                         }
                         PCFactory.setCharacter(pl, list);
                         pl.closeInventory();
-                        PCFactory.setEnable(pl, PCFactory.ENABLED);
+                        PCFactory.setEnable(pl, PCFactory.CHARENABLED);
+                        PCFactory.setChanged(pl, PCFactory.CHARNOTCHANGED);
                         ViewCharacters.viewCharacters(pl);
                     }
                     default ->
@@ -608,8 +608,7 @@ public final class InventoryListeners implements Listener
                     }
                 }
             }
-
-            case DELCONFIRMCN, DELCONFIRMEN ->             //Check if delete page
+            case DELCONFIRMCN, DELCONFIRMEN ->             //Ask if delete page
             {
                 e.setCancelled(true);
                 Languages lang = Localisation.getLanguage(pl);
@@ -648,6 +647,25 @@ public final class InventoryListeners implements Listener
                             case EN -> pl.sendMessage(ChatColor.RED + "You refused to delete");
                         }
                     }
+                }
+            }
+        }
+        if(title.equalsIgnoreCase(plName + VIEWCHARCN + "-更改页面")
+                || title.equalsIgnoreCase(plName + VIEWCHAREN + "-Changing Page"))
+        {                       //Change Page
+            e.setCancelled(true);
+            int slot = e.getSlot();
+            ClickType click = e.getClick();
+            List<Integer> ogCharList = PCFactory.getCharacterList(pl);
+            List<Integer> nowCharList = ogCharList;
+            int pointNow = POINTMAP.get(pl);
+            int og = ogCharList.get(slot - 7);
+            int now = nowCharList.get(slot - 7);
+            switch(slot)
+            {
+                case 10 ->
+                {
+
                 }
             }
         }

@@ -24,7 +24,9 @@ public final class PCFactory
     static FileConfiguration cfg = override.studio.strlantian.PlayerCharacters.inst.getConfig(); //Config
 
     @SuppressWarnings("Deprecation")
-    public static void createItem(Inventory inv, int slot, ItemStack i, String name, Enchantment ench, int level, boolean isHideEnchant, String ... lore)
+    public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name,
+                                    Enchantment ench, int level, boolean isHideEnchant,
+                                    String ... lore)
     {
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(name);
@@ -38,7 +40,7 @@ public final class PCFactory
         inv.setItem(slot, i);
     }
     @SuppressWarnings("Deprecation")
-    public static void createItem(Inventory inv, int slot, ItemStack i, String name, String ... lore)
+    public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name, String ... lore)
     {        //Create items for an ITEM IN **VIEWING PAGE**
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(name);
@@ -47,7 +49,7 @@ public final class PCFactory
         inv.setItem(slot, i);
     }
     @SuppressWarnings("Deprecation")
-    public static void createItem(Inventory inv, int slot, ItemStack i, String name)
+    public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name)
     {
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(name);
@@ -57,7 +59,7 @@ public final class PCFactory
     public static void createItemForQuestion(Inventory inv, String num, String lore)
     {
         final ItemStack Q = new ItemStack(Material.BOOK, 1);
-        createItem(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
+        setItemToInv(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
     }
     public static void createItemForOption(Inventory inv, QuestionOptions ques, String name)
     {
@@ -67,9 +69,9 @@ public final class PCFactory
 
         switch(ques)
         {
-            case OPIA -> createItem(inv, 29, A, ChatColor.BLUE + name);
-            case OPIB -> createItem(inv, 31, B, ChatColor.YELLOW + name);
-            case OPIC -> createItem(inv, 33, C, ChatColor.LIGHT_PURPLE + name);
+            case OPIA -> setItemToInv(inv, 29, A, ChatColor.BLUE + name);
+            case OPIB -> setItemToInv(inv, 31, B, ChatColor.YELLOW + name);
+            case OPIC -> setItemToInv(inv, 33, C, ChatColor.LIGHT_PURPLE + name);
         }
     }
     public static List<String> getPathList(Player pl)  //Character Path
@@ -141,24 +143,24 @@ public final class PCFactory
         return list;
     }
 
-    public static final int NOTCHANGED = 0;
-    public static final int CHANGED = 1;
-    public static final int NOTENABLED = 0;
-    public static final int ENABLED = 1;
+    public static final int CHARNOTCHANGED = 0;
+    public static final int CHARCHANGED = 1;
+    public static final int CHARDISALED = 0;
+    public static final int CHARENABLED = 1;
     public static final int NOINIT = 2;
     public static int getChanged(Player pl)
     {
         return cfg.getInt(getPathList(pl).get(CHANGE.ordinal()));
     }
-    public static void setChanged(Player pl)
+    public static void setChanged(Player pl, int whatNow)
     {         //When the changing time changes
-        cfg.set(getPathList(pl).get(CHANGE.ordinal()), CHANGED);
+        cfg.set(getPathList(pl).get(CHANGE.ordinal()), whatNow);
     }
     public static void setEnable(Player pl, int whatNow)
     {
         cfg.set(getPathList(pl).get(Characters.ENABLED.ordinal()), whatNow);
         Languages lang = Localisation.getLanguage(pl);
-        if (whatNow == ENABLED)
+        if (whatNow == CHARENABLED)
         {
             switch (lang)
             {
@@ -166,7 +168,7 @@ public final class PCFactory
                 case EN -> pl.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
             }
         }
-        else if(whatNow == NOTENABLED)
+        else if(whatNow == CHARDISALED)
         {
             switch (lang)
             {

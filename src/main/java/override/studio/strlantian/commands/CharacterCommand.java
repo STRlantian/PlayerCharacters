@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static override.studio.strlantian.playercharacters.enums.Characters.HEALTH;
+
 public final class CharacterCommand implements TabExecutor
 {
     FileConfiguration cfg = PlayerCharacters.inst.getConfig();
@@ -49,9 +51,9 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "1. /character init: " + ChatColor.DARK_GREEN + "用于首次设置你的性格");
                 pl.sendMessage(ChatColor.GREEN + "2. /character view: " + ChatColor.DARK_GREEN + "用于查看你现在的性格");
                 pl.sendMessage(ChatColor.GREEN + "3. /character change: " + ChatColor.DARK_GREEN + "用于改变你的性格");
-                pl.sendMessage(ChatColor.RED + "-注意! 在这个存档中,你的性格只能改变一次. 践行江山易改 本性难移的原则.[非得要改那就去找管理员吧(恼]");
+                pl.sendMessage(ChatColor.RED + "-注意! 在这个存档中,你的性格只能小改变一次. 践行江山易改 本性难移的原则.[非得要改那就去找管理员吧(恼]");
                 pl.sendMessage(ChatColor.GREEN + "4. /character delete: " + ChatColor.DARK_GREEN + "用于删除你的所有性格");
-                pl.sendMessage(ChatColor.RED + "-注意! 在这个存档中 一旦你的性格被删除将不可恢复或者重建,因此删除性格需要/character confirm");
+                pl.sendMessage(ChatColor.RED + "-注意! 在这个存档中 一旦你的性格被删除将不可恢复或者重建,因此删除性格需要确认");
                 pl.sendMessage(ChatColor.RED + "-注意! 这表示你不会受到任何性格影响,包括buff和debuff");
                 pl.sendMessage(ChatColor.GREEN + "5. /character help: " + ChatColor.DARK_GREEN + "显示此帮助页面");
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "展示作者(求求看看吧看看我b站)");
@@ -75,7 +77,7 @@ public final class CharacterCommand implements TabExecutor
                 pl.sendMessage(ChatColor.GREEN + "3. /character change: " + ChatColor.DARK_GREEN + "Change your characters");
                 pl.sendMessage(ChatColor.RED + "-Attention! You have only 1 chance to change them.[Go to ask admin if u r that paranoid to change them]");
                 pl.sendMessage(ChatColor.GREEN + "4. /character delete: " + ChatColor.DARK_GREEN + "Delete all the characters");
-                pl.sendMessage(ChatColor.RED + "-Attention! You can't recreate characters after deleting. So you need to /character confirm if you want to delete them");
+                pl.sendMessage(ChatColor.RED + "-Attention! You can't recreate characters after deleting. So you need to confirm if you want to delete them");
                 pl.sendMessage(ChatColor.RED + "-Attention! You will no longer be influenced by characters if you delete them");
                 pl.sendMessage(ChatColor.GREEN + "5. /character help: " + ChatColor.DARK_GREEN + "Show this help page");
                 pl.sendMessage(ChatColor.GREEN + "6. /character credits: " + ChatColor.DARK_GREEN + "Show author(SEE MY BILIBILI PLEEEAAASE)");
@@ -113,7 +115,7 @@ public final class CharacterCommand implements TabExecutor
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args)
     {
         Player pl;
-        if((commandSender instanceof Entity))
+        if((commandSender instanceof Player))           //check who sent the command
         {
              pl = (Player) commandSender;
         }
@@ -125,13 +127,15 @@ public final class CharacterCommand implements TabExecutor
         }
 
         Languages lang = Objects.requireNonNull(Localisation.getLanguage(pl));
-        if(!lang.equals(Languages.CN) && !lang.equals(Languages.EN))
+        if(!Localisation.checkLang(pl))                //check if there is lang
         {
             Localisation.uDidntSetLanguage(pl);
             return true;
         }
 
-        if(PCFactory.getCharacterList(pl).get(0) == null)
+        if(PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 0        //check if init
+        || PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 1
+        || PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 2)
         {
             if(!args[0].equals("language") && !args[0].equals("lang")
             && !args[0].equals("help") && !args[0].equals("credit")
@@ -144,7 +148,7 @@ public final class CharacterCommand implements TabExecutor
 
         switch (args.length)
         {
-            default ->
+            default ->          //check help pls
             {
                 switch(lang)
                 {
@@ -175,15 +179,15 @@ public final class CharacterCommand implements TabExecutor
                     case "view"-> ViewCharacters.viewCharacters(pl);
                     case "init", "initialise", "initialize"->
                     {
-                        if(PCFactory.getEnable(pl) == PCFactory.ENABLED
-                        || PCFactory.getChanged(pl) == PCFactory.NOTCHANGED)
+                        if(PCFactory.getEnable(pl) == PCFactory.NOINIT
+                        && PCFactory.getChanged(pl) == PCFactory.NOINIT)
                         {
 
                         }
                     }
                     case "delete", "del" ->
                     {
-                        if(PCFactory.getEnable(pl) == PCFactory.ENABLED)
+                        if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
                         {
                             DeleteCharacters.confirmDelete(pl);
                         }

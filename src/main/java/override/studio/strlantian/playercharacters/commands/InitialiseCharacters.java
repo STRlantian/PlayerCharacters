@@ -138,7 +138,8 @@ public final class InitialiseCharacters
             case CN-> pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
             case EN-> pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
         }
-        setEnable(pl, ENABLED);
+        setEnable(pl, CHARENABLED);
+        setChanged(pl, CHARNOTCHANGED);
         ViewCharacters.viewCharacters(pl);
     }
     public static final String ASKTITLECN = "您确定吗";
@@ -160,9 +161,9 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.YELLOW + "建议在一个安全的地方做来避免可能的事故");
                 pl.sendMessage(ChatColor.RED + "如果你关掉测试窗口,那么结果将不会保存");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLECN);
-                createItem(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要");
-                createItem(invAsk, 4, ATTENTION, "请参阅聊天栏");
-                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧");
+                setItemToInv(invAsk, 2, DECLINE, ChatColor.RED + "我不想我不要");
+                setItemToInv(invAsk, 4, ATTENTION, "请参阅聊天栏");
+                setItemToInv(invAsk, 6, CONFIRM, ChatColor.GREEN + "好的快开始吧");
             }
 
             case EN->
@@ -172,9 +173,9 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.YELLOW + "I suggest you doing this in a safe place to avoid any possible accidents");
                 pl.sendMessage(ChatColor.RED + "If you close the page, your characters won't be saved");
                 Inventory invAsk = Bukkit.createInventory(null, 9, ASKTITLEEN);
-                createItem(invAsk, 2, DECLINE, ChatColor.RED + "No please");
-                createItem(invAsk, 4, ATTENTION, "Read the chat");
-                createItem(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick");
+                setItemToInv(invAsk, 2, DECLINE, ChatColor.RED + "No please");
+                setItemToInv(invAsk, 4, ATTENTION, "Read the chat");
+                setItemToInv(invAsk, 6, CONFIRM, ChatColor.GREEN + "OK I will be quick");
             }
         }
     }
@@ -379,10 +380,10 @@ public final class InitialiseCharacters
                 pl.sendMessage(ChatColor.GREEN + "开始初始化性格...");
                 Inventory invMain = Bukkit.createInventory(null, 9, INITITLEMAINCN);
 
-                createItem(invMain, 3, new ItemStack(Material.APPLE), ChatColor.YELLOW + "纯随机抽取你的性格",
+                setItemToInv(invMain, 3, new ItemStack(Material.APPLE), ChatColor.YELLOW + "纯随机抽取你的性格",
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.BLUE + "插件自动抽,抽完不能改");
-                createItem(invMain, 5, new ItemStack(Material.APPLE), ChatColor.YELLOW + "测试得出你的性格",
+                setItemToInv(invMain, 5, new ItemStack(Material.APPLE), ChatColor.YELLOW + "测试得出你的性格",
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.BLUE + "通过作者的测试,测完不能改");
                 pl.openInventory(invMain);
@@ -392,10 +393,10 @@ public final class InitialiseCharacters
             {
                 pl.sendMessage(ChatColor.GREEN + "Start initialising...");
                 Inventory invMain = Bukkit.createInventory(null, 9, INITITLEMAINCN);
-                createItem(invMain, 3, new ItemStack(Material.APPLE), ChatColor.YELLOW + "Get your characters randomly",
+                setItemToInv(invMain, 3, new ItemStack(Material.APPLE), ChatColor.YELLOW + "Get your characters randomly",
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.BLUE + "Fully-randomly get your characters");
-                createItem(invMain, 5, new ItemStack(Material.APPLE), ChatColor.YELLOW + "Test your characters",
+                setItemToInv(invMain, 5, new ItemStack(Material.APPLE), ChatColor.YELLOW + "Test your characters",
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.BLUE + "Have a short test");
                 pl.openInventory(invMain);
