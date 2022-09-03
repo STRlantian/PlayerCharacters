@@ -10,13 +10,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import override.studio.strlantian.playercharacters.enums.Characters;
-import override.studio.strlantian.playercharacters.enums.Languages;
-import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static override.studio.strlantian.PlayerCharacters.CN;
+import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.enums.Characters.CHANGE;
 
 public final class PCFactory
@@ -41,7 +41,7 @@ public final class PCFactory
     }
     @SuppressWarnings("Deprecation")
     public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name, String ... lore)
-    {        //Create items for an ITEM IN **VIEWING PAGE**
+    {
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(name);
         im.setLore(List.of(lore));
@@ -56,12 +56,7 @@ public final class PCFactory
         i.setItemMeta(im);
         inv.setItem(slot, i);
     }
-    public static void createItemForQuestion(Inventory inv, String num, String lore)
-    {
-        final ItemStack Q = new ItemStack(Material.BOOK, 1);
-        setItemToInv(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
-    }
-    public static void createItemForOption(Inventory inv, QuestionOptions ques, String name)
+    public static void createItemForOption(Inventory inv, int ques, String name)
     {
         final ItemStack A = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
         final ItemStack B = new ItemStack(Material.YELLOW_WOOL, 1);
@@ -69,9 +64,9 @@ public final class PCFactory
 
         switch(ques)
         {
-            case OPIA -> setItemToInv(inv, 29, A, ChatColor.BLUE + name);
-            case OPIB -> setItemToInv(inv, 31, B, ChatColor.YELLOW + name);
-            case OPIC -> setItemToInv(inv, 33, C, ChatColor.LIGHT_PURPLE + name);
+            case 0 -> setItemToInv(inv, 29, A, ChatColor.BLUE + name);
+            case 1 -> setItemToInv(inv, 31, B, ChatColor.YELLOW + name);
+            case 2 -> setItemToInv(inv, 33, C, ChatColor.LIGHT_PURPLE + name);
         }
     }
     public static List<String> getPathList(Player pl)  //Character Path
@@ -113,7 +108,7 @@ public final class PCFactory
     }
     public static void uDidntInit(Player pl) //When someone hasn't initialised
     {
-        Languages language = Localisation.getLanguage(pl);
+        int language = Localisation.getLanguage(pl);
         switch(language)
         {
             case CN->
@@ -159,7 +154,7 @@ public final class PCFactory
     public static void setEnable(Player pl, int whatNow)
     {
         cfg.set(getPathList(pl).get(Characters.ENABLED.ordinal()), whatNow);
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
         if (whatNow == CHARENABLED)
         {
             switch (lang)

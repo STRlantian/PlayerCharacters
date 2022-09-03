@@ -21,20 +21,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
-import override.studio.strlantian.playercharacters.enums.Languages;
-import override.studio.strlantian.playercharacters.enums.QuestionOptions;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
-import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.PlayerCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
-import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.*;
+import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMCN;
+import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMEN;
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
@@ -48,7 +45,7 @@ public final class InventoryListeners implements Listener
     {
         Player pl = (Player) e.getPlayer();
         InventoryView inv = e.getView();
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
         String title = inv.getTitle();
 
         String name = Objects.requireNonNull(inv.getItem(13)).getItemMeta().getDisplayName();
@@ -64,7 +61,6 @@ public final class InventoryListeners implements Listener
                 switch(lang)
                 {
                     case CN-> pl.sendMessage(ChatColor.RED + "你取消了测试");
-
                     case EN-> pl.sendMessage(ChatColor.RED + "You cancelled the test");
                 }
                 
@@ -116,7 +112,7 @@ public final class InventoryListeners implements Listener
         {
             case INITITLEMAINCN, INITITLEMAINEN ->      //Initialise page
             {
-                List<Integer> tempList = InitialiseCharacters.getRandomConstList(pl);
+                List<Integer> tempList = InitialiseCharacters.getRandomConstList();
                 e.setCancelled(true);
                 int slot = e.getSlot();
                 switch(slot)
@@ -127,7 +123,7 @@ public final class InventoryListeners implements Listener
             }
             case ASKTITLECN, ASKTITLEEN ->              //Ask if going to take a test
             {
-                List<Integer> tempList = getRandomConstList(pl);
+                List<Integer> tempList = getRandomConstList();
                 e.setCancelled(true);
                 int slot = e.getSlot();
 
@@ -153,7 +149,7 @@ public final class InventoryListeners implements Listener
                 char letter = tempChar[2];
                 int slot = e.getSlot();
                 List<Integer> list = CHARTEMPLIST.get(pl);
-                Languages lang = Localisation.getLanguage(pl);
+                int lang = Localisation.getLanguage(pl);
                 switch(num)
                 {
                     case 1 ->
@@ -392,8 +388,8 @@ public final class InventoryListeners implements Listener
                                                             {
                                                                 switch(lang)
                                                                 {
-                                                                    case CN -> PCFactory.createItemForOption(invQues, QuestionOptions.OPIA, "我愿意");
-                                                                    case EN -> PCFactory.createItemForOption(invQues, QuestionOptions.OPIA, "Yes");
+                                                                    case CN -> PCFactory.createItemForOption(invQues, 0, "我愿意");
+                                                                    case EN -> PCFactory.createItemForOption(invQues, 0, "Yes");
                                                                 }
                                                                 ISWAITED.put(pl, true);
                                                                 NICETRY.remove(pl);
@@ -611,7 +607,7 @@ public final class InventoryListeners implements Listener
             case DELCONFIRMCN, DELCONFIRMEN ->             //Ask if delete page
             {
                 e.setCancelled(true);
-                Languages lang = Localisation.getLanguage(pl);
+                int lang = Localisation.getLanguage(pl);
                 switch(e.getSlot())
                 {
                     case 3 ->

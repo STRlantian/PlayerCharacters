@@ -8,12 +8,15 @@ import override.studio.strlantian.commands.CharacterCommand;
 import override.studio.strlantian.listeners.InventoryListeners;
 import override.studio.strlantian.listeners.JoinInit;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 public final class PlayerCharacters extends JavaPlugin
 {
     public static JavaPlugin inst;
 
+    public static final int CN = 0;
+    public static final int EN = 1;
     @Override
     public void onEnable()
     {

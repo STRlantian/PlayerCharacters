@@ -10,12 +10,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.enums.Languages;
 
 import java.util.List;
 import java.util.Objects;
 
-import static override.studio.strlantian.playercharacters.PCFactory.*;
+import static override.studio.strlantian.PlayerCharacters.CN;
+import static override.studio.strlantian.PlayerCharacters.EN;
+import static override.studio.strlantian.playercharacters.PCFactory.setItemToInv;
+import static override.studio.strlantian.playercharacters.PCFactory.uDidntInit;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public final class ViewCharacters
@@ -23,7 +25,7 @@ public final class ViewCharacters
     public static final String VIEWCHARCN = "的性格页面";
     public static final String VIEWCHAREN = "'s Character Page";
     @SuppressWarnings("Deprecation")
-    private static Inventory createViewInv(Player pl, Languages language)
+    private static Inventory createViewInv(Player pl, int language)
     {       //Create inventories for **VIEWING CHARACTERS**
         String name = pl.getName();
         ItemStack consFlag = new ItemStack(Material.PAPER, 1);
@@ -65,7 +67,7 @@ public final class ViewCharacters
         ItemStack ene = ENERGY.repItem();
         ItemStack hea = HEALTH.repItem();
 
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
         switch(lang)
         {
             case CN ->
@@ -173,7 +175,7 @@ public final class ViewCharacters
         ItemStack pat = PATIENCE.repItem();
         ItemStack hig = HEIGHT.repItem();
 
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
 
         switch(lang)
         {
@@ -347,7 +349,7 @@ public final class ViewCharacters
     }
     public static void viewCharacters(Player pl)
     {
-        Languages language = Localisation.getLanguage(pl);
+        int language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Inventory inv = Objects.requireNonNull(createViewInv(pl, language));
         setBasicalItem(pl, inv);

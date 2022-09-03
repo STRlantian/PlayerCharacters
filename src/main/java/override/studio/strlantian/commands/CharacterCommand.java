@@ -11,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import override.studio.strlantian.PlayerCharacters;
@@ -19,12 +18,12 @@ import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
-import override.studio.strlantian.playercharacters.enums.Languages;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
+import static override.studio.strlantian.PlayerCharacters.CN;
+import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.enums.Characters.HEALTH;
 
 public final class CharacterCommand implements TabExecutor
@@ -33,7 +32,7 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveHelp(Player pl)
     {
-        Languages language = Localisation.getLanguage(pl);
+        int language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -90,7 +89,7 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveCredits(Player pl)
     {
-        Languages language = Localisation.getLanguage(pl);
+        int language = Localisation.getLanguage(pl);
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -126,8 +125,8 @@ public final class CharacterCommand implements TabExecutor
             return true;
         }
 
-        Languages lang = Objects.requireNonNull(Localisation.getLanguage(pl));
-        if(!Localisation.checkLang(pl))                //check if there is lang
+        int lang = Localisation.getLanguage(pl);
+        if(Localisation.checkLang(pl))                //check if there is lang
         {
             Localisation.uDidntSetLanguage(pl);
             return true;

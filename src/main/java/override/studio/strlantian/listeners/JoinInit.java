@@ -9,12 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import override.studio.strlantian.playercharacters.Localisation;
-import override.studio.strlantian.playercharacters.enums.Languages;
 
-import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.PlayerCharacters.*;
 import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
 
 public final class JoinInit implements Listener
@@ -23,7 +21,7 @@ public final class JoinInit implements Listener
 
     public static void joinInit(Player pl)
     {
-        if(!Localisation.checkLang(pl))
+        if(Localisation.checkLang(pl))
         {
             String name = pl.getName().toLowerCase();
 
@@ -88,14 +86,14 @@ public final class JoinInit implements Listener
             {
                 case 3 ->
                 {
-                    cfg.set(name + ".Language", Languages.CN);
+                    cfg.set(name + ".Language", CN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.RED + "已更改语言到: 简体中文");
                     pl.closeInventory();
                 }
                 case 5 ->
                 {
-                    cfg.set(name + ".Language", Languages.EN);
+                    cfg.set(name + ".Language", EN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
                     pl.closeInventory();

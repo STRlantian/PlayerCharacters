@@ -11,16 +11,16 @@ import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.enums.Characters;
-import override.studio.strlantian.playercharacters.enums.Languages;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static override.studio.strlantian.PlayerCharacters.CN;
+import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
-import static override.studio.strlantian.playercharacters.enums.Characters.SANITY;
 
 public final class ChangeCharacters
 {
@@ -28,7 +28,7 @@ public final class ChangeCharacters
 
     private static void alreadyMax(Player pl)
     {
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
         switch(lang)
         {
             case CN -> pl.sendMessage(ChatColor.RED + "该值已经达到极限");
@@ -38,7 +38,7 @@ public final class ChangeCharacters
 
     public void changeCharacters(Player pl)
     {
-        Languages lang = Localisation.getLanguage(pl);
+        int lang = Localisation.getLanguage(pl);
         switch(lang)
         {
             case CN ->
