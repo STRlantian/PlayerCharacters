@@ -21,8 +21,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
+import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import static override.studio.strlantian.PlayerCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
+import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.checkAndModify;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMCN;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMEN;
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
@@ -653,16 +656,13 @@ public final class InventoryListeners implements Listener
             int slot = e.getSlot();
             ClickType click = e.getClick();
             List<Integer> ogCharList = PCFactory.getCharacterList(pl);
-            List<Integer> nowCharList = ogCharList;
+            List<Integer> nowCharList = PCFactory.getCharacterList(pl);
             int pointNow = POINTMAP.get(pl);
             int og = ogCharList.get(slot - 7);
             int now = nowCharList.get(slot - 7);
             switch(slot)
             {
-                case 10 ->
-                {
-
-                }
+                case 10 -> ChangeCharacters.checkAndModify(pl, click, SANITY, nowCharList);
             }
         }
     }

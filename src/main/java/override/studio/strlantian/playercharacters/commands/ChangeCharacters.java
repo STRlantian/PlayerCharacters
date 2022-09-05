@@ -24,6 +24,7 @@ import static override.studio.strlantian.playercharacters.commands.ViewCharacter
 
 public final class ChangeCharacters
 {
+    public static final Map<Player, List<Integer>> TEMPCHANGECHARLIST = new HashMap<>(Collections.emptyMap());
     public static final Map<Player, Integer> POINTMAP = new HashMap<>(Collections.emptyMap());
 
     private static void alreadyMax(Player pl)
@@ -32,11 +33,20 @@ public final class ChangeCharacters
         switch(lang)
         {
             case CN -> pl.sendMessage(ChatColor.RED + "该值已经达到极限");
-            case EN -> pl.sendMessage(ChatColor.RED + "This value is the maximum/minimum");
+            case EN -> pl.sendMessage(ChatColor.RED + "This value reaches the maximum/minimum");
         }
     }
 
-    public void changeCharacters(Player pl)
+    private static void noPoint(Player pl)
+    {
+        int lang = Localisation.getLanguage(pl);
+        switch(lang)
+        {
+            case CN -> pl.sendMessage(ChatColor.RED + "您  没  分  了");
+            case EN -> pl.sendMessage(ChatColor.RED + "You have ran out points");
+        }
+    }
+    public static void changeCharacters(Player pl)
     {
         int lang = Localisation.getLanguage(pl);
         switch(lang)
@@ -68,14 +78,19 @@ public final class ChangeCharacters
 
     public static void checkAndModify(Player pl, ClickType click, Characters which, List<Integer> what)
     {           //HOW TO REALISE THE POINTS
-        int og = PCFactory.getCharacterList(pl).get(which.ordinal());
-        int now = what.get(which.ordinal());
-        int pointNow = POINTMAP.get(pl);
+                //UNDER CONSTRUCTION
+        int lang = Localisation.getLanguage(pl);
+        int og = PCFactory.getCharacterList(pl).get(which.ordinal());           //Get Original Number
+        int now = what.get(which.ordinal());                                    //Get Target Number
+        int point = POINTMAP.get(pl);                                        //Get Point
+        int ogMinus = Math.abs(og - now);
 
-        if(click.isLeftClick())
+        if(click.isLeftClick())                         //If left click -> plus
         {
-            if(now < which.maxValue())
+            if(now < which.maxValue())                  //If now < max value of the cha
             {
+                int temp = Math.abs(og - now - 1);      //If
+
                 now++;
             }
             else
@@ -83,9 +98,9 @@ public final class ChangeCharacters
                 alreadyMax(pl);
             }
         }
-        else if(click.isRightClick())
+        else if(click.isRightClick())       //If right click -> minus
         {
-            if(now > 0)
+            if(now > 0)                     //If now > 0
             {
                 now--;
             }
@@ -94,11 +109,42 @@ public final class ChangeCharacters
                 alreadyMax(pl);
             }
         }
-        if(now != og)
+
+        if(ogMinus > nowMinus)
         {
-            POINTMAP.put(pl, pointNow);
+            point++;
+            switch(lang)
+            {
+                case CN -> pl.sendMessage(ChatColor.GREEN + "成功将 " + which.charName(CN)
+                        + " 性格从最开始的" + og + "更改为" + now + ",现在还剩下" + point + "分");
+                case EN -> pl.sendMessage(ChatColor.GREEN + "Changed " + which.charName(EN)
+                        + "from original" + og + "to" + now + "successfully, now you have" + point + "points to use");
+            }
         }
-        POINTMAP.put(pl, pointNow);
+        else if(ogMinus < nowMinus)
+        {
+            if(point <= 0)
+            {
+                noPoint(pl);
+                if(click.isLeftClick())
+                {
+
+                }
+            }
+            else
+            {
+                point--;
+                switch(lang)
+                {
+                    case CN -> pl.sendMessage(ChatColor.GREEN + "成功将 " + which.charName(CN)
+                            + " 性格从最开始的" + og + "更改为" + now + ",现在还剩下" + point + "分");
+                    case EN -> pl.sendMessage(ChatColor.GREEN + "Changed " + which.charName(EN)
+                            + "from original" + og + "to" + now + "successfully, now you have" + point + "points to use");
+                }
+            }
+        }
+
+        POINTMAP.put(pl, point);
         what.set(which.ordinal(), now);
     }
 }
