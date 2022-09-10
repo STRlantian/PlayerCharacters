@@ -9,8 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import override.studio.strlantian.playercharacters.Localisation;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 
 import static override.studio.strlantian.PlayerCharacters.*;
 import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
@@ -21,7 +23,7 @@ public final class JoinInit implements Listener
 
     public static void joinInit(Player pl)
     {
-        if(Localisation.checkLang(pl))
+        if(!Localisation.checkLang(pl))
         {
             String name = pl.getName().toLowerCase();
 
@@ -47,12 +49,18 @@ public final class JoinInit implements Listener
             cfg.set(cha, "Height");
             pl.openInventory(Localisation.getLanguageInv());
         }
+        PlayerStorager.addToStorageMap(pl);
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent e)
     {
-        Player pl = e.getPlayer();
-        joinInit(pl);
+        joinInit(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e)
+    {
+        PlayerStorager.removeFromStorageMap(e.getPlayer());
     }
 
     @SuppressWarnings("Deprecation")

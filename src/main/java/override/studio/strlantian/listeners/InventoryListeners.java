@@ -19,12 +19,11 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
-import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import static override.studio.strlantian.PlayerCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
-import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.checkAndModify;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMCN;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMEN;
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
@@ -48,7 +46,8 @@ public final class InventoryListeners implements Listener
     {
         Player pl = (Player) e.getPlayer();
         InventoryView inv = e.getView();
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         String title = inv.getTitle();
 
         String name = Objects.requireNonNull(inv.getItem(13)).getItemMeta().getDisplayName();
@@ -152,7 +151,8 @@ public final class InventoryListeners implements Listener
                 char letter = tempChar[2];
                 int slot = e.getSlot();
                 List<Integer> list = CHARTEMPLIST.get(pl);
-                int lang = Localisation.getLanguage(pl);
+                PlayerStorager ps = new PlayerStorager(pl);
+                int lang = ps.getLanguage();
                 switch(num)
                 {
                     case 1 ->
@@ -610,7 +610,8 @@ public final class InventoryListeners implements Listener
             case DELCONFIRMCN, DELCONFIRMEN ->             //Ask if delete page
             {
                 e.setCancelled(true);
-                int lang = Localisation.getLanguage(pl);
+                PlayerStorager ps = new PlayerStorager(pl);
+                int lang = ps.getLanguage();
                 switch(e.getSlot())
                 {
                     case 3 ->

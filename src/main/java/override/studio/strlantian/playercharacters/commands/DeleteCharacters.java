@@ -7,17 +7,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 
 import static override.studio.strlantian.PlayerCharacters.*;
 
-public final class DeleteCharacters
+public abstract class DeleteCharacters
 {
     static FileConfiguration cfg = inst.getConfig();
     private static void itIsDisabled(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN ->
@@ -37,7 +38,8 @@ public final class DeleteCharacters
     @SuppressWarnings("Deprecation")
     public static void confirmDelete(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         if(PCFactory.getEnable(pl) == PCFactory.CHARDISALED)
         {
             itIsDisabled(pl);

@@ -19,10 +19,9 @@ import static override.studio.strlantian.PlayerCharacters.CN;
 import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.enums.Characters.CHANGE;
 
-public final class PCFactory
+public abstract class PCFactory
 {
     static FileConfiguration cfg = override.studio.strlantian.PlayerCharacters.inst.getConfig(); //Config
-
     @SuppressWarnings("Deprecation")
     public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name,
                                     Enchantment ench, int level, boolean isHideEnchant,
@@ -108,8 +107,9 @@ public final class PCFactory
     }
     public static void uDidntInit(Player pl) //When someone hasn't initialised
     {
-        int language = Localisation.getLanguage(pl);
-        switch(language)
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
+        switch(lang)
         {
             case CN->
             {
@@ -125,6 +125,8 @@ public final class PCFactory
             }
         }
     }
+
+    //About players
     public static List<String> getCharacterList(Player pl, List<Integer> tempList) //Get Characters
     {
         List<String> list = new ArrayList<>(Collections.emptyList());
@@ -154,7 +156,8 @@ public final class PCFactory
     public static void setEnable(Player pl, int whatNow)
     {
         cfg.set(getPathList(pl).get(Characters.ENABLED.ordinal()), whatNow);
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         if (whatNow == CHARENABLED)
         {
             switch (lang)

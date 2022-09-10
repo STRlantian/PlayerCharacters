@@ -7,8 +7,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import override.studio.strlantian.commands.CharacterCommand;
 import override.studio.strlantian.listeners.InventoryListeners;
 import override.studio.strlantian.listeners.JoinInit;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Objects;
 
 public final class PlayerCharacters extends JavaPlugin
@@ -27,7 +28,7 @@ public final class PlayerCharacters extends JavaPlugin
         Objects.requireNonNull(Bukkit.getPluginCommand("character")).setExecutor(new CharacterCommand());
 
         Objects.requireNonNull(Bukkit.getPluginCommand("character")).setTabCompleter(new CharacterCommand());
-        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setAliases(List.of("cha"));
+        Objects.requireNonNull(Bukkit.getPluginCommand("character")).setAliases(Collections.singletonList("cha"));
 
         Bukkit.getPluginManager().registerEvents(new JoinInit(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryListeners(), this);
@@ -42,6 +43,7 @@ public final class PlayerCharacters extends JavaPlugin
     public void onDisable()
     {
         saveConfig();
+        PlayerStorager.clearStorager();
         System.out.println(ChatColor.RED + "Player Characters Plugin is disabled");
     }
 }

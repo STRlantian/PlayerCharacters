@@ -7,8 +7,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,7 +17,7 @@ import static override.studio.strlantian.PlayerCharacters.CN;
 import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.PCFactory.*;
 
-public final class InitialiseCharacters
+public abstract class InitialiseCharacters
 {
     public static final Map<Player, List<Integer>> CHARTEMPLIST = new HashMap<>(Collections.emptyMap());
     private static void createItemForQuestion(Inventory inv, String num, String lore)
@@ -92,7 +92,8 @@ public final class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void randCharacters(Player pl, List<Integer> list)
     { //Full-Randomly get characters
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN-> pl.sendMessage(ChatColor.YELLOW + "抽取中");
@@ -158,7 +159,8 @@ public final class InitialiseCharacters
         final ItemStack CONFIRM = new ItemStack(Material.GREEN_WOOL, 1);
         final ItemStack DECLINE = new ItemStack(Material.RED_WOOL, 1);
 
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN->
@@ -356,7 +358,8 @@ public final class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void testCharacters(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
         int queNum = rand.nextInt(2);
 
@@ -380,7 +383,8 @@ public final class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void initialiseCharacters(Player pl)
     {
-        int language = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int language = ps.getLanguage();
         switch(language)
         {
             case CN->

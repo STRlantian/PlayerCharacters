@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.Collections;
@@ -22,14 +22,15 @@ import static override.studio.strlantian.PlayerCharacters.EN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
 
-public final class ChangeCharacters
+public abstract class ChangeCharacters
 {
     public static final Map<Player, List<Integer>> TEMPCHANGECHARLIST = new HashMap<>(Collections.emptyMap());
     public static final Map<Player, Integer> POINTMAP = new HashMap<>(Collections.emptyMap());
 
     private static void alreadyMax(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN -> pl.sendMessage(ChatColor.RED + "该值已经达到极限");
@@ -39,16 +40,20 @@ public final class ChangeCharacters
 
     private static void noPoint(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN -> pl.sendMessage(ChatColor.RED + "您  没  分  了");
-            case EN -> pl.sendMessage(ChatColor.RED + "You have ran out points");
+            case EN -> pl.sendMessage(ChatColor.RED + "You have ran out of points");
         }
     }
+
+    @SuppressWarnings("Deprecation")
     public static void changeCharacters(Player pl)
     {
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN ->
@@ -79,7 +84,8 @@ public final class ChangeCharacters
     public static void checkAndModify(Player pl, ClickType click, Characters which, List<Integer> what)
     {           //HOW TO REALISE THE POINTS
                 //UNDER CONSTRUCTION
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         int og = PCFactory.getCharacterList(pl).get(which.ordinal());           //Get Original Number
         int now = what.get(which.ordinal());                                    //Get Target Number
         int point = POINTMAP.get(pl);                                        //Get Point

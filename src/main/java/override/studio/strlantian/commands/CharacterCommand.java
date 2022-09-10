@@ -10,13 +10,13 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import override.studio.strlantian.PlayerCharacters;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
+import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 
 import java.util.Collections;
@@ -28,11 +28,10 @@ import static override.studio.strlantian.playercharacters.enums.Characters.HEALT
 
 public final class CharacterCommand implements TabExecutor
 {
-    FileConfiguration cfg = PlayerCharacters.inst.getConfig();
-
     private void giveHelp(Player pl)
     {
-        int language = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -89,7 +88,8 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveCredits(Player pl)
     {
-        int language = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
         {
@@ -125,7 +125,8 @@ public final class CharacterCommand implements TabExecutor
             return true;
         }
 
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         if(Localisation.checkLang(pl))                //check if there is lang
         {
             Localisation.uDidntSetLanguage(pl);
@@ -181,7 +182,7 @@ public final class CharacterCommand implements TabExecutor
                         if(PCFactory.getEnable(pl) == PCFactory.NOINIT
                         && PCFactory.getChanged(pl) == PCFactory.NOINIT)
                         {
-
+                            InitialiseCharacters.initialiseCharacters(pl);
                         }
                     }
                     case "delete", "del" ->
@@ -228,12 +229,11 @@ public final class CharacterCommand implements TabExecutor
                     "change",
                     "delete",
                     "view",
-                    "confirm",
-                    "decline");
+                    "settings");
         }
         else
         {
-            return Collections.singletonList(null);
+            return Collections.singletonList("出错了诶");
         }
     }
 }

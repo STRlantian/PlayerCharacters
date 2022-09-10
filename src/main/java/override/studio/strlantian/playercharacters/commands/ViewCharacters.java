@@ -8,8 +8,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.PlayerStorager;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +20,7 @@ import static override.studio.strlantian.playercharacters.PCFactory.setItemToInv
 import static override.studio.strlantian.playercharacters.PCFactory.uDidntInit;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
-public final class ViewCharacters
+public abstract class ViewCharacters
 {
     public static final String VIEWCHARCN = "的性格页面";
     public static final String VIEWCHAREN = "'s Character Page";
@@ -67,7 +67,8 @@ public final class ViewCharacters
         ItemStack ene = ENERGY.repItem();
         ItemStack hea = HEALTH.repItem();
 
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN ->
@@ -175,7 +176,8 @@ public final class ViewCharacters
         ItemStack pat = PATIENCE.repItem();
         ItemStack hig = HEIGHT.repItem();
 
-        int lang = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
 
         switch(lang)
         {
@@ -349,9 +351,10 @@ public final class ViewCharacters
     }
     public static void viewCharacters(Player pl)
     {
-        int language = Localisation.getLanguage(pl);
+        PlayerStorager ps = new PlayerStorager(pl);
+        int lang = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-        Inventory inv = Objects.requireNonNull(createViewInv(pl, language));
+        Inventory inv = Objects.requireNonNull(createViewInv(pl, lang));
         setBasicalItem(pl, inv);
         setSpecialItem(pl, inv);
     }
