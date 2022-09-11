@@ -44,7 +44,7 @@ public abstract class Localisation
 
     public static boolean checkLang(Player pl) //Check if set lang
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         return lang == CN
                 || lang == EN;

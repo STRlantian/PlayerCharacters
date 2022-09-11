@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.Collections;
@@ -29,7 +29,7 @@ public abstract class ChangeCharacters
 
     private static void alreadyMax(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -40,7 +40,7 @@ public abstract class ChangeCharacters
 
     private static void noPoint(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -52,7 +52,7 @@ public abstract class ChangeCharacters
     @SuppressWarnings("Deprecation")
     public static void changeCharacters(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -84,12 +84,13 @@ public abstract class ChangeCharacters
     public static void checkAndModify(Player pl, ClickType click, Characters which, List<Integer> what)
     {           //HOW TO REALISE THE POINTS
                 //UNDER CONSTRUCTION
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
-        int og = PCFactory.getCharacterList(pl).get(which.ordinal());           //Get Original Number
+        int og = ps.getCharacterList().get(which.ordinal());           //Get Original Number
         int now = what.get(which.ordinal());                                    //Get Target Number
         int point = POINTMAP.get(pl);                                        //Get Point
         int ogMinus = Math.abs(og - now);
+        int nowMinus = 0;           //Sooooo how to??????????????????????????????????????
 
         if(click.isLeftClick())                         //If left click -> plus
         {

@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
@@ -30,6 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
+import static override.studio.strlantian.playercharacters.PCFactory.CHARNOTCHANGED;
 import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMCN;
 import static override.studio.strlantian.playercharacters.commands.DeleteCharacters.DELCONFIRMEN;
@@ -46,7 +48,7 @@ public final class InventoryListeners implements Listener
     {
         Player pl = (Player) e.getPlayer();
         InventoryView inv = e.getView();
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         String title = inv.getTitle();
 
@@ -105,6 +107,8 @@ public final class InventoryListeners implements Listener
         InventoryView invView = e.getView();
         String title = invView.getTitle();
         String plName = pl.getName();
+        PlayerStorage ps = new PlayerStorage(pl);
+        int lang = ps.getLanguage();
         if(title.equalsIgnoreCase(plName + VIEWCHARCN)
         || title.equalsIgnoreCase(plName + VIEWCHAREN))
         {                       //View Page
@@ -151,8 +155,6 @@ public final class InventoryListeners implements Listener
                 char letter = tempChar[2];
                 int slot = e.getSlot();
                 List<Integer> list = CHARTEMPLIST.get(pl);
-                PlayerStorager ps = new PlayerStorager(pl);
-                int lang = ps.getLanguage();
                 switch(num)
                 {
                     case 1 ->
@@ -580,10 +582,10 @@ public final class InventoryListeners implements Listener
                                 pl.sendMessage(ChatColor.GREEN + "The results has been saved. Have a look!");
                             }
                         }
-                        PCFactory.setCharacter(pl, list);
+                        ps.setCharacterList(list);
                         pl.closeInventory();
-                        PCFactory.setEnable(pl, PCFactory.CHARENABLED);
-                        PCFactory.setChanged(pl, PCFactory.CHARNOTCHANGED);
+                        ps.setEnable(CHARENABLED);
+                        ps.setChanged(CHARNOTCHANGED);
                         ViewCharacters.viewCharacters(pl);
                     }
                     default ->
@@ -610,8 +612,6 @@ public final class InventoryListeners implements Listener
             case DELCONFIRMCN, DELCONFIRMEN ->             //Ask if delete page
             {
                 e.setCancelled(true);
-                PlayerStorager ps = new PlayerStorager(pl);
-                int lang = ps.getLanguage();
                 switch(e.getSlot())
                 {
                     case 3 ->
@@ -656,8 +656,8 @@ public final class InventoryListeners implements Listener
             e.setCancelled(true);
             int slot = e.getSlot();
             ClickType click = e.getClick();
-            List<Integer> ogCharList = PCFactory.getCharacterList(pl);
-            List<Integer> nowCharList = PCFactory.getCharacterList(pl);
+            List<Integer> ogCharList = ps.getCharacterList();
+            List<Integer> nowCharList = ps.getCharacterList();
             int pointNow = POINTMAP.get(pl);
             int og = ogCharList.get(slot - 7);
             int now = nowCharList.get(slot - 7);

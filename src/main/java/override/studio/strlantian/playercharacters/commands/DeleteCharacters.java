@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import static override.studio.strlantian.PlayerCharacters.*;
 
@@ -17,7 +17,7 @@ public abstract class DeleteCharacters
     static FileConfiguration cfg = inst.getConfig();
     private static void itIsDisabled(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -38,13 +38,13 @@ public abstract class DeleteCharacters
     @SuppressWarnings("Deprecation")
     public static void confirmDelete(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
-        if(PCFactory.getEnable(pl) == PCFactory.CHARDISALED)
+        if(ps.getEnable() == PCFactory.CHARDISALED)
         {
             itIsDisabled(pl);
         }
-        else if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
+        else if(ps.getEnable() == PCFactory.CHARENABLED)
         {
             switch(lang)
             {
@@ -72,16 +72,17 @@ public abstract class DeleteCharacters
 
     public static void deleteCharacters(Player pl)
     {
+        PlayerStorage ps = new PlayerStorage(pl);
         String name = pl.getName().toLowerCase();
-        if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
+        if(ps.getEnable() == PCFactory.CHARENABLED)
         {
-            PCFactory.setEnable(pl, PCFactory.CHARDISALED);
+            ps.setEnable(PCFactory.CHARDISALED);
             if(cfg.contains(name))
             {
                 cfg.set(name + ".Characters", "");
             }
         }
-        else if(PCFactory.getEnable(pl) == PCFactory.CHARDISALED)
+        else if(ps.getEnable() == PCFactory.CHARDISALED)
         {
             itIsDisabled(pl);
         }

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -92,7 +92,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void randCharacters(Player pl, List<Integer> list)
     { //Full-Randomly get characters
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -140,14 +140,14 @@ public abstract class InitialiseCharacters
         list.set(8, pati);
         list.set(9, heig);
 
-        setCharacter(pl, list);
+        ps.setCharacterList(list);
         switch(lang)
         {
             case CN-> pl.sendMessage(ChatColor.GREEN + "已完成,如图是结果(不可更改)");
             case EN-> pl.sendMessage(ChatColor.GREEN + "Finished. Here's your result(Can't be changed)");
         }
-        setEnable(pl, CHARENABLED);
-        setChanged(pl, CHARNOTCHANGED);
+        ps.setEnable(CHARENABLED);
+        ps.setChanged(CHARNOTCHANGED);
         ViewCharacters.viewCharacters(pl);
     }
     public static final String ASKTITLECN = "您确定吗";
@@ -159,7 +159,7 @@ public abstract class InitialiseCharacters
         final ItemStack CONFIRM = new ItemStack(Material.GREEN_WOOL, 1);
         final ItemStack DECLINE = new ItemStack(Material.RED_WOOL, 1);
 
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -358,7 +358,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void testCharacters(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
         int queNum = rand.nextInt(2);
@@ -383,7 +383,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void initialiseCharacters(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int language = ps.getLanguage();
         switch(language)
         {

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,14 +61,14 @@ public abstract class ViewCharacters
     //我没怎么在意代码美观性所以就一个private一个public了（（（（（
     private static void setBasicalItem(Player pl, Inventory inv)
     {
-        List<Integer> list = PCFactory.getCharacterList(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
+        int lang = ps.getLanguage();
+        List<Integer> list = ps.getCharacterList();
 
         ItemStack hun = SATURATION.repItem();
         ItemStack ene = ENERGY.repItem();
         ItemStack hea = HEALTH.repItem();
 
-        PlayerStorager ps = new PlayerStorager(pl);
-        int lang = ps.getLanguage();
         switch(lang)
         {
             case CN ->
@@ -166,7 +166,9 @@ public abstract class ViewCharacters
     }
     public static void setSpecialItem(Player pl, Inventory inv)
     {
-        List<Integer> list = PCFactory.getCharacterList(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
+        int lang = ps.getLanguage();
+        List<Integer> list = ps.getCharacterList();
 
         ItemStack san = SANITY.repItem();
         ItemStack dar = DARKNESS.repItem();
@@ -175,9 +177,6 @@ public abstract class ViewCharacters
         ItemStack kin = KINDNESS.repItem();
         ItemStack pat = PATIENCE.repItem();
         ItemStack hig = HEIGHT.repItem();
-
-        PlayerStorager ps = new PlayerStorager(pl);
-        int lang = ps.getLanguage();
 
         switch(lang)
         {
@@ -351,7 +350,7 @@ public abstract class ViewCharacters
     }
     public static void viewCharacters(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Inventory inv = Objects.requireNonNull(createViewInv(pl, lang));

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
@@ -30,7 +30,7 @@ public final class CharacterCommand implements TabExecutor
 {
     private void giveHelp(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
@@ -88,7 +88,7 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveCredits(Player pl)
     {
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
@@ -124,8 +124,7 @@ public final class CharacterCommand implements TabExecutor
             commandSender.sendMessage(ChatColor.RED + "Nice try");
             return true;
         }
-
-        PlayerStorager ps = new PlayerStorager(pl);
+        PlayerStorage ps = new PlayerStorage(pl);
         int lang = ps.getLanguage();
         if(Localisation.checkLang(pl))                //check if there is lang
         {
@@ -133,9 +132,9 @@ public final class CharacterCommand implements TabExecutor
             return true;
         }
 
-        if(PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 0        //check if init
-        || PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 1
-        || PCFactory.getCharacterList(pl).get(HEALTH.ordinal()) != 2)
+        if(ps.getCharacterList().get(HEALTH.ordinal()) != 0        //check if init
+        || ps.getCharacterList().get(HEALTH.ordinal()) != 1
+        || ps.getCharacterList().get(HEALTH.ordinal()) != 2)
         {
             if(!args[0].equals("language") && !args[0].equals("lang")
             && !args[0].equals("help") && !args[0].equals("credit")
@@ -179,15 +178,15 @@ public final class CharacterCommand implements TabExecutor
                     case "view"-> ViewCharacters.viewCharacters(pl);
                     case "init", "initialise", "initialize"->
                     {
-                        if(PCFactory.getEnable(pl) == PCFactory.NOINIT
-                        && PCFactory.getChanged(pl) == PCFactory.NOINIT)
+                        if(PlayerStorage.getStorage(pl).getEnable() == PCFactory.NOINIT
+                        && PlayerStorage.getStorage(pl).getChanged() == PCFactory.NOINIT)
                         {
                             InitialiseCharacters.initialiseCharacters(pl);
                         }
                     }
                     case "delete", "del" ->
                     {
-                        if(PCFactory.getEnable(pl) == PCFactory.CHARENABLED)
+                        if(ps.getEnable() == PCFactory.CHARENABLED)
                         {
                             DeleteCharacters.confirmDelete(pl);
                         }

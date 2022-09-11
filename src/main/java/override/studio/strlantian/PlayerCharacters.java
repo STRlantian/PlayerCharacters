@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import override.studio.strlantian.commands.CharacterCommand;
 import override.studio.strlantian.listeners.InventoryListeners;
 import override.studio.strlantian.listeners.JoinInit;
-import override.studio.strlantian.playercharacters.PlayerStorager;
+import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public final class PlayerCharacters extends JavaPlugin
     public void onDisable()
     {
         saveConfig();
-        PlayerStorager.clearStorager();
+        PlayerStorage.clearStorage();
         System.out.println(ChatColor.RED + "Player Characters Plugin is disabled");
     }
 }
