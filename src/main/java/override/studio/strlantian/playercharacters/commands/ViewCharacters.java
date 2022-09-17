@@ -8,7 +8,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.List;
@@ -61,7 +60,7 @@ public abstract class ViewCharacters
     //我没怎么在意代码美观性所以就一个private一个public了（（（（（
     private static void setBasicalItem(Player pl, Inventory inv)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         List<Integer> list = ps.getCharacterList();
 
@@ -166,7 +165,7 @@ public abstract class ViewCharacters
     }
     public static void setSpecialItem(Player pl, Inventory inv)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         List<Integer> list = ps.getCharacterList();
 
@@ -268,7 +267,7 @@ public abstract class ViewCharacters
                 {
                     case 0 -> setItemToInv(inv, 10, san,
                             SANITY.repColour() + "Sanity- You are not that clear",
-                            SANITY.repColour() + "[Porobobilitic]Nausea and haste");
+                            SANITY.repColour() + "[Probabilistic]Nausea and haste");
 
                     case 1 -> setItemToInv(inv, 10, san,
                             SANITY.repColour() + "Sanity- You are clear",
@@ -291,11 +290,11 @@ public abstract class ViewCharacters
                 switch (list.get(5)) //positivity
                 {
                     case 0 -> setItemToInv(inv, 12, pos,
-                            POSITIVITY.repColour() + "Attitude- You are always positive",
+                            POSITIVITY.repColour() + "Optimism- You are always positive",
                             POSITIVITY.repColour() + "[When low health]Regeneration");
 
                     case 1 -> setItemToInv(inv, 12, pos,
-                            POSITIVITY.repColour() + "Attitude- You are a little negative",
+                            POSITIVITY.repColour() + "Optimism- You are a little negative",
                             POSITIVITY.repColour() + "[When low health]Resistance");
                 }
                 switch (list.get(6)) //braveness
@@ -350,7 +349,7 @@ public abstract class ViewCharacters
     }
     public static void viewCharacters(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Inventory inv = Objects.requireNonNull(createViewInv(pl, lang));

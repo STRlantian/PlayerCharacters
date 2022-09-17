@@ -17,7 +17,7 @@ public abstract class DeleteCharacters
     static FileConfiguration cfg = inst.getConfig();
     private static void itIsDisabled(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -38,7 +38,7 @@ public abstract class DeleteCharacters
     @SuppressWarnings("Deprecation")
     public static void confirmDelete(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         if(ps.getEnable() == PCFactory.CHARDISALED)
         {
@@ -72,11 +72,12 @@ public abstract class DeleteCharacters
 
     public static void deleteCharacters(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         String name = pl.getName().toLowerCase();
         if(ps.getEnable() == PCFactory.CHARENABLED)
         {
             ps.setEnable(PCFactory.CHARDISALED);
+            PlayerStorage.removeFromStorageMap(pl);
             if(cfg.contains(name))
             {
                 cfg.set(name + ".Characters", "");

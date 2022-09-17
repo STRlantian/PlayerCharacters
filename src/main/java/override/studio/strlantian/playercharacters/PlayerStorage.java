@@ -3,7 +3,6 @@ package override.studio.strlantian.playercharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import override.studio.strlantian.PlayerCharacters;
 import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.*;
@@ -84,7 +83,7 @@ public final class PlayerStorage
     public void setEnable(int whatNow)
     {
         CFG.set(PCFactory.getPathList(PL).get(Characters.ENABLED.ordinal()), whatNow);
-        PlayerStorage ps = new PlayerStorage(PL);
+        PlayerStorage ps = PlayerStorage.getStorage(PL);
         int lang = ps.getLanguage();
         if (whatNow == CHARENABLED)
         {
@@ -96,6 +95,7 @@ public final class PlayerStorage
         }
         else if(whatNow == CHARDISALED)
         {
+            removeFromStorageMap(PL);
             switch (lang)
             {
                 case CN -> PL.sendMessage(ChatColor.RED + "你的性格已经删除");

@@ -30,7 +30,7 @@ public final class CharacterCommand implements TabExecutor
 {
     private void giveHelp(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
@@ -88,7 +88,7 @@ public final class CharacterCommand implements TabExecutor
 
     private void giveCredits(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int language = ps.getLanguage();
         pl.playSound(pl, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
         switch(language)
@@ -124,7 +124,7 @@ public final class CharacterCommand implements TabExecutor
             commandSender.sendMessage(ChatColor.RED + "Nice try");
             return true;
         }
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         if(Localisation.checkLang(pl))                //check if there is lang
         {

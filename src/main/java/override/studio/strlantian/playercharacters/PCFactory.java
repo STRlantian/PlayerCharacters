@@ -110,7 +110,7 @@ public abstract class PCFactory
     }
     public static void uDidntInit(Player pl) //When someone hasn't initialised
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {

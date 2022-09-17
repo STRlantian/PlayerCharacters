@@ -15,6 +15,7 @@ import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
 import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
 
 public final class JoinInit implements Listener
@@ -25,31 +26,35 @@ public final class JoinInit implements Listener
     {
         if(!Localisation.checkLang(pl))
         {
-            String name = pl.getName().toLowerCase();
+            if(PlayerStorage.getStorage(pl).getEnable() == CHARENABLED
+            || PlayerStorage.getStorage(pl).getEnable() == NOINIT)
+            {
+                String name = pl.getName().toLowerCase();
 
-            pl.sendMessage(ChatColor.GRAY + "[玩家性格]本服务器开启了 玩家性格 插件, 输入 /character 进行了解");
-            pl.sendMessage(ChatColor.GRAY + "[玩家性格]建议不要改名字因为插件要用 改了您数据就没");
-            pl.sendMessage(ChatColor.GRAY + "[PlayerCharacters]This server enables PlayerCharacter Plugin. Learn more by /character");
-            pl.sendMessage(ChatColor.GRAY + "[PlayerCharacters]Players are recommended not to change names bcs the plugin uses them");
-            String cha = name + ".Characters";
-            cfg.set(name, "Language");
-            cfg.set(name, "Characters");
-            cfg.set(name + ".Changed", NOINIT);
-            cfg.set(name + ".isEnabled", NOINIT);
+                pl.sendMessage(ChatColor.GRAY + "[玩家性格]本服务器开启了 玩家性格 插件, 输入 /character 进行了解");
+                pl.sendMessage(ChatColor.GRAY + "[玩家性格]建议不要改名字因为插件要用 改了您数据就没");
+                pl.sendMessage(ChatColor.GRAY + "[PlayerCharacters]This server enables PlayerCharacter Plugin. Learn more by /character");
+                pl.sendMessage(ChatColor.GRAY + "[PlayerCharacters]Players are recommended not to change names bcs the plugin uses them");
+                String cha = name + ".Characters";
+                cfg.set(name, "Language");
+                cfg.set(name, "Characters");
+                cfg.set(name + ".Changed", NOINIT);
+                cfg.set(name + ".isEnabled", NOINIT);
 
-            cfg.set(cha, "Saturation");
-            cfg.set(cha, "Energy");
-            cfg.set(cha, "Health");
-            cfg.set(cha, "Sanity");
-            cfg.set(cha, "Darkness");
-            cfg.set(cha, "Positivity");
-            cfg.set(cha, "Braveness");
-            cfg.set(cha, "Kindness");
-            cfg.set(cha, "Patience");
-            cfg.set(cha, "Height");
-            pl.openInventory(Localisation.getLanguageInv());
+                cfg.set(cha, "Saturation");
+                cfg.set(cha, "Energy");
+                cfg.set(cha, "Health");
+                cfg.set(cha, "Sanity");
+                cfg.set(cha, "Darkness");
+                cfg.set(cha, "Positivity");
+                cfg.set(cha, "Braveness");
+                cfg.set(cha, "Kindness");
+                cfg.set(cha, "Patience");
+                cfg.set(cha, "Height");
+                pl.openInventory(Localisation.getLanguageInv());
+                PlayerStorage.addToStorageMap(pl);
+            }
         }
-        PlayerStorage.addToStorageMap(pl);
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent e)

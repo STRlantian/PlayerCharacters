@@ -29,7 +29,7 @@ public abstract class ChangeCharacters
 
     private static void alreadyMax(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -40,7 +40,7 @@ public abstract class ChangeCharacters
 
     private static void noPoint(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -52,7 +52,7 @@ public abstract class ChangeCharacters
     @SuppressWarnings("Deprecation")
     public static void changeCharacters(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -84,7 +84,7 @@ public abstract class ChangeCharacters
     public static void checkAndModify(Player pl, ClickType click, Characters which, List<Integer> what)
     {           //HOW TO REALISE THE POINTS
                 //UNDER CONSTRUCTION
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         int og = ps.getCharacterList().get(which.ordinal());           //Get Original Number
         int now = what.get(which.ordinal());                                    //Get Target Number

@@ -92,7 +92,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void randCharacters(Player pl, List<Integer> list)
     { //Full-Randomly get characters
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -159,7 +159,7 @@ public abstract class InitialiseCharacters
         final ItemStack CONFIRM = new ItemStack(Material.GREEN_WOOL, 1);
         final ItemStack DECLINE = new ItemStack(Material.RED_WOOL, 1);
 
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         switch(lang)
         {
@@ -358,7 +358,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void testCharacters(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
         int queNum = rand.nextInt(2);
@@ -383,7 +383,7 @@ public abstract class InitialiseCharacters
     @SuppressWarnings("Deprecation")
     public static void initialiseCharacters(Player pl)
     {
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int language = ps.getLanguage();
         switch(language)
         {

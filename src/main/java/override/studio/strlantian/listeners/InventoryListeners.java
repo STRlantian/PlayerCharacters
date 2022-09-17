@@ -48,7 +48,7 @@ public final class InventoryListeners implements Listener
     {
         Player pl = (Player) e.getPlayer();
         InventoryView inv = e.getView();
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         String title = inv.getTitle();
 
@@ -107,7 +107,7 @@ public final class InventoryListeners implements Listener
         InventoryView invView = e.getView();
         String title = invView.getTitle();
         String plName = pl.getName();
-        PlayerStorage ps = new PlayerStorage(pl);
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
         if(title.equalsIgnoreCase(plName + VIEWCHARCN)
         || title.equalsIgnoreCase(plName + VIEWCHAREN))
