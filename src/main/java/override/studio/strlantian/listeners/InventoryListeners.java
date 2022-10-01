@@ -19,6 +19,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 import override.studio.strlantian.playercharacters.commands.ChangeCharacters;
@@ -29,7 +30,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.PlayerCharacters.inst;
 import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
 import static override.studio.strlantian.playercharacters.PCFactory.CHARNOTCHANGED;
 import static override.studio.strlantian.playercharacters.commands.ChangeCharacters.POINTMAP;
@@ -64,8 +65,8 @@ public final class InventoryListeners implements Listener
                 pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 switch(lang)
                 {
-                    case CN-> pl.sendMessage(ChatColor.RED + "你取消了测试");
-                    case EN-> pl.sendMessage(ChatColor.RED + "You cancelled the test");
+                    case Localisation.CN-> pl.sendMessage(ChatColor.RED + "你取消了测试");
+                    case Localisation.EN-> pl.sendMessage(ChatColor.RED + "You cancelled the test");
                 }
                 
             }
@@ -76,8 +77,8 @@ public final class InventoryListeners implements Listener
                     pl.playSound(pl, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                     switch(lang)
                     {
-                        case CN-> pl.sendMessage(ChatColor.RED + "你取消了测试,结果将不被保存");
-                        case EN-> pl.sendMessage(ChatColor.RED + "You cancelled the test so your characters won't be saved");
+                        case Localisation.CN-> pl.sendMessage(ChatColor.RED + "你取消了测试,结果将不被保存");
+                        case Localisation.EN-> pl.sendMessage(ChatColor.RED + "You cancelled the test so your characters won't be saved");
                     }
                     if(num == 4
                             && letter == 'a')
@@ -87,8 +88,8 @@ public final class InventoryListeners implements Listener
                         CHARTEMPLIST.remove(pl);
                         switch(lang)
                         {
-                            case CN -> pl.sendMessage(ChatColor.RED + "你的计时也是");
-                            case EN -> pl.sendMessage(ChatColor.RED + "Your timing, too");
+                            case Localisation.CN -> pl.sendMessage(ChatColor.RED + "你的计时也是");
+                            case Localisation.EN -> pl.sendMessage(ChatColor.RED + "Your timing, too");
                         }
                     }
                 }
@@ -364,8 +365,8 @@ public final class InventoryListeners implements Listener
                                             {
                                                 switch(lang)
                                                 {
-                                                    case CN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
-                                                    case EN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
+                                                    case Localisation.CN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
+                                                    case Localisation.EN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
                                                 }
                                                 new BukkitRunnable()
                                                 {
@@ -393,8 +394,8 @@ public final class InventoryListeners implements Listener
                                                             {
                                                                 switch(lang)
                                                                 {
-                                                                    case CN -> PCFactory.createItemForOption(invQues, 0, "我愿意");
-                                                                    case EN -> PCFactory.createItemForOption(invQues, 0, "Yes");
+                                                                    case Localisation.CN -> PCFactory.createItemForOption(invQues, 0, "我愿意");
+                                                                    case Localisation.EN -> PCFactory.createItemForOption(invQues, 0, "Yes");
                                                                 }
                                                                 ISWAITED.put(pl, true);
                                                                 NICETRY.remove(pl);
@@ -426,8 +427,8 @@ public final class InventoryListeners implements Listener
                                                 {}
                                                 switch(lang)
                                                 {
-                                                    case CN -> pl.sendMessage(ChatColor.RED + "都说了让你等你不听");
-                                                    case EN -> pl.sendMessage(ChatColor.RED + "I said wait but u wasn't listening");
+                                                    case Localisation.CN -> pl.sendMessage(ChatColor.RED + "都说了让你等你不听");
+                                                    case Localisation.EN -> pl.sendMessage(ChatColor.RED + "I said wait but u wasn't listening");
                                                 }
                                                 pl.closeInventory();
                                             }
@@ -436,8 +437,8 @@ public final class InventoryListeners implements Listener
                                                 NICETRY.put(pl, haveATry);
                                                 switch(lang)
                                                 {
-                                                    case CN -> pl.sendMessage(ChatColor.RED + "请耐心等待");
-                                                    case EN -> pl.sendMessage(ChatColor.RED + "Please wait");
+                                                    case Localisation.CN -> pl.sendMessage(ChatColor.RED + "请耐心等待");
+                                                    case Localisation.EN -> pl.sendMessage(ChatColor.RED + "Please wait");
                                                 }
                                             }
                                         }
@@ -488,7 +489,7 @@ public final class InventoryListeners implements Listener
                                 {
                                     case 29 ->
                                     {
-                                        list.set(HEIGHT.ordinal(), 1);
+                                        list.set(COLDNESS.ordinal(), 1);
                                         int bra = list.get(BRAVENESS.ordinal());
                                         int rand3 = rand.nextInt(5);
                                         if(bra > 0
@@ -500,7 +501,7 @@ public final class InventoryListeners implements Listener
                                     }
                                     case 33 ->
                                     {
-                                        list.set(HEIGHT.ordinal(), 0);
+                                        list.set(COLDNESS.ordinal(), 0);
                                         int bra = list.get(BRAVENESS.ordinal());
                                         int rand4 = rand.nextInt(5);
                                         if(bra < 1
@@ -524,11 +525,11 @@ public final class InventoryListeners implements Listener
                                         if(rand5 == 0
                                         || rand5 == 1)
                                         {
-                                            list.set(HEIGHT.ordinal(), 1);
+                                            list.set(COLDNESS.ordinal(), 1);
                                         }
                                         else
                                         {
-                                            list.set(HEIGHT.ordinal(), 0);
+                                            list.set(COLDNESS.ordinal(), 0);
                                         }
                                         if(pat > 0)
                                         {
@@ -549,7 +550,7 @@ public final class InventoryListeners implements Listener
                                         {
                                             pat++;
                                         }
-                                        list.set(HEIGHT.ordinal(), 1);
+                                        list.set(COLDNESS.ordinal(), 1);
                                         list.set(BRAVENESS.ordinal(), bra);
                                         list.set(PATIENCE.ordinal(), pat);
                                     }
@@ -559,11 +560,11 @@ public final class InventoryListeners implements Listener
                                         int rand6 = rand.nextInt(2);
                                         if(rand6 == 0)
                                         {
-                                            list.set(HEIGHT.ordinal(), 0);
+                                            list.set(COLDNESS.ordinal(), 0);
                                         }
                                         else
                                         {
-                                            list.set(HEIGHT.ordinal(), 1);
+                                            list.set(COLDNESS.ordinal(), 1);
                                         }
                                     }
                                 }
@@ -571,12 +572,12 @@ public final class InventoryListeners implements Listener
                         }
                         switch(lang)
                         {
-                            case CN ->
+                            case Localisation.CN ->
                             {
                                 pl.sendMessage(ChatColor.GREEN + "好,测试完成");
                                 pl.sendMessage(ChatColor.GREEN + "结果已经保存,来看看吧");
                             }
-                            case EN ->
+                            case Localisation.EN ->
                             {
                                 pl.sendMessage(ChatColor.GREEN + "Well done, the test is over");
                                 pl.sendMessage(ChatColor.GREEN + "The results has been saved. Have a look!");
@@ -593,13 +594,13 @@ public final class InventoryListeners implements Listener
                         pl.closeInventory();
                         switch(lang)
                         {
-                            case CN ->
+                            case Localisation.CN ->
                             {
                                 pl.sendMessage(ChatColor.RED + "要么是你改了");
                                 pl.sendMessage(ChatColor.RED + "要么是插件坏了");
                                 pl.sendMessage(ChatColor.RED + "你看着办吧 =Δ=");
                             }
-                            case EN ->
+                            case Localisation.EN ->
                             {
                                 pl.sendMessage(ChatColor.RED + "There must be something wrong");
                                 pl.sendMessage(ChatColor.RED + "Either the plugin or yourself");
@@ -619,21 +620,21 @@ public final class InventoryListeners implements Listener
                         pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                         switch(lang)                //I HATE DEPRECATION
                         {
-                            case CN ->
+                            case Localisation.CN ->
                             {
                                 pl.sendMessage(ChatColor.YELLOW + "你真的确定吗,请再选择一次,因为删除后无法恢复");
                                 BaseComponent sure = new TextComponent(ChatColor.GREEN + "我真的确认");
                                 sure.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("嗯嗯嗯删了吧")));
                                 sure.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character delete and im very sure about this"));
-                                pl.sendMessage(sure);
+                                pl.spigot().sendMessage(sure);
                             }
-                            case EN ->
+                            case Localisation.EN ->
                             {
                                 pl.sendMessage(ChatColor.YELLOW + "Are you really sure? Please select again bcs you can't recover them");
                                 BaseComponent sure = new TextComponent(ChatColor.GREEN + "Yes");
                                 sure.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Delete please")));
                                 sure.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character delete and im very sure about this"));
-                                pl.sendMessage(sure);
+                                pl.spigot().sendMessage(sure);
                             }
                         }
                     }
@@ -643,8 +644,8 @@ public final class InventoryListeners implements Listener
                         pl.closeInventory();
                         switch(lang)
                         {
-                            case CN -> pl.sendMessage(ChatColor.RED + "你取消了删除");
-                            case EN -> pl.sendMessage(ChatColor.RED + "You refused to delete");
+                            case Localisation.CN -> pl.sendMessage(ChatColor.RED + "你取消了删除");
+                            case Localisation.EN -> pl.sendMessage(ChatColor.RED + "You refused to delete");
                         }
                     }
                 }

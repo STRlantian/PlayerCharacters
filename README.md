@@ -3,8 +3,6 @@ This is my first individual Minecraft plugin.
 It makes players in Minecraft have their own characters
 And get some buff and debuff from them.
 This idea was came up with by myself.
-~~(It's wired that I came up with this idea after watching animation
-"Weslie Goat and Wolffy")~~
 
 # Credits
 *STRlantian* - MainDev
@@ -13,7 +11,7 @@ This idea was came up with by myself.
 
 # Warning
 1. It's better to use this plugin on paper or paper-based servers
-2. Spigot is also OK but not recommended bcs I haven't tested n Spigot and compiled the plugin use Paper's maven
+2. Spigot is also OK but not recommended bcs I haven't tested on Spigot
 3. You will not be able to change characters after changing them for 1 time
 4. Please enable the plugin before any player joins the server
 5. Please do not edit the config.yml file except you know what are you doing
@@ -30,7 +28,6 @@ Have fun.
 这个插件会提供每个玩家性格选项
 以此来收到不同的buff和debuff
 这个想法是我自己原创的,去过mcbbs搜都没找到相似的
-~~(离谱的是我是看了喜羊羊与灰太狼后想到的 离谱)~~
 
 # 制作人员
 *STRlantian* - 程序

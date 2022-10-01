@@ -7,7 +7,7 @@ import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.*;
 
-import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.PlayerCharacters.inst;
 import static override.studio.strlantian.playercharacters.PCFactory.CHARDISALED;
 import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
 
@@ -40,6 +40,10 @@ public final class PlayerStorage
     {
         return charList;
     }
+    public int getCharacter(Characters which)
+    {
+        return charList.get(which.ordinal());
+    }
     public void setCharacterList(Characters what, int value)
     {
         charList.set(what.ordinal(), value);
@@ -54,7 +58,7 @@ public final class PlayerStorage
             case BRAVENESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.BRAVENESS.ordinal()), value);
             case KINDNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.KINDNESS.ordinal()), value);
             case PATIENCE -> CFG.set(PCFactory.getPathList(PL).get(Characters.PATIENCE.ordinal()), value);
-            case HEIGHT -> CFG.set(PCFactory.getPathList(PL).get(Characters.HEIGHT.ordinal()), value);
+            case COLDNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.COLDNESS.ordinal()), value);
         }
     }
     public void setCharacterList(List<Integer> list)
@@ -89,8 +93,8 @@ public final class PlayerStorage
         {
             switch (lang)
             {
-                case CN -> PL.sendMessage(ChatColor.GREEN + "你的性格已启用");
-                case EN -> PL.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
+                case Localisation.CN -> PL.sendMessage(ChatColor.GREEN + "你的性格已启用");
+                case Localisation.EN -> PL.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
             }
         }
         else if(whatNow == CHARDISALED)
@@ -98,8 +102,8 @@ public final class PlayerStorage
             removeFromStorageMap(PL);
             switch (lang)
             {
-                case CN -> PL.sendMessage(ChatColor.RED + "你的性格已经删除");
-                case EN -> PL.sendMessage(ChatColor.RED + "Your characters has been deleted");
+                case Localisation.CN -> PL.sendMessage(ChatColor.RED + "你的性格已经删除");
+                case Localisation.EN -> PL.sendMessage(ChatColor.RED + "Your characters has been deleted");
             }
         }
     }
@@ -124,7 +128,7 @@ public final class PlayerStorage
         enable = CFG.getInt(PCFactory.getPathList(PL).get(Characters.ENABLED.ordinal()));
         changed = CFG.getInt(PCFactory.getPathList(PL).get(Characters.CHANGE.ordinal()));
     }
-    public PlayerStorage(Player pl)
+    private PlayerStorage(Player pl)
     {
         PL = pl;
         refresh();

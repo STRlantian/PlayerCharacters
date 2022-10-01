@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
 
@@ -86,61 +86,79 @@ public abstract class ChangeCharacters
                 //UNDER CONSTRUCTION
         PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
-        int og = ps.getCharacterList().get(which.ordinal());           //Get Original Number
-        int now = what.get(which.ordinal());                                    //Get Target Number
-        int point = POINTMAP.get(pl);                                        //Get Point
-        int ogMinus = Math.abs(og - now);
+        /*
+               玩家具有一定的分数可以进行分配
+               然后玩家可以对于某个属性进行加或者减
+               左键加右键减
+               如果分数执行后小于0那么不执行
+               如果属性执行后超出满值或者执行后小于0那么不执行
+               但是还需要做个判定就是
+               如果它还原了它的属性那么要把分数还回去
+               比如
+               一个属性原本分数是1
+               然后现在有人加到2了
+               这时候理应分数减1
+               但是他发现他搞错了
+               现在要再给自己的分数减回去
+               就是给这个属性分数减1
+               那么这时候分数应该加1
+         */
+        int og = ps.getCharacter(which);  //获取原本属性列表中对应值
+        int now = what.get(which.ordinal());                    //获取现在对应属性的值
+        int point = POINTMAP.get(pl);                           //获取此时玩家可分配分数
+        int ogMinus = Math.abs(og - now);                       //获取原本属性和现在属性的差值绝对值
         int nowMinus = 0;           //Sooooo how to??????????????????????????????????????
-
-        if(click.isLeftClick())                         //If left click -> plus
+        int ogsumup = 0;
+        for (int i : ps.getCharacterList())
         {
-            if(now < which.maxValue())                  //If now < max value of the cha
+            ogsumup += i;
+        }
+        int sumup = 0;
+        for (int i : what)
+        {
+            sumup += i;
+        }
+        if(ogsumup == 0)
+        {
+            PCFactory.uDidntInit(pl);
+        }
+        else if(sumup == 0)
+        {
+            switch(PlayerStorage.getStorage(pl).getLanguage())
             {
-                int temp = Math.abs(og - now - 1);      //If
-
-                now++;
-            }
-            else
-            {
-                alreadyMax(pl);
+                case CN -> pl.sendMessage(ChatColor.RED + "出错了怎么办啊啊啊啊啊啊");
+                case EN -> pl.sendMessage(ChatColor.RED + "Something went wrong...");
             }
         }
-        else if(click.isRightClick())       //If right click -> minus
+        else
         {
-            if(now > 0)                     //If now > 0
+            if(click.isLeftClick())                         //If left click -> plus
             {
-                now--;
-            }
-            else
-            {
-                alreadyMax(pl);
-            }
-        }
-
-        if(ogMinus > nowMinus)
-        {
-            point++;
-            switch(lang)
-            {
-                case CN -> pl.sendMessage(ChatColor.GREEN + "成功将 " + which.charName(CN)
-                        + " 性格从最开始的" + og + "更改为" + now + ",现在还剩下" + point + "分");
-                case EN -> pl.sendMessage(ChatColor.GREEN + "Changed " + which.charName(EN)
-                        + "from original" + og + "to" + now + "successfully, now you have" + point + "points to use");
-            }
-        }
-        else if(ogMinus < nowMinus)
-        {
-            if(point <= 0)
-            {
-                noPoint(pl);
-                if(click.isLeftClick())
+                if(now < which.maxValue())                  //If now < max value of the cha
                 {
 
+                    now++;
+                }
+                else
+                {
+                    alreadyMax(pl);
                 }
             }
-            else
+            else if(click.isRightClick())       //If right click -> minus
             {
-                point--;
+                if(now > 0)                     //If now > 0
+                {
+                    now--;
+                }
+                else
+                {
+                    alreadyMax(pl);
+                }
+            }
+
+            if(ogMinus > nowMinus)
+            {
+                point++;
                 switch(lang)
                 {
                     case CN -> pl.sendMessage(ChatColor.GREEN + "成功将 " + which.charName(CN)
@@ -149,9 +167,31 @@ public abstract class ChangeCharacters
                             + "from original" + og + "to" + now + "successfully, now you have" + point + "points to use");
                 }
             }
-        }
+            else if(ogMinus < nowMinus)
+            {
+                if(point <= 0)
+                {
+                    noPoint(pl);
+                    if(click.isLeftClick())
+                    {
 
-        POINTMAP.put(pl, point);
-        what.set(which.ordinal(), now);
+                    }
+                }
+                else
+                {
+                    point--;
+                    switch(lang)
+                    {
+                        case CN -> pl.sendMessage(ChatColor.GREEN + "成功将 " + which.charName(CN)
+                                + " 性格从最开始的" + og + "更改为" + now + ",现在还剩下" + point + "分");
+                        case EN -> pl.sendMessage(ChatColor.GREEN + "Changed " + which.charName(EN)
+                                + "from original" + og + "to" + now + "successfully, now you have" + point + "points to use");
+                    }
+                }
+            }
+
+            POINTMAP.put(pl, point);
+            what.set(which.ordinal(), now);
+        }
     }
 }

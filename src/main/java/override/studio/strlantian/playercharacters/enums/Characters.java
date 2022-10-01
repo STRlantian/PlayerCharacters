@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
 
 public enum Characters
 {
@@ -18,7 +18,7 @@ public enum Characters
     BRAVENESS(new ItemStack(Material.WOODEN_SWORD), ChatColor.RED, 1, "勇气", "Courage"),
     KINDNESS(new ItemStack(Material.EGG), ChatColor.BLUE, 2, "善良", "Kindness"),
     PATIENCE(new ItemStack(Material.GOLDEN_BOOTS), ChatColor.LIGHT_PURPLE, 1, "耐心", "Patience"),
-    HEIGHT(new ItemStack(Material.FEATHER), ChatColor.WHITE, 1, "恐高", "Heightfear"),
+    COLDNESS(new ItemStack(Material.SNOWBALL), ChatColor.WHITE, 1, "抗寒", "Anti-Coldness"),
     LANGUAGE(),
     CHANGE(),
     ENABLED();

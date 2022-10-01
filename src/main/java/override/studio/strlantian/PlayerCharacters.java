@@ -5,8 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import override.studio.strlantian.commands.CharacterCommand;
+import override.studio.strlantian.listeners.Init;
 import override.studio.strlantian.listeners.InventoryListeners;
-import override.studio.strlantian.listeners.JoinInit;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.Collections;
@@ -16,8 +16,6 @@ public final class PlayerCharacters extends JavaPlugin
 {
     public static JavaPlugin inst;
 
-    public static final int CN = 0;
-    public static final int EN = 1;
     @Override
     public void onEnable()
     {
@@ -30,12 +28,12 @@ public final class PlayerCharacters extends JavaPlugin
         Objects.requireNonNull(Bukkit.getPluginCommand("character")).setTabCompleter(new CharacterCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("character")).setAliases(Collections.singletonList("cha"));
 
-        Bukkit.getPluginManager().registerEvents(new JoinInit(), this);
+        Bukkit.getPluginManager().registerEvents(new Init(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryListeners(), this);
 
         for(Player player : Bukkit.getOnlinePlayers())
         {
-            JoinInit.joinInit(player);
+            Init.joinInit(player);
         }
     }
 

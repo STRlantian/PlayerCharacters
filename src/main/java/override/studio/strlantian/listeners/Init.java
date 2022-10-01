@@ -14,20 +14,25 @@ import org.bukkit.inventory.InventoryView;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
-import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.PlayerCharacters.inst;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
 import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
 import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
 
-public final class JoinInit implements Listener
+public final class Init implements Listener
 {
     static FileConfiguration cfg = inst.getConfig();
 
     public static void joinInit(Player pl)
     {
+        if(PlayerStorage.getStorage(pl).getEnable() == CHARENABLED)
+        {
+            PlayerStorage.addToStorageMap(pl);
+        }
         if(!Localisation.checkLang(pl))
         {
-            if(PlayerStorage.getStorage(pl).getEnable() == CHARENABLED
-            || PlayerStorage.getStorage(pl).getEnable() == NOINIT)
+            if(PlayerStorage.getStorage(pl).getEnable() == NOINIT)
             {
                 String name = pl.getName().toLowerCase();
 
@@ -52,7 +57,6 @@ public final class JoinInit implements Listener
                 cfg.set(cha, "Patience");
                 cfg.set(cha, "Height");
                 pl.openInventory(Localisation.getLanguageInv());
-                PlayerStorage.addToStorageMap(pl);
             }
         }
     }
@@ -89,24 +93,24 @@ public final class JoinInit implements Listener
         Player pl = (Player) e.getWhoClicked();
         InventoryView inv = pl.getOpenInventory();
         String title = inv.getTitle();
+        PlayerStorage ps = PlayerStorage.getStorage(pl);
 
         if (Localisation.LANGTITLE.equals(title))
         {
             e.setCancelled(true);
             int slot = e.getSlot();
-            String name = pl.getName().toLowerCase();
             switch (slot)
             {
                 case 3 ->
                 {
-                    cfg.set(name + ".Language", CN);
+                    ps.setLanguage(CN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.RED + "已更改语言到: 简体中文");
                     pl.closeInventory();
                 }
                 case 5 ->
                 {
-                    cfg.set(name + ".Language", EN);
+                    ps.setLanguage(EN);
                     pl.playSound(pl, Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 1);
                     pl.sendMessage(ChatColor.BLUE + "Language has been set to: English");
                     pl.closeInventory();

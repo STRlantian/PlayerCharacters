@@ -13,10 +13,9 @@ import override.studio.strlantian.playercharacters.PlayerStorage;
 import java.util.List;
 import java.util.Objects;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
-import static override.studio.strlantian.playercharacters.PCFactory.setItemToInv;
-import static override.studio.strlantian.playercharacters.PCFactory.uDidntInit;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
+import static override.studio.strlantian.playercharacters.PCFactory.*;
 import static override.studio.strlantian.playercharacters.enums.Characters.*;
 
 public abstract class ViewCharacters
@@ -175,7 +174,7 @@ public abstract class ViewCharacters
         ItemStack bra = BRAVENESS.repItem();
         ItemStack kin = KINDNESS.repItem();
         ItemStack pat = PATIENCE.repItem();
-        ItemStack hig = HEIGHT.repItem();
+        ItemStack hig = COLDNESS.repItem();
 
         switch(lang)
         {
@@ -183,7 +182,7 @@ public abstract class ViewCharacters
             {
                 switch (list.get(3)) //sanity
                 {
-                    case 0 -> setItemToInv(inv, 10, san,
+                    case SANITY_LOW -> setItemToInv(inv, 10, san,
                             SANITY.repColour() + "理智- 你有时不清醒",
                             SANITY.repColour() + "概率性反胃和急迫效果");
 
@@ -252,11 +251,11 @@ public abstract class ViewCharacters
                 switch (list.get(9))
                 {
                     case 0 -> setItemToInv(inv, 16, hig,
-                            HEIGHT.repColour() + "恐高- 你恐高",
-                            HEIGHT.repColour() + "高处反胃和速度效果");
+                            COLDNESS.repColour() + "抗寒- 你怕冷",
+                            COLDNESS.repColour() + "太冷的时候虚弱和速度效果");
 
                     case 1 -> setItemToInv(inv, 16, hig,
-                            HEIGHT.repColour() + "恐高- 你不恐高",
+                            COLDNESS.repColour() + "抗寒- 你不怕冷",
                             ChatColor.GRAY + "不受影响");
                 }
             }
@@ -336,11 +335,11 @@ public abstract class ViewCharacters
                 switch (list.get(9))
                 {
                     case 0 -> setItemToInv(inv, 16, hig,
-                            HEIGHT.repColour() + "Height- You are height-sick",
-                            HEIGHT.repColour() + "[At high places]Nausea and swiftness");
+                            COLDNESS.repColour() + "Height- You are height-sick",
+                            COLDNESS.repColour() + "[At high places]Nausea and swiftness");
 
                     case 1 -> setItemToInv(inv, 16, hig,
-                            HEIGHT.repColour() + "Height- You are not afraid of it",
+                            COLDNESS.repColour() + "Height- You are not afraid of it",
                             ChatColor.GRAY + "No effects");
                 }
             }

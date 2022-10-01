@@ -2,7 +2,6 @@ package override.studio.strlantian.playercharacters;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -13,24 +12,43 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
 
 public abstract class PCFactory
 {
-    private static final FileConfiguration CFG = override.studio.strlantian.PlayerCharacters.inst.getConfig(); //Config
     public static final int CHARNOTCHANGED = 0;
     public static final int CHARCHANGED = 1;
     public static final int CHARDISALED = 0;
     public static final int CHARENABLED = 1;
     public static final int NOINIT = 2;
+
+    public static final int SANITY_LOW = 0;
+    public static final int DARKNESS_YES = 0;
+    public static final int POSITIVITY_YES = 0;
+    public static final int BRAVENESS_YES = 0;
+    public static final int KINDNESS_NO = 0;
+    public static final int PATIENCE_YES = 0;
+    public static final int COLDNESS_FEAR = 0;
+
+    public static final int SANITY_NORMAL = 1;
+    public static final int DARKNESS_NO = 1;
+    public static final int POSITIVITY_NO = 1;
+    public static final int BRAVENESS_NO = 1;
+    public static final int KINDNESS_NORMAL = 1;
+    public static final int PATIENCE_NO = 1;
+    public static final int COLDNESS_NO = 1;
+
+    public static final int SANITY_HIGH = 2;
+    public static final int KINDNESS_YES = 2;
     @SuppressWarnings("Deprecation")
     public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name,
                                     Enchantment ench, int level, boolean isHideEnchant,
                                     String ... lore)
     {
-        ItemMeta im = i.getItemMeta();
+        ItemMeta im = Objects.requireNonNull(i.getItemMeta());
         im.setDisplayName(name);
         im.setLore(List.of(lore));
         im.addEnchant(ench, level, true);
@@ -44,7 +62,7 @@ public abstract class PCFactory
     @SuppressWarnings("Deprecation")
     public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name, String ... lore)
     {
-        ItemMeta im = i.getItemMeta();
+        ItemMeta im = Objects.requireNonNull(i.getItemMeta());
         im.setDisplayName(name);
         im.setLore(List.of(lore));
         i.setItemMeta(im);
@@ -53,7 +71,7 @@ public abstract class PCFactory
     @SuppressWarnings("Deprecation")
     public static void setItemToInv(Inventory inv, int slot, ItemStack i, String name)
     {
-        ItemMeta im = i.getItemMeta();
+        ItemMeta im = Objects.requireNonNull(i.getItemMeta());
         im.setDisplayName(name);
         i.setItemMeta(im);
         inv.setItem(slot, i);
@@ -118,15 +136,12 @@ public abstract class PCFactory
             {
                 pl.sendMessage(ChatColor.RED + "你还没初始化你的性格");
                 pl.sendMessage(ChatColor.RED + "使用/character init");
-                
             }
             case EN->
             {
                 pl.sendMessage(ChatColor.RED + "You haven't initialise your characters");
                 pl.sendMessage(ChatColor.RED + "Please use /character init");
-                
             }
         }
     }
-
 }

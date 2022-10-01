@@ -11,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
@@ -19,11 +18,12 @@ import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
 import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
 import override.studio.strlantian.playercharacters.commands.ViewCharacters;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
+import static override.studio.strlantian.playercharacters.Localisation.CN;
+import static override.studio.strlantian.playercharacters.Localisation.EN;
 import static override.studio.strlantian.playercharacters.enums.Characters.HEALTH;
 
 public final class CharacterCommand implements TabExecutor
@@ -111,7 +111,7 @@ public final class CharacterCommand implements TabExecutor
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args)
+    public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args)
     {
         Player pl;
         if((commandSender instanceof Player))           //check who sent the command
@@ -156,14 +156,15 @@ public final class CharacterCommand implements TabExecutor
                         BaseComponent pleaseDoHelpCN = new TextComponent(ChatColor.RED + "麻烦看看/character help吧");
                         pleaseDoHelpCN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("看啥,点啊")));
                         pleaseDoHelpCN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
-                        pl.sendMessage(pleaseDoHelpCN);
+                        pl.spigot().sendMessage(pleaseDoHelpCN);
                     }
                     case EN ->
                     {
                         BaseComponent pleaseDoHelpEN = new TextComponent(ChatColor.RED + "Please do /character help");
                         pleaseDoHelpEN.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("What r u waiting for")));
                         pleaseDoHelpEN.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/character help"));
-                        pl.sendMessage(pleaseDoHelpEN);
+                        pl.sendMessage(String.valueOf(pleaseDoHelpEN));
+                        pl.spigot().sendMessage(pleaseDoHelpEN);
                     }
                 }
             }
@@ -216,7 +217,7 @@ public final class CharacterCommand implements TabExecutor
     }
 
     @Override
-    public @NotNull List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings)
+    public @Nonnull List<String> onTabComplete(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] strings)
     {
         if(strings.length == 1)
         {

@@ -7,10 +7,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import override.studio.strlantian.playercharacters.Localisation;
 import override.studio.strlantian.playercharacters.PCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
-import static override.studio.strlantian.PlayerCharacters.*;
+import static override.studio.strlantian.PlayerCharacters.inst;
 
 public abstract class DeleteCharacters
 {
@@ -21,12 +22,12 @@ public abstract class DeleteCharacters
         int lang = ps.getLanguage();
         switch(lang)
         {
-            case CN ->
+            case Localisation.CN ->
             {
                 pl.sendMessage(ChatColor.RED + "你已经删过了,都说了恢复不了就别试了");
                 pl.sendMessage(ChatColor.RED + "如果你确信这是个错误那么就联系管理员吧");
             }
-            case EN ->
+            case Localisation.EN ->
             {
                 pl.sendMessage(ChatColor.RED + "You have deleted them so don't try to recover");
                 pl.sendMessage(ChatColor.RED + "Contact admin if you believe this is an error");
@@ -48,14 +49,14 @@ public abstract class DeleteCharacters
         {
             switch(lang)
             {
-                case CN ->
+                case Localisation.CN ->
                 {
                     Inventory inv = Bukkit.createInventory(null, 9, DELCONFIRMCN);
                     PCFactory.setItemToInv(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "嗯 我确定删除");
                     PCFactory.setItemToInv(inv, 5, new ItemStack(Material.RED_WOOL), ChatColor.RED + "不 我点错了");
                     pl.openInventory(inv);
                 }
-                case EN ->
+                case Localisation.EN ->
                 {
                     Inventory inv = Bukkit.createInventory(null, 9, DELCONFIRMEN);
                     PCFactory.setItemToInv(inv, 3, new ItemStack(Material.GREEN_WOOL), ChatColor.GREEN + "Yes I want to delete them");

@@ -10,13 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import override.studio.strlantian.PlayerCharacters;
 
-import static override.studio.strlantian.PlayerCharacters.CN;
-import static override.studio.strlantian.PlayerCharacters.EN;
-
 public abstract class Localisation
 {
     static FileConfiguration cfg = PlayerCharacters.inst.getConfig();
 
+    public static final int CN = 0;
+    public static final int EN = 1;
     public static final String LANGTITLE = "选语言 | Choose a Language";
     @SuppressWarnings("Deprecation")
     public static Inventory getLanguageInv()
