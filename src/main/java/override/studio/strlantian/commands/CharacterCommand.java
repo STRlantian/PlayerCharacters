@@ -24,7 +24,7 @@ import java.util.List;
 
 import static override.studio.strlantian.playercharacters.Localisation.CN;
 import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.enums.Characters.HEALTH;
+import static override.studio.strlantian.playercharacters.Characters.HEALTH;
 
 public final class CharacterCommand implements TabExecutor
 {

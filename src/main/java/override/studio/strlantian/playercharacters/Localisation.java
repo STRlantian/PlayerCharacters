@@ -10,21 +10,28 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import override.studio.strlantian.PlayerCharacters;
 
+import java.util.Objects;
+
 public abstract class Localisation
 {
+    /*
+    IS THERE ANYONE
+    THAT HAS BETTER ADVICES ON LOCALISATION???
+    */
+
     static FileConfiguration cfg = PlayerCharacters.inst.getConfig();
 
     public static final int CN = 0;
     public static final int EN = 1;
     public static final String LANGTITLE = "选语言 | Choose a Language";
-    @SuppressWarnings("Deprecation")
+
     public static Inventory getLanguageInv()
     {
         Inventory inv = Bukkit.createInventory(null, 9, LANGTITLE);
         ItemStack CN = new ItemStack(Material.RED_WOOL);
         ItemStack EN = new ItemStack(Material.BLUE_WOOL);
-        ItemMeta cn = CN.getItemMeta();
-        ItemMeta en = EN.getItemMeta();
+        ItemMeta cn = Objects.requireNonNull(CN.getItemMeta());
+        ItemMeta en = Objects.requireNonNull(EN.getItemMeta());
         cn.setDisplayName(ChatColor.RED + "Chinese | 简体中文");
         en.setDisplayName(ChatColor.BLUE + "English | 英语");
         CN.setItemMeta(cn);
@@ -41,7 +48,7 @@ public abstract class Localisation
         pl.sendMessage(ChatColor.RED + "It seems that you haven't set your language yet.Please /character language");
     }
 
-    public static boolean checkLang(Player pl) //Check if set lang
+    public static boolean checkLang(Player pl)
     {
         PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();

@@ -3,7 +3,6 @@ package override.studio.strlantian.playercharacters;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import override.studio.strlantian.playercharacters.enums.Characters;
 
 import java.util.*;
 
@@ -52,7 +51,7 @@ public final class PlayerStorage
             case SATURATION -> CFG.set(PCFactory.getPathList(PL).get(Characters.SATURATION.ordinal()), value);
             case ENERGY -> CFG.set(PCFactory.getPathList(PL).get(Characters.ENERGY.ordinal()), value);
             case HEALTH -> CFG.set(PCFactory.getPathList(PL).get(Characters.HEALTH.ordinal()), value);
-            case SANITY -> CFG.set(PCFactory.getPathList(PL).get(Characters.SANITY.ordinal()), value);
+            case PERSEVERANCE -> CFG.set(PCFactory.getPathList(PL).get(Characters.PERSEVERANCE.ordinal()), value);
             case DARKNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.DARKNESS.ordinal()), value);
             case POSITIVITY -> CFG.set(PCFactory.getPathList(PL).get(Characters.POSITIVITY.ordinal()), value);
             case BRAVENESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.BRAVENESS.ordinal()), value);

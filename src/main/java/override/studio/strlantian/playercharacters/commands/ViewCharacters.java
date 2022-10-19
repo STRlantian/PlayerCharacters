@@ -16,7 +16,7 @@ import java.util.Objects;
 import static override.studio.strlantian.playercharacters.Localisation.CN;
 import static override.studio.strlantian.playercharacters.Localisation.EN;
 import static override.studio.strlantian.playercharacters.PCFactory.*;
-import static override.studio.strlantian.playercharacters.enums.Characters.*;
+import static override.studio.strlantian.playercharacters.Characters.*;
 
 public abstract class ViewCharacters
 {
@@ -28,6 +28,7 @@ public abstract class ViewCharacters
         String name = pl.getName();
         ItemStack consFlag = new ItemStack(Material.PAPER, 1);
         ItemStack featFlag = new ItemStack(Material.PAPER, 1);
+        StringBuilder bas = new StringBuilder(ChatColor.MAGIC.toString()).append(ChatColor.GOLD).append(name);
 
         switch(language)
         {
@@ -35,25 +36,25 @@ public abstract class ViewCharacters
             case CN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + VIEWCHARCN);
-                setItemToInv(inv, 0, consFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的基本性格",
+                setItemToInv(inv, 0, consFlag, bas.append("所属的基本性格").toString(),
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.GOLD + "这是你的基本性格");
-                setItemToInv(inv, 9, featFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "所属的特殊性格",
+                setItemToInv(inv, 9, featFlag, bas.append("所属的特殊性格").toString(),
                         ChatColor.GOLD + "这是你的特殊性格");
                 return inv;
             }
             case EN ->
             {
                 Inventory inv = Bukkit.createInventory(null, 3 * 9, name + VIEWCHAREN);
-                setItemToInv(inv, 0, consFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s basical characters",
+                setItemToInv(inv, 0, consFlag, bas.append("'s Basical Characters").toString(),
                         Enchantment.DURABILITY, 1, true,
                         ChatColor.GOLD + "These are your basical characters");
-                setItemToInv(inv, 9, featFlag, ChatColor.MAGIC + "" + ChatColor.GOLD + name + "'s special characters",
+                setItemToInv(inv, 9, featFlag, bas.append("'s Special Characters").toString(),
                         ChatColor.GOLD + "These are your special characters");
                 return inv;
             }
         }
-        return Bukkit.createInventory(null, 9, ChatColor.RED + "ERROR |||| 出错了");
+        return Bukkit.createInventory(null, 9, ChatColor.RED + "ERROR || 出错了");
     }
 
     //我没怎么在意代码美观性所以就一个private一个public了（（（（（
@@ -168,7 +169,7 @@ public abstract class ViewCharacters
         int lang = ps.getLanguage();
         List<Integer> list = ps.getCharacterList();
 
-        ItemStack san = SANITY.repItem();
+        ItemStack san = PERSEVERANCE.repItem();
         ItemStack dar = DARKNESS.repItem();
         ItemStack pos = POSITIVITY.repItem();
         ItemStack bra = BRAVENESS.repItem();
@@ -183,16 +184,16 @@ public abstract class ViewCharacters
                 switch (list.get(3)) //sanity
                 {
                     case SANITY_LOW -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "理智- 你有时不清醒",
-                            SANITY.repColour() + "概率性反胃和急迫效果");
+                            PERSEVERANCE.repColour() + "坚毅- 善于坚持不懈",
+                            PERSEVERANCE.repColour() + "在硬扛的情况下特殊效果");
 
                     case 1 -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "理智- 你比较清醒",
+                            PERSEVERANCE.repColour() + "坚毅- 你是个正常人",
                             ChatColor.GRAY + "不受影响");
 
                     case 2 -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "理智- 你沉着冷静",
-                            SANITY.repColour() + "抗性和速度效果");
+                            PERSEVERANCE.repColour() + "坚毅- 你意志力不强()",
+                            PERSEVERANCE.repColour() + "在硬扛的情况下特殊效果");
                 }
                 switch (list.get(4)) //darkness
                 {
@@ -262,19 +263,19 @@ public abstract class ViewCharacters
 
             case EN->
             {
-                switch (list.get(3)) //sanity
+                switch (list.get(3))
                 {
                     case 0 -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "Sanity- You are not that clear",
-                            SANITY.repColour() + "[Probabilistic]Nausea and haste");
+                            PERSEVERANCE.repColour() + "Perseverance- You got this",
+                            PERSEVERANCE.repColour() + "Mystery effects");
 
                     case 1 -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "Sanity- You are clear",
+                            PERSEVERANCE.repColour() + "Perseverance- Normal",
                             ChatColor.GRAY + "No effects");
 
                     case 2 -> setItemToInv(inv, 10, san,
-                            SANITY.repColour() + "Sanity- You can calm down anytime",
-                            SANITY.repColour() + "Resistance and slowness");
+                            PERSEVERANCE.repColour() + "Perseverance- You are not",
+                            PERSEVERANCE.repColour() + "Mystery effects");
                 }
                 switch (list.get(4)) //darkness
                 {

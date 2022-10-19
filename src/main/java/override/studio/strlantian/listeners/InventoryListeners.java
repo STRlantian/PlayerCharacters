@@ -39,7 +39,7 @@ import static override.studio.strlantian.playercharacters.commands.DeleteCharact
 import static override.studio.strlantian.playercharacters.commands.InitialiseCharacters.*;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHARCN;
 import static override.studio.strlantian.playercharacters.commands.ViewCharacters.VIEWCHAREN;
-import static override.studio.strlantian.playercharacters.enums.Characters.*;
+import static override.studio.strlantian.playercharacters.Characters.*;
 
 public final class InventoryListeners implements Listener
 {
@@ -168,13 +168,13 @@ public final class InventoryListeners implements Listener
                                 {
                                     case 29 ->
                                     {
-                                        list.set(SANITY.ordinal(), 0);
+                                        list.set(PERSEVERANCE.ordinal(), 0);
                                         list.set(BRAVENESS.ordinal(), 0);
                                         list.set(DARKNESS.ordinal(), 1);
                                     }
                                     case 33 ->
                                     {
-                                        list.set(SANITY.ordinal(), 1);
+                                        list.set(PERSEVERANCE.ordinal(), 1);
                                         list.set(BRAVENESS.ordinal(), 1);
                                         list.set(DARKNESS.ordinal(), 0);
                                     }
@@ -187,13 +187,13 @@ public final class InventoryListeners implements Listener
                                 {
                                     case 29 ->
                                     {
-                                        list.set(SANITY.ordinal(), 0);
+                                        list.set(PERSEVERANCE.ordinal(), 0);
                                         list.set(DARKNESS.ordinal(), 1);
                                         list.set(BRAVENESS.ordinal(), 1);
                                     }
                                     case 33 ->
                                     {
-                                        list.set(SANITY.ordinal(), 1);
+                                        list.set(PERSEVERANCE.ordinal(), 1);
                                         list.set(DARKNESS.ordinal(), 0);
                                         list.set(BRAVENESS.ordinal(), 0);
                                     }
@@ -206,7 +206,7 @@ public final class InventoryListeners implements Listener
                     }
                     case 2 ->
                     {
-                        int san = list.get(SANITY.ordinal());
+                        int san = list.get(PERSEVERANCE.ordinal());
                         switch(letter)
                         {
                             case 'A' ->
@@ -221,7 +221,7 @@ public final class InventoryListeners implements Listener
                                         {
                                             san--;
                                         }
-                                        list.set(SANITY.ordinal(), san);
+                                        list.set(PERSEVERANCE.ordinal(), san);
                                         list.set(POSITIVITY.ordinal(), 0);
                                     }
                                     case 31 ->
@@ -232,7 +232,7 @@ public final class InventoryListeners implements Listener
                                         {
                                             san--;
                                         }
-                                        list.set(SANITY.ordinal(), san);
+                                        list.set(PERSEVERANCE.ordinal(), san);
                                         list.set(POSITIVITY.ordinal(), 1);
                                     }
                                     case 33 ->
@@ -241,7 +241,7 @@ public final class InventoryListeners implements Listener
                                         {
                                             san++;
                                         }
-                                        list.set(SANITY.ordinal(), san);
+                                        list.set(PERSEVERANCE.ordinal(), san);
                                         list.set(POSITIVITY.ordinal(), 0);
                                     }
                                 }
@@ -257,7 +257,7 @@ public final class InventoryListeners implements Listener
                                             san--;
                                         }
                                         list.set(POSITIVITY.ordinal(), 1);
-                                        list.set(SANITY.ordinal(), san);
+                                        list.set(PERSEVERANCE.ordinal(), san);
                                     }
                                     case 31 ->
                                     {
@@ -266,7 +266,7 @@ public final class InventoryListeners implements Listener
                                             san++;
                                         }
                                         list.set(POSITIVITY.ordinal(), 0);
-                                        list.set(SANITY.ordinal(), san);
+                                        list.set(PERSEVERANCE.ordinal(), san);
                                     }
                                     case 33 ->
                                     {
@@ -358,15 +358,21 @@ public final class InventoryListeners implements Listener
                                 {
                                     case 29 ->
                                     {
-                                        if(Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.BLUE + "我愿意")
-                                        || Objects.requireNonNull(e.getCurrentItem()).getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.BLUE + "Yes"))
+                                        if(Objects.requireNonNull(Objects.requireNonNull(e.getCurrentItem()).
+                                                getItemMeta()).getDisplayName().
+                                                equalsIgnoreCase(ChatColor.BLUE + "我愿意")
+                                        || Objects.requireNonNull(e.getCurrentItem()).
+                                                getItemMeta().getDisplayName().
+                                                equalsIgnoreCase(ChatColor.BLUE + "Yes"))
                                         {
                                             if(!ISWAITED.get(pl))
                                             {
                                                 switch(lang)
                                                 {
-                                                    case Localisation.CN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
-                                                    case Localisation.EN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL), ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
+                                                    case Localisation.CN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL),
+                                                            ChatColor.RED + "那你来等等", ChatColor.GRAY + "剩余秒数: ");
+                                                    case Localisation.EN -> PCFactory.setItemToInv(invQues, 29, new ItemStack(Material.GRAY_WOOL),
+                                                            ChatColor.RED + "Then wait actually", ChatColor.GRAY + "Seconds remaining: ");
                                                 }
                                                 new BukkitRunnable()
                                                 {
@@ -664,7 +670,7 @@ public final class InventoryListeners implements Listener
             int now = nowCharList.get(slot - 7);
             switch(slot)
             {
-                case 10 -> ChangeCharacters.checkAndModify(pl, click, SANITY, nowCharList);
+                case 10 -> ChangeCharacters.checkAndModify(pl, click, PERSEVERANCE, nowCharList);
             }
         }
     }
