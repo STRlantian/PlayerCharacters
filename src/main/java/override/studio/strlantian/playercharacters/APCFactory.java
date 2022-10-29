@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
 
-public abstract class PCFactory
+public abstract class APCFactory
 {
     public static final int CHARNOTCHANGED = 0;
     public static final int CHARCHANGED = 1;

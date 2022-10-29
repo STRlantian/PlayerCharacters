@@ -4,10 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
 
-public enum Characters
+public enum ECharacters
 {
     SATURATION(new ItemStack(Material.COOKED_CHICKEN), ChatColor.DARK_GREEN, 2, "饱食度", "Saturation"),
     ENERGY(new ItemStack(Material.SUGAR), ChatColor.DARK_BLUE, 2, "能量值", "Energy"),
@@ -27,7 +27,7 @@ public enum Characters
     private ChatColor tempCo;
     private int maxValue;
     private String cn, en;
-    Characters(ItemStack represent, ChatColor colour, int maxValue, String cnName, String enName)
+    ECharacters(ItemStack represent, ChatColor colour, int maxValue, String cnName, String enName)
     {
         tempRe = represent;
         tempCo = colour;
@@ -35,7 +35,7 @@ public enum Characters
         cn = cnName;
         en = enName;
     }
-    Characters(){}
+    ECharacters(){}
     public ItemStack repItem()
     {
         return tempRe;

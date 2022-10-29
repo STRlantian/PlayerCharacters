@@ -13,12 +13,12 @@ import override.studio.strlantian.playercharacters.PlayerStorage;
 import java.util.List;
 import java.util.Objects;
 
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.PCFactory.*;
-import static override.studio.strlantian.playercharacters.Characters.*;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
+import static override.studio.strlantian.playercharacters.APCFactory.*;
+import static override.studio.strlantian.playercharacters.ECharacters.*;
 
-public abstract class ViewCharacters
+public abstract class AViewCharacters
 {
     public static final String VIEWCHARCN = "的性格页面";
     public static final String VIEWCHAREN = "'s Character Page";

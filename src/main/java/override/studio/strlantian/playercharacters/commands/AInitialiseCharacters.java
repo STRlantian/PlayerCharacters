@@ -7,23 +7,23 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.APCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.PCFactory.*;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
+import static override.studio.strlantian.playercharacters.APCFactory.*;
 
-public abstract class InitialiseCharacters
+public abstract class AInitialiseCharacters
 {
     public static final Map<Player, List<Integer>> CHARTEMPLIST = new HashMap<>(Collections.emptyMap());
     private static void createItemForQuestion(Inventory inv, String num, String lore)
     {
         final ItemStack Q = new ItemStack(Material.BOOK, 1);
-        PCFactory.setItemToInv(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
+        APCFactory.setItemToInv(inv, 13, Q, "(" + num + "/5)", ChatColor.GREEN + lore);
     }
 
     public static List<Integer> getRandomConstList()
@@ -148,7 +148,7 @@ public abstract class InitialiseCharacters
         }
         ps.setEnable(CHARENABLED);
         ps.setChanged(CHARNOTCHANGED);
-        ViewCharacters.viewCharacters(pl);
+        AViewCharacters.viewCharacters(pl);
     }
     public static final String ASKTITLECN = "您确定吗";
     public static final String ASKTITLEEN = "Are you sure";

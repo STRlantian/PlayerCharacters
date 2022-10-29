@@ -9,16 +9,16 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.APCFactory;
 import override.studio.strlantian.playercharacters.PlayerStatus;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import java.util.Objects;
 
 import static override.studio.strlantian.PlayerCharacters.inst;
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.Characters.DARKNESS;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
+import static override.studio.strlantian.playercharacters.ECharacters.DARKNESS;
 
 public class DarknessListener implements Listener
 {
@@ -36,10 +36,10 @@ public class DarknessListener implements Listener
                 Location loc = Objects.requireNonNull(e.getTo());
                 if(loc.getBlock().getLightFromBlocks() <= 4)
                 {
-                    if(ps.getEnable() == PCFactory.CHARENABLED)
+                    if(ps.getEnable() == APCFactory.CHARENABLED)
                     {
                         int dark = ps.getCharacter(DARKNESS);
-                        if(dark == PCFactory.DARKNESS_YES)
+                        if(dark == APCFactory.DARKNESS_YES)
                         {
                             pt.setIntoDark(true);
                             switch(ps.getLanguage())

@@ -12,7 +12,7 @@ import override.studio.strlantian.PlayerCharacters;
 
 import java.util.Objects;
 
-public abstract class Localisation
+public abstract class ALocalisation
 {
     /*
     IS THERE ANYONE

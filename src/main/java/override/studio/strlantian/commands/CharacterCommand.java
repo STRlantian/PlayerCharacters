@@ -11,20 +11,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import override.studio.strlantian.playercharacters.Localisation;
-import override.studio.strlantian.playercharacters.PCFactory;
+import override.studio.strlantian.playercharacters.ALocalisation;
+import override.studio.strlantian.playercharacters.APCFactory;
 import override.studio.strlantian.playercharacters.PlayerStorage;
-import override.studio.strlantian.playercharacters.commands.DeleteCharacters;
-import override.studio.strlantian.playercharacters.commands.InitialiseCharacters;
-import override.studio.strlantian.playercharacters.commands.ViewCharacters;
+import override.studio.strlantian.playercharacters.commands.ADeleteCharacters;
+import override.studio.strlantian.playercharacters.commands.AInitialiseCharacters;
+import override.studio.strlantian.playercharacters.commands.AViewCharacters;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.Characters.HEALTH;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
+import static override.studio.strlantian.playercharacters.ECharacters.HEALTH;
 
 public final class CharacterCommand implements TabExecutor
 {
@@ -126,9 +126,9 @@ public final class CharacterCommand implements TabExecutor
         }
         PlayerStorage ps = PlayerStorage.getStorage(pl);
         int lang = ps.getLanguage();
-        if(Localisation.checkLang(pl))                //check if there is lang
+        if(ALocalisation.checkLang(pl))                //check if there is lang
         {
-            Localisation.uDidntSetLanguage(pl);
+            ALocalisation.uDidntSetLanguage(pl);
             return true;
         }
 
@@ -140,7 +140,7 @@ public final class CharacterCommand implements TabExecutor
             && !args[0].equals("help") && !args[0].equals("credit")
             && !args[0].equals("credits"))
             {
-                PCFactory.uDidntInit(pl);
+                APCFactory.uDidntInit(pl);
                 return true;
             }
         }
@@ -175,21 +175,21 @@ public final class CharacterCommand implements TabExecutor
                 {
                     case "help"-> giveHelp(pl);
                     case "credits", "credit"-> giveCredits(pl);
-                    case "language", "lang" -> pl.openInventory(Localisation.getLanguageInv());
-                    case "view"-> ViewCharacters.viewCharacters(pl);
+                    case "language", "lang" -> pl.openInventory(ALocalisation.getLanguageInv());
+                    case "view"-> AViewCharacters.viewCharacters(pl);
                     case "init", "initialise", "initialize"->
                     {
-                        if(PlayerStorage.getStorage(pl).getEnable() == PCFactory.NOINIT
-                        && PlayerStorage.getStorage(pl).getChanged() == PCFactory.NOINIT)
+                        if(PlayerStorage.getStorage(pl).getEnable() == APCFactory.NOINIT
+                        && PlayerStorage.getStorage(pl).getChanged() == APCFactory.NOINIT)
                         {
-                            InitialiseCharacters.initialiseCharacters(pl);
+                            AInitialiseCharacters.initialiseCharacters(pl);
                         }
                     }
                     case "delete", "del" ->
                     {
-                        if(ps.getEnable() == PCFactory.CHARENABLED)
+                        if(ps.getEnable() == APCFactory.CHARENABLED)
                         {
-                            DeleteCharacters.confirmDelete(pl);
+                            ADeleteCharacters.confirmDelete(pl);
                         }
                     }
                 }
@@ -204,7 +204,7 @@ public final class CharacterCommand implements TabExecutor
                 && args[5].equals("about")
                 && args[6].equals("this"))
                 {
-                    DeleteCharacters.deleteCharacters(pl);
+                    ADeleteCharacters.deleteCharacters(pl);
                     switch(lang)
                     {
                         case CN -> pl.sendMessage(ChatColor.GREEN + "已删除性格 感谢使用!");

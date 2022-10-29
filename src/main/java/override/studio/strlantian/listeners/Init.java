@@ -11,14 +11,14 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
-import override.studio.strlantian.playercharacters.Localisation;
+import override.studio.strlantian.playercharacters.ALocalisation;
 import override.studio.strlantian.playercharacters.PlayerStorage;
 
 import static override.studio.strlantian.PlayerCharacters.inst;
-import static override.studio.strlantian.playercharacters.Localisation.CN;
-import static override.studio.strlantian.playercharacters.Localisation.EN;
-import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
-import static override.studio.strlantian.playercharacters.PCFactory.NOINIT;
+import static override.studio.strlantian.playercharacters.ALocalisation.CN;
+import static override.studio.strlantian.playercharacters.ALocalisation.EN;
+import static override.studio.strlantian.playercharacters.APCFactory.CHARENABLED;
+import static override.studio.strlantian.playercharacters.APCFactory.NOINIT;
 
 public final class Init implements Listener
 {
@@ -30,7 +30,7 @@ public final class Init implements Listener
         {
             PlayerStorage.addToStorageMap(pl);
         }
-        if(!Localisation.checkLang(pl))
+        if(!ALocalisation.checkLang(pl))
         {
             if(PlayerStorage.getStorage(pl).getEnable() == NOINIT)
             {
@@ -56,7 +56,7 @@ public final class Init implements Listener
                 cfg.set(cha, "Kindness");
                 cfg.set(cha, "Patience");
                 cfg.set(cha, "Height");
-                pl.openInventory(Localisation.getLanguageInv());
+                pl.openInventory(ALocalisation.getLanguageInv());
             }
         }
     }
@@ -79,7 +79,7 @@ public final class Init implements Listener
         InventoryView inv = e.getView();
         Player pl = (Player) e.getPlayer();
         String title = inv.getTitle();
-        if (Localisation.LANGTITLE.equals(title))
+        if (ALocalisation.LANGTITLE.equals(title))
         {
             pl.sendMessage(ChatColor.GRAY + "你仍然可以使用 /character language 来设置");
             pl.sendMessage(ChatColor.GRAY + "You can still use /character language to set language");
@@ -95,7 +95,7 @@ public final class Init implements Listener
         String title = inv.getTitle();
         PlayerStorage ps = PlayerStorage.getStorage(pl);
 
-        if (Localisation.LANGTITLE.equals(title))
+        if (ALocalisation.LANGTITLE.equals(title))
         {
             e.setCancelled(true);
             int slot = e.getSlot();

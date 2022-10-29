@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 import static override.studio.strlantian.PlayerCharacters.inst;
-import static override.studio.strlantian.playercharacters.PCFactory.CHARDISALED;
-import static override.studio.strlantian.playercharacters.PCFactory.CHARENABLED;
+import static override.studio.strlantian.playercharacters.APCFactory.CHARDISALED;
+import static override.studio.strlantian.playercharacters.APCFactory.CHARENABLED;
 
 public final class PlayerStorage
 {
@@ -39,25 +39,25 @@ public final class PlayerStorage
     {
         return charList;
     }
-    public int getCharacter(Characters which)
+    public int getCharacter(ECharacters which)
     {
         return charList.get(which.ordinal());
     }
-    public void setCharacterList(Characters what, int value)
+    public void setCharacterList(ECharacters what, int value)
     {
         charList.set(what.ordinal(), value);
         switch(what)
         {
-            case SATURATION -> CFG.set(PCFactory.getPathList(PL).get(Characters.SATURATION.ordinal()), value);
-            case ENERGY -> CFG.set(PCFactory.getPathList(PL).get(Characters.ENERGY.ordinal()), value);
-            case HEALTH -> CFG.set(PCFactory.getPathList(PL).get(Characters.HEALTH.ordinal()), value);
-            case PERSEVERANCE -> CFG.set(PCFactory.getPathList(PL).get(Characters.PERSEVERANCE.ordinal()), value);
-            case DARKNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.DARKNESS.ordinal()), value);
-            case POSITIVITY -> CFG.set(PCFactory.getPathList(PL).get(Characters.POSITIVITY.ordinal()), value);
-            case BRAVENESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.BRAVENESS.ordinal()), value);
-            case KINDNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.KINDNESS.ordinal()), value);
-            case PATIENCE -> CFG.set(PCFactory.getPathList(PL).get(Characters.PATIENCE.ordinal()), value);
-            case COLDNESS -> CFG.set(PCFactory.getPathList(PL).get(Characters.COLDNESS.ordinal()), value);
+            case SATURATION -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.SATURATION.ordinal()), value);
+            case ENERGY -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.ENERGY.ordinal()), value);
+            case HEALTH -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.HEALTH.ordinal()), value);
+            case PERSEVERANCE -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.PERSEVERANCE.ordinal()), value);
+            case DARKNESS -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.DARKNESS.ordinal()), value);
+            case POSITIVITY -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.POSITIVITY.ordinal()), value);
+            case BRAVENESS -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.BRAVENESS.ordinal()), value);
+            case KINDNESS -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.KINDNESS.ordinal()), value);
+            case PATIENCE -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.PATIENCE.ordinal()), value);
+            case COLDNESS -> CFG.set(APCFactory.getPathList(PL).get(ECharacters.COLDNESS.ordinal()), value);
         }
     }
     public void setCharacterList(List<Integer> list)
@@ -66,7 +66,7 @@ public final class PlayerStorage
         int i = 0;
         while(i < 10)
         {
-            CFG.set(PCFactory.getPathList(PL).get(i), list.get(i));
+            CFG.set(APCFactory.getPathList(PL).get(i), list.get(i));
             i++;
         }
     }
@@ -77,7 +77,7 @@ public final class PlayerStorage
     public void setLanguage(int value)
     {
         lang = value;
-        CFG.set(PCFactory.getPathList(PL).get(Characters.LANGUAGE.ordinal()), value);
+        CFG.set(APCFactory.getPathList(PL).get(ECharacters.LANGUAGE.ordinal()), value);
     }
     public int getEnable()
     {
@@ -85,15 +85,15 @@ public final class PlayerStorage
     }
     public void setEnable(int whatNow)
     {
-        CFG.set(PCFactory.getPathList(PL).get(Characters.ENABLED.ordinal()), whatNow);
+        CFG.set(APCFactory.getPathList(PL).get(ECharacters.ENABLED.ordinal()), whatNow);
         PlayerStorage ps = PlayerStorage.getStorage(PL);
         int lang = ps.getLanguage();
         if (whatNow == CHARENABLED)
         {
             switch (lang)
             {
-                case Localisation.CN -> PL.sendMessage(ChatColor.GREEN + "你的性格已启用");
-                case Localisation.EN -> PL.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
+                case ALocalisation.CN -> PL.sendMessage(ChatColor.GREEN + "你的性格已启用");
+                case ALocalisation.EN -> PL.sendMessage(ChatColor.GREEN + "Your characters have been enabled");
             }
         }
         else if(whatNow == CHARDISALED)
@@ -101,8 +101,8 @@ public final class PlayerStorage
             removeFromStorageMap(PL);
             switch (lang)
             {
-                case Localisation.CN -> PL.sendMessage(ChatColor.RED + "你的性格已经删除");
-                case Localisation.EN -> PL.sendMessage(ChatColor.RED + "Your characters has been deleted");
+                case ALocalisation.CN -> PL.sendMessage(ChatColor.RED + "你的性格已经删除");
+                case ALocalisation.EN -> PL.sendMessage(ChatColor.RED + "Your characters has been deleted");
             }
         }
     }
@@ -113,19 +113,19 @@ public final class PlayerStorage
     public void setChanged(int value)
     {
         changed = value;
-        CFG.set(PCFactory.getPathList(PL).get(Characters.CHANGE.ordinal()), value);
+        CFG.set(APCFactory.getPathList(PL).get(ECharacters.CHANGE.ordinal()), value);
     }
     public void refresh()
     {
         charList = new ArrayList<>(Collections.emptyList());
         for(int i = 0; i < 10; i++)
         {
-            charList.set(i, (Integer) CFG.get(PCFactory.getPathList(PL).get(i)));
+            charList.set(i, (Integer) CFG.get(APCFactory.getPathList(PL).get(i)));
             i++;
         }
-        lang = CFG.getInt(PCFactory.getPathList(PL).get(Characters.LANGUAGE.ordinal()));
-        enable = CFG.getInt(PCFactory.getPathList(PL).get(Characters.ENABLED.ordinal()));
-        changed = CFG.getInt(PCFactory.getPathList(PL).get(Characters.CHANGE.ordinal()));
+        lang = CFG.getInt(APCFactory.getPathList(PL).get(ECharacters.LANGUAGE.ordinal()));
+        enable = CFG.getInt(APCFactory.getPathList(PL).get(ECharacters.ENABLED.ordinal()));
+        changed = CFG.getInt(APCFactory.getPathList(PL).get(ECharacters.CHANGE.ordinal()));
     }
     private PlayerStorage(Player pl)
     {
